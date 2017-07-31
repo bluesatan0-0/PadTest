@@ -113,17 +113,19 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         rvHoles.setLayoutManager(linearLayoutManager_holes);
 
 //        初始化列表(餐线、餐眼)数据
-        InitData_RecyclerView();
+        initData_RecyclerView();
     }
 
 
     /**
      * 初始化列表RecyclerView的数据（餐线+餐眼）
      */
-    private void InitData_RecyclerView() {
+    private void initData_RecyclerView() {
 
-//        餐线业务操作类
+
+//       设置模块业务类————加载数据（SettingsPresenter_DataLoad）
         SettingsPresenter_DataLoad settingsPresenterDataLoad = new SettingsPresenter_DataLoad();
+//        回调监听
         settingsPresenterDataLoad.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
             @Override
             public void loaded_Lines(List<Line> list) {
@@ -135,75 +137,103 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
             @Override
             public void load_Lines_Holes(List<Line> linesList, final List<Hole> holesList) {
-                if (null != linesList) {
-                    lines.clear();
-                    lines.addAll(linesList);
-                    System.out.println("aaa list:" + linesList.toString());
-                    linesAdapter = new LinesAdapter(context, lines);
-                    linesAdapter.setOnItemClickListener(new LinesAdapter.ItemClickListener() {
-
-                        @Override
-                        public void onBtnNameClick(String lineName) {
-
-                            SettingsPresenter_DataLoad settingsPresenter_dataLoad_HolesByLinesName = new SettingsPresenter_DataLoad();
-                            settingsPresenter_dataLoad_HolesByLinesName.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
-                                @Override
-                                public void loaded_Lines(List<Line> linesList) {
-
-                                }
-
-                                @Override
-                                public void loaded_Holes(List<Hole> holesList) {
-                                    holes.removeAll(holes);
-                                    holes.clear();
-                                    holes.addAll(holesList);
-
-                                    holesAdapter.notifyDataSetChanged();
-                                }
-
-                                @Override
-                                public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
-
-                                }
-                            });
-
-                            if (lineName.equals("全   部")) {
-                                settingsPresenter_dataLoad_HolesByLinesName.getList_Holes();
-                            } else {
-                                settingsPresenter_dataLoad_HolesByLinesName.getList_HolesByLinesName(lineName);
-                            }
-                        }
-
-                        @Override
-                        public void onDeleteClick(String lineName) {
-                            // TODO: 2017/7/31   编写对应对话框
-                            flag = FLAG_DELETE_LINE;
-                            showAlert();
-                        }
-
-                        @Override
-                        public void onEditClick(String lineName) {
-                            // TODO: 2017/7/31   编写对应对话框
-                            flag = FLAG_EDIT_LINE;
-                            showAlert();
-                        }
-                    });
-                    rvLines.setAdapter(linesAdapter);
-                }
-                if (null != holesList) {
-                    holes.clear();
-                    holes.addAll(holesList);
-                    System.out.println("aaa list:" + holesList.toString());
-                    holesAdapter = new HolesAdapter(context, holes, lines);
-                    rvHoles.setAdapter(holesAdapter);
-                }
-
+                initAdapter_AfterGetData(linesList, holesList);
             }
         });
+
 //        开始获取 数据（餐线+餐眼）
         settingsPresenterDataLoad.getList_LinesAndHoles();
     }
 
+    /**
+     * 获取数据后 设置RecyclerView的适配器adapter
+     * 当model完成数据下载后调用
+     *
+     * @param linesList 新鲜加载的餐线集合
+     * @param holesList 新鲜加载的餐眼集合
+     */
+    private void initAdapter_AfterGetData(List<Line> linesList, List<Hole> holesList) {
+        if (null != linesList) {
+            lines.removeAll(lines);
+            lines.clear();
+            lines.addAll(linesList);
+            System.out.println("aaa list:" + linesList.toString());
+            linesAdapter = new LinesAdapter(context, lines);
+            linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
+            rvLines.setAdapter(linesAdapter);
+        }
+        if (null != holesList) {
+            holes.clear();
+            holes.addAll(holesList);
+            System.out.println("aaa list:" + holesList.toString());
+            holesAdapter = new HolesAdapter(context, holes, lines);
+            rvHoles.setAdapter(holesAdapter);
+        }
+    }
+
+    /**
+     * 餐线点击事件  的  回调监听器
+     *
+     */
+    class mItemClickListener_rvLines implements LinesAdapter.ItemClickListener {
+
+        @Override
+        public void onBtnNameClick(String lineName) {
+
+            whenBtnLineNameClick(lineName);
+        }
+
+
+        @Override
+        public void onDeleteClick(String lineName) {
+            // TODO: 2017/7/31   编写对应对话框
+            flag = FLAG_DELETE_LINE;
+            showAlert();
+        }
+
+        @Override
+        public void onEditClick(String lineName) {
+            // TODO: 2017/7/31   编写对应对话框
+            flag = FLAG_EDIT_LINE;
+            showAlert();
+        }
+
+        /**
+         * 根据点击的line  更新rvHoles中的数据（换成被点击餐线的餐眼）
+         * 当rvLines的item中btnName被点击时，执行
+         * @param lineName 餐线名称
+         */
+        private void whenBtnLineNameClick(String lineName) {
+            SettingsPresenter_DataLoad settingsPresenter_dataLoad_HolesByLinesName = new SettingsPresenter_DataLoad();
+            settingsPresenter_dataLoad_HolesByLinesName.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
+                @Override
+                public void loaded_Lines(List<Line> linesList) {
+
+                }
+
+                @Override
+                public void loaded_Holes(List<Hole> holesList) {
+                    holes.removeAll(holes);
+                    holes.clear();
+                    holes.addAll(holesList);
+
+                    holesAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
+
+                }
+            });
+
+            if (lineName.equals("全   部")) {
+                settingsPresenter_dataLoad_HolesByLinesName.getList_Holes();
+            } else {
+                settingsPresenter_dataLoad_HolesByLinesName.getList_HolesByLinesName(lineName);
+            }
+        }
+
+    }
 
     private void initEvent() {
 
@@ -223,7 +253,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
 
     /**
-     * 点击事件
+     * 设置模块 主界面  按钮点击事件
+     *
      */
     @Override
     public void onClick(View v) {
@@ -300,7 +331,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
 
     /**
-     * 提示窗口alertDialog中按钮的单击事件：
+     * 提示窗口alertDialog中  按钮单击事件：
      *
      * @param dialog
      * @param which
