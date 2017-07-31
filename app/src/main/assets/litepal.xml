@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<litepal>
+
+    <dbname value="DefaultDB" />
+
+    <version value="2" />
+
+    <list>
+        <mapping class="com.zjxl.yanj.padtest.Bean.Plate"/>
+
+    </list>
+
+
+</litepal>

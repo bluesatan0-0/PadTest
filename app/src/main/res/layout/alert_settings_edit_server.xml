@@ -1,0 +1,186 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="match_parent"
+    android:background="#00111111">
+
+    <TextView
+        android:id="@+id/tv_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/colorTitle"
+        android:padding="10dp"
+        android:text="设置服务器(SharedPerference)"
+        android:textAlignment="center"
+        android:textColor="#ffffffff"
+        android:textSize="22sp" />
+
+
+    <!--数据库地址（前置机）-->
+    <EditText
+        android:id="@+id/et_db_ip"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/tv_title"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_edittext_border"
+        android:hint="120.26.88.91"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tv_db_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/et_db_ip"
+        android:layout_toStartOf="@id/et_db_ip"
+        android:maxLines="1"
+        android:text="前置机地址(db_ip)："
+        android:textSize="24sp" />
+
+    <!--数据库端口（前置机）-->
+    <EditText
+        android:id="@+id/et_db_port"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/et_db_ip"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_edittext_border"
+        android:hint="3306"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tv_db_port"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/et_db_port"
+        android:layout_toStartOf="@id/et_db_port"
+        android:maxLines="1"
+        android:text="前置机端口(db_port)："
+        android:textSize="24sp" />
+
+
+    <!--数据库名-->
+    <EditText
+        android:id="@+id/et_db_name"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/et_db_port"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_edittext_border"
+        android:hint="my_server"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tv_db_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/et_db_name"
+        android:layout_toStartOf="@id/et_db_name"
+        android:maxLines="1"
+        android:text="前置机名称(db_name)："
+        android:textSize="24sp" />
+
+
+    <!--数据库账户-->
+    <EditText
+        android:id="@+id/et_db_user"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/et_db_name"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_edittext_border"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tv_db_user"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/et_db_user"
+        android:layout_toStartOf="@id/et_db_user"
+        android:maxLines="1"
+        android:text="前置机账户(db_user)："
+        android:textSize="24sp" />
+
+
+    <!--数据库密码-->
+    <EditText
+        android:id="@+id/et_db_pwd"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/et_db_user"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_edittext_border"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tv_db_pwd"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/et_db_pwd"
+        android:layout_toStartOf="@id/et_db_pwd"
+        android:maxLines="1"
+        android:text="前置机密码(db_pwd)："
+        android:textSize="24sp" />
+
+
+    <!--前置机数据库的配置👆-->
+
+
+    <!--远端服务器的配置👇-->
+
+    <!--服务器地址-->
+    <EditText
+        android:id="@+id/et_server_ip"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@+id/et_db_pwd"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="22dp"
+        android:background="@drawable/shape_edittext_border"
+        android:hint="192.168.2.241"
+        android:textSize="24sp" />
+
+    <TextView
+        android:id="@+id/tv_server_ip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/et_server_ip"
+        android:layout_toStartOf="@id/et_server_ip"
+        android:maxLines="1"
+        android:text="服务器地址(server_ip)："
+        android:textSize="24sp" />
+
+    <!--餐厅编号-->
+    <EditText
+        android:id="@+id/et_server_department"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/et_server_ip"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_edittext_border"
+        android:textSize="24sp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@id/et_server_department"
+        android:layout_toStartOf="@id/et_server_department"
+        android:maxLines="1"
+        android:text="餐厅编号(department_id)："
+        android:textSize="24sp" />
+
+
+</RelativeLayout>

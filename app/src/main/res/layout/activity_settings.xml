@@ -1,0 +1,160 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="40dp">
+
+    <!--菜单样式-->
+    <include layout="@layout/head_layout"></include>
+
+    <!--菜单按钮-->
+    <include layout="@layout/menu_layout_settings"></include>
+
+
+    <!--内容区：操作按钮-->
+    <LinearLayout
+        android:id="@+id/ll_buttons"
+        android:layout_width="match_parent"
+        android:layout_height="30dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="120dp"
+        android:gravity="center_horizontal|right">
+
+        <!--添加餐线-->
+        <Button
+            android:id="@+id/btn_addLine"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/shape_button"
+            android:gravity="center"
+            android:text="+ 添加餐线"
+            android:textColor="#ffffffff" />
+
+        <!--添加眼-->
+        <Button
+            android:id="@+id/btn_addHole"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/shape_button"
+            android:gravity="center"
+            android:text="+ 添加眼"
+            android:textColor="#ffffffff" />
+
+    </LinearLayout>
+
+    <!--数据列表区；左侧：餐线列表-->
+    <LinearLayout
+        android:id="@+id/ll_lines"
+        android:layout_width="180dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignTop="@+id/linearLayout"
+        android:layout_marginLeft="50dp"
+        android:layout_marginStart="40dp"
+        android:orientation="vertical">
+
+        <!--<Button-->
+        <!--android:id="@+id/btn_allLines"-->
+        <!--android:layout_width="match_parent"-->
+        <!--android:layout_height="match_parent"-->
+        <!--android:gravity="center_vertical|left"-->
+        <!--android:text="全    部"-->
+        <!--android:paddingLeft="10dp"-->
+        <!--android:background="#00000000"-->
+        <!--android:textSize="26px" />-->
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_Lines"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+    </LinearLayout>
+
+    <!--右侧：设备列表-->
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/ll_buttons"
+        android:layout_marginLeft="40dp"
+        android:layout_marginRight="40dp"
+        android:layout_marginTop="30dp"
+        android:layout_toEndOf="@id/ll_lines"
+        android:orientation="vertical">
+
+        <!--头部列名-->
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:background="#ffFFF6F2"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_column"
+                android:gravity="center"
+                android:text="保温眼名称(hole.name)"
+                android:textColor="#bb000000"
+                android:textSize="26px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_column"
+                android:gravity="center"
+                android:text="餐线名称(line.name)"
+                android:textColor="#bb000000"
+                android:textSize="26px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_column"
+                android:gravity="center"
+                android:text="餐眼编码(hole.uuid)"
+                android:textColor="#bb000000"
+                android:textSize="26px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_column"
+                android:gravity="center"
+                android:text="状  态(hole.statu)"
+                android:textColor="#bb000000"
+                android:textSize="26px" />
+
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="2"
+                android:background="@drawable/shape_column"
+                android:gravity="center"
+                android:text="  操  作  "
+                android:textColor="#bb000000"
+                android:textSize="26px" />
+        </LinearLayout>
+
+        <!--数据列表-->
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_devices_belong_line"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+        </android.support.v7.widget.RecyclerView>
+
+
+    </LinearLayout>
+
+</RelativeLayout>

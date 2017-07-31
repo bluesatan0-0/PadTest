@@ -1,0 +1,23 @@
+<resources>
+    <string name="app_name">PadTest</string>
+
+
+    <string name="cancel">取消</string>
+    <string name="ensure">确认</string>
+
+    <string name="alert_clean_title">清空当前排菜</string>
+    <string name="alert_clean">清空操作将清除当前排菜信息，您确定要清空吗？</string>
+    <string name="alert_download_success">下载今日菜单成功！</string>
+    <string name="alert_upload_success">上传排菜信息成功！</string>
+
+    <string name="alert_settings_title_save_settings">保存设置</string>
+    <string name="alert_settings_title_edit_server">设置服务器(SharedPerference)</string>
+    <string name="alert_settings_title_add_hole">添加保温眼(table:menu_device)</string>
+    <string name="alert_settings_title_add_holes">批量添加保温眼</string>
+    <string name="alert_settings_title_line_add">添加餐线(table:menu_rows)</string>
+    <string name="alert_settings_title_line_update">修改餐线(table:menu_rows)</string>
+    <string name="alert_settings_title_line_delete">删除餐线</string>
+
+    <string name="alert_settings_ensure_save_settings">确定保存设置？</string>
+    <string name="alert_settings_ensure_line_delete">删除餐线，相应的保温眼也将被删除，确定要删除该餐线？</string>
+</resources>

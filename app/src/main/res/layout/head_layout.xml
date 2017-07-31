@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_head_Layout"
+    android:layout_width="match_parent"
+    android:layout_height="92dp"
+    android:background="@drawable/shape_head"
+    android:gravity="bottom"
+    android:orientation="horizontal"
+    android:paddingBottom="20dp"
+    android:paddingTop="5dp">
+
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:src="@mipmap/navegation_logo" />
+
+    <View
+        android:layout_width="1dp"
+        android:layout_height="50dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:background="@mipmap/navegation_line"></View>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_school_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="浙 江 大 学"
+            android:textColor="#ffffffff"
+            android:textSize="36px" />
+
+        <TextView
+            android:id="@+id/tv_diningRoom_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="3dp"
+            android:text="紫金港东区食堂"
+            android:textColor="#ffffffff"
+            android:textSize="24px" />
+
+    </LinearLayout>
+
+</LinearLayout>

@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/tv_hole_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_column"
+            android:gravity="center"
+            android:text="保温眼名称"
+            android:textColor="#bb000000"
+            android:textSize="26px" />
+
+        <TextView
+            android:id="@+id/tv_line_name"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_column"
+            android:gravity="center"
+            android:text="  餐线名称  "
+            android:textColor="#bb000000"
+            android:textSize="26px" />
+
+        <TextView
+            android:id="@+id/tv_hole_code"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_column"
+            android:gravity="center"
+            android:text="  餐眼 ID  "
+            android:textColor="#bb000000"
+            android:textSize="26px" />
+
+        <TextView
+            android:id="@+id/tv_hole_statu"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/shape_column"
+            android:gravity="center"
+            android:text="  状  态  "
+            android:textColor="#bb000000"
+            android:textSize="26px" />
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="2"
+            android:background="@drawable/shape_column"
+            android:gravity="center"
+            android:orientation="horizontal">
+
+            <Button
+                android:id="@+id/btn_device_edit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#00000000"
+                android:text="修改设备"
+                android:textColor="@drawable/selector_text_color" />
+
+            <Button
+                android:id="@+id/btn_device_check"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#00000000"
+                android:text="检测设备"
+                android:textColor="@drawable/selector_text_color" />
+
+            <Button
+                android:id="@+id/btn_device_delete"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_margin="10dp"
+                android:background="#00000000"
+                android:text="删除设备"
+                android:textColor="@drawable/selector_text_color" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+</LinearLayout>
