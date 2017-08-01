@@ -32,7 +32,6 @@ public class HolesAdapter extends RecyclerView.Adapter implements View.OnClickLi
     private List<Hole> dataList;
     private List<Line> linesList;
     private Line line;
-    private int lineId;
 
     public HolesAdapter(Context context, List<Hole> holes, List<Line> linesList) {
         this.context = context;
@@ -52,14 +51,14 @@ public class HolesAdapter extends RecyclerView.Adapter implements View.OnClickLi
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
         Hole hole = dataList.get(position);
-//        lineId = hole.getLineId();
+        int lineId = hole.getLineId();
         String lineName = null;
 
-        if (null != line && hole.getLineId() == line.getId()) {
+        if (null != line && lineId == line.getId()) {
             lineName = line.getName();
         } else {
             for (Line line : linesList) {
-                if (hole.getLineId() == line.getId()) {
+                if (lineId == line.getId()) {
                     this.line = line;
                     lineName = line.getName();
                 }
@@ -77,6 +76,9 @@ public class HolesAdapter extends RecyclerView.Adapter implements View.OnClickLi
                 break;
             case 1:
                 holeStatu = "在线";
+                break;
+            case -4:
+                holeStatu = "未保活";
                 break;
         }
 //        获取holeStatu👆

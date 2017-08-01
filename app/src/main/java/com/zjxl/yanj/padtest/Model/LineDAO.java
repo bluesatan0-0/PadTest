@@ -161,7 +161,7 @@ public class LineDAO {
 
         //        删除餐眼语句
         StringBuilder sql_deleteHole = new StringBuilder();
-        sql_deleteHole.append("delete from menu_device where rows = ( ");
+        sql_deleteHole.append("delete from menu_device where row = ( ");
         sql_deleteHole.append("select id from menu_rows where name = '");
         sql_deleteHole.append(line.getName());
         sql_deleteHole.append("')");
@@ -183,7 +183,7 @@ public class LineDAO {
 
         try {
             statement = connection.createStatement();
-            int effectRows = statement.executeUpdate(sql_deleteLine.toString());
+            int effectRows = statement.executeUpdate(sql_deleteHole.toString());
             if (effectRows >= 0) {
                 effectRows = statement.executeUpdate(sql_deleteLine.toString());
                 if (effectRows >= 0) {

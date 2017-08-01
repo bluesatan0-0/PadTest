@@ -43,9 +43,9 @@ public class LinesAdapter extends RecyclerView.Adapter {
     @Override
     public ViewHolder_LinesAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.item_line, null);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_line, parent, false);
 
-        if (null==itemClickListener) {
+        if (null == itemClickListener) {
             System.out.println("aaa itemClickListener is null");
         }
 
@@ -68,7 +68,6 @@ public class LinesAdapter extends RecyclerView.Adapter {
     public int getItemCount() {
         return dataList.size();
     }
-
 
 
     /**
@@ -120,22 +119,21 @@ public class LinesAdapter extends RecyclerView.Adapter {
         @Override
         public void onClick(View v) {
 
+            View parent = (View) v.getParent();
+            Button btnName = (Button) parent.findViewById(R.id.btn_lineName);
+            String linesName = btnName.getText().toString();
+
             switch (v.getId()) {
+
                 case R.id.btn_lineName:
-                    Button btnName = (Button) v;
-                    String linesName = btnName.getText().toString();
                     mItemClickListener.onBtnNameClick(linesName);
                     break;
+
                 case R.id.iv_line_edit:
-                    View parent = (View) v.getParent();
-                    btnName = (Button) parent.findViewById(R.id.btn_lineName);
-                    linesName = btnName.getText().toString();
                     mItemClickListener.onEditClick(linesName);
                     break;
+
                 case R.id.iv_line_delete:
-                    parent = (View) v.getParent();
-                    btnName = (Button) parent.findViewById(R.id.btn_lineName);
-                    linesName = btnName.getText().toString();
                     mItemClickListener.onDeleteClick(linesName);
                     break;
             }
