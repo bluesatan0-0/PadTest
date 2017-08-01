@@ -14,7 +14,7 @@
         android:src="@mipmap/alert_success_icon" />
 
     <TextView
-        android:id="@+id/tv_message"
+        android:id="@+id/tv_message_ensure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp"

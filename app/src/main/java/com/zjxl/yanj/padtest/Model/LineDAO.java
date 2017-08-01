@@ -151,6 +151,69 @@ public class LineDAO {
         return flag;
     }
 
+    /**
+     * 删除餐线
+     *
+     * @param line
+     * @return 返回删除是否成功(LineDao.FLAG)
+     */
+    public int deleteLine(Line line) {
+
+        //        删除餐眼语句
+        StringBuilder sql_deleteHole = new StringBuilder();
+        sql_deleteHole.append("delete from menu_device where rows = ( ");
+        sql_deleteHole.append("select id from menu_rows where name = '");
+        sql_deleteHole.append(line.getName());
+        sql_deleteHole.append("')");
+
+        //        删除餐线语句
+        StringBuilder sql_deleteLine = new StringBuilder();
+        sql_deleteLine.append("delete ");
+        sql_deleteLine.append("from ");
+        sql_deleteLine.append("menu_rows ");
+        sql_deleteLine.append("where name= '");
+        sql_deleteLine.append(line.getName());
+        sql_deleteLine.append("'");
+
+        System.out.println("aaa sql_deleteHole:" + sql_deleteHole);
+        System.out.println("aaa sql_deleteLine:" + sql_deleteLine);
+        Statement statement = null;
+        ResultSet resultSet = null;
+        int flag = FLAG_ERROR;
+
+        try {
+            statement = connection.createStatement();
+            int effectRows = statement.executeUpdate(sql_deleteLine.toString());
+            if (effectRows >= 0) {
+                effectRows = statement.executeUpdate(sql_deleteLine.toString());
+                if (effectRows >= 0) {
+                    flag = FLAG_SUCCESS;
+                } else {
+                    flag = FLAG_ERROR;
+                }
+            } else {
+                flag = FLAG_ERROR;
+            }
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != resultSet) {
+                    resultSet.close();
+                }
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("数据库关闭失败");
+            }
+        }
+
+        return flag;
+    }
+
 //
 //    private void getTime(String text, long currentTime) {
 //        date = new Date(currentTime);

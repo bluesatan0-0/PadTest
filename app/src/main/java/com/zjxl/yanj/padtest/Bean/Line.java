@@ -35,6 +35,15 @@ public class Line implements Serializable {
     public Line() {
     }
 
+
+    /**
+     * 根据餐线名称生成餐线实例
+     * @param name 餐线名称
+     */
+    public Line(String name) {
+        this.name = name;
+    }
+
     public Line(int id, String code, String name, int status) {
         this.id = id;
         this.code = code;

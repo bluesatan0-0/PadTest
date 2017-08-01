@@ -16,7 +16,7 @@
         android:background="#FFFFFF">
 
         <TextView
-            android:id="@+id/tv_title"
+            android:id="@+id/tv_title_ensure"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:layout_alignParentStart="true"
@@ -32,7 +32,7 @@
             android:id="@+id/ll_account"
             android:layout_width="293dp"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_title"
+            android:layout_below="@id/tv_title_ensure"
             android:layout_centerInParent="true"
             android:layout_marginTop="39dp"
             android:orientation="horizontal">

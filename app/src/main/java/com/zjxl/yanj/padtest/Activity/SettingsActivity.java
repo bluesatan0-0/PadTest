@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.zjxl.yanj.padtest.Adapter.HolesAdapter;
@@ -24,6 +25,7 @@ import com.zjxl.yanj.padtest.Bean.Line;
 import com.zjxl.yanj.padtest.Presenter.SettingsPresenter_AddHole;
 import com.zjxl.yanj.padtest.Presenter.SettingsPresenter_AddLine;
 import com.zjxl.yanj.padtest.Presenter.SettingsPresenter_DataLoad;
+import com.zjxl.yanj.padtest.Presenter.SettingsPresenter_DeleteLine;
 import com.zjxl.yanj.padtest.R;
 import com.zjxl.yanj.padtest.Utils.SharedPreference_Utils;
 
@@ -65,6 +67,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     private static final int FLAG_ADD_HOLE = 2;
     private static final int FLAG_DELETE_LINE = 3;
     private static final int FLAG_EDIT_LINE = 4;
+    private Button btnAllLines;
+    private String lineName_ForDelete;
 
 
     @Override
@@ -91,6 +95,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
         btnAddHole = (Button) findViewById(R.id.btn_addHole);
         btnAddLine = (Button) findViewById(R.id.btn_addLine);
+
+        btnAllLines = (Button) findViewById(R.id.btn_allLines);
 
         rvLines = (RecyclerView) findViewById(R.id.rv_Lines);
         rvHoles = (RecyclerView) findViewById(R.id.rv_devices_belong_line);
@@ -122,27 +128,28 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
      */
     private void initData_RecyclerView() {
 
+        updateNotifyDataSet_LinesHoles();
 
-//       设置模块业务类————加载数据（SettingsPresenter_DataLoad）
-        SettingsPresenter_DataLoad settingsPresenterDataLoad = new SettingsPresenter_DataLoad();
-//        回调监听
-        settingsPresenterDataLoad.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
-            @Override
-            public void loaded_Lines(List<Line> list) {
-            }
-
-            @Override
-            public void loaded_Holes(List<Hole> holesList) {
-            }
-
-            @Override
-            public void load_Lines_Holes(List<Line> linesList, final List<Hole> holesList) {
-                initAdapter_AfterGetData(linesList, holesList);
-            }
-        });
-
-//        开始获取 数据（餐线+餐眼）
-        settingsPresenterDataLoad.getList_LinesAndHoles();
+////       设置模块业务类————加载数据（SettingsPresenter_DataLoad）
+//        SettingsPresenter_DataLoad settingsPresenterDataLoad = new SettingsPresenter_DataLoad();
+////        回调监听
+//        settingsPresenterDataLoad.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
+//            @Override
+//            public void loaded_Lines(List<Line> list) {
+//            }
+//
+//            @Override
+//            public void loaded_Holes(List<Hole> holesList) {
+//            }
+//
+//            @Override
+//            public void load_Lines_Holes(List<Line> linesList, final List<Hole> holesList) {
+//                initAdapter_AfterGetData(linesList, holesList);
+//            }
+//        });
+//
+////        开始获取 数据（餐线+餐眼）
+//        settingsPresenterDataLoad.getList_LinesAndHoles();
     }
 
     /**
@@ -153,27 +160,13 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
      * @param holesList 新鲜加载的餐眼集合
      */
     private void initAdapter_AfterGetData(List<Line> linesList, List<Hole> holesList) {
-        if (null != linesList) {
-            lines.removeAll(lines);
-            lines.clear();
-            lines.addAll(linesList);
-            System.out.println("aaa list:" + linesList.toString());
-            linesAdapter = new LinesAdapter(context, lines);
-            linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
-            rvLines.setAdapter(linesAdapter);
-        }
-        if (null != holesList) {
-            holes.clear();
-            holes.addAll(holesList);
-            System.out.println("aaa list:" + holesList.toString());
-            holesAdapter = new HolesAdapter(context, holes, lines);
-            rvHoles.setAdapter(holesAdapter);
-        }
+        lines.clear();
+
+
     }
 
     /**
      * 餐线点击事件  的  回调监听器
-     *
      */
     class mItemClickListener_rvLines implements LinesAdapter.ItemClickListener {
 
@@ -188,6 +181,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         public void onDeleteClick(String lineName) {
             // TODO: 2017/7/31   编写对应对话框
             flag = FLAG_DELETE_LINE;
+            lineName_ForDelete = lineName;
             showAlert();
         }
 
@@ -201,6 +195,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         /**
          * 根据点击的line  更新rvHoles中的数据（换成被点击餐线的餐眼）
          * 当rvLines的item中btnName被点击时，执行
+         *
          * @param lineName 餐线名称
          */
         private void whenBtnLineNameClick(String lineName) {
@@ -216,7 +211,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                     holes.removeAll(holes);
                     holes.clear();
                     holes.addAll(holesList);
-
+                    System.out.println("aaa whenBtnLineNameClick loaded_Holes_list:" + holesList.toString());
                     holesAdapter.notifyDataSetChanged();
                 }
 
@@ -225,12 +220,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
                 }
             });
-
-            if (lineName.equals("全   部")) {
-                settingsPresenter_dataLoad_HolesByLinesName.getList_Holes();
-            } else {
-                settingsPresenter_dataLoad_HolesByLinesName.getList_HolesByLinesName(lineName);
-            }
+            settingsPresenter_dataLoad_HolesByLinesName.getList_HolesByLinesName(lineName);
         }
 
     }
@@ -249,12 +239,14 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 //        餐眼的增(删改在adapter中)
         btnAddHole.setOnClickListener(this);
 
+//        显示所有餐线
+        btnAllLines.setOnClickListener(this);
+
     }
 
 
     /**
      * 设置模块 主界面  按钮点击事件
-     *
      */
     @Override
     public void onClick(View v) {
@@ -263,6 +255,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 //            返回主页
             case R.id.ll_back_SettingsMenu:
                 onBackPressed();
+                break;
+            case R.id.btn_allLines:
+                updateNotifyDataSet_LinesHoles();
                 break;
 //            设置服务器
             case R.id.ll_server_SettingsMenu:
@@ -282,6 +277,54 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
+    /**
+     * 更新数据  两个RecyclerView
+     */
+    private void updateNotifyDataSet_LinesHoles() {
+
+        SettingsPresenter_DataLoad settingsPresenter_dataLoad = new SettingsPresenter_DataLoad();
+        settingsPresenter_dataLoad.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
+            @Override
+            public void loaded_Lines(List<Line> linesList) {
+
+            }
+
+            @Override
+            public void loaded_Holes(List<Hole> holesList) {
+
+            }
+
+            @Override
+            public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
+
+                lines.clear();
+                holes.clear();
+                lines.addAll(linesList);
+                holes.addAll(holesList);
+
+                if (null != linesAdapter) {
+                    linesAdapter.notifyDataSetChanged();
+                } else {
+//                    若空则认为是初始化，实例化适配器
+                    linesAdapter = new LinesAdapter(context, lines);
+                    linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
+                    rvLines.setAdapter(linesAdapter);
+                }
+
+                if (null != holesAdapter) {
+                    holesAdapter.notifyDataSetChanged();
+                } else {
+//                    若空则认为是初始化，实例化适配器
+                    holesAdapter = new HolesAdapter(context, holes, lines);
+                    rvHoles.setAdapter(holesAdapter);
+                }
+
+            }
+        });
+
+        settingsPresenter_dataLoad.getList_LinesAndHoles();
+    }
+
 
     /**
      * 显示提示框
@@ -289,6 +332,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     private void showAlert() {
 
         switch (flag) {
+//            编辑服务器
             case FLAG_EDIT_SERVER:
                 alertView = layoutInflater.inflate(R.layout.alert_settings_edit_server, null);
                 ArrayMap<String, String> configs = SharedPreference_Utils.getInstance(this).getConfigs();
@@ -302,11 +346,25 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 ((EditText) alertView.findViewById(R.id.et_db_pwd)).setText(configs.get(SharedPreference_Utils.KEY_DB_PWD));
 
                 break;
+//            添加餐线
             case FLAG_ADD_LINE:
                 alertView = layoutInflater.inflate(R.layout.alert_settings_line_add, null);
                 break;
+//            添加餐眼
             case FLAG_ADD_HOLE:
                 alertView = layoutInflater.inflate(R.layout.alert_settings_add_hole, null);
+                break;
+//            删除餐线
+            case FLAG_DELETE_LINE:
+                alertView = layoutInflater.inflate(R.layout.alert_ensure, null);
+                TextView tvTitle = (TextView) alertView.findViewById(R.id.tv_title_ensure);
+                TextView tvMessage = (TextView) alertView.findViewById(R.id.tv_message_ensure);
+                tvTitle.setText(R.string.alert_settings_title_line_delete);
+                tvMessage.setText(R.string.alert_settings_ensure_line_delete);
+                break;
+//            编辑餐线
+            case FLAG_EDIT_LINE:
+                alertView = layoutInflater.inflate(R.layout.alert_settings_line_edit, null);
                 break;
         }
 
@@ -391,9 +449,18 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                                     lines.clear();
                                     lines.addAll(linesList);
 
+//                                    runOnUiThread(new Runnable() {
+//                                        @Override
+//                                        public void run() {
+//
+//                                            linesAdapter.notifyDataSetChanged();
+//                                            holesAdapter.notifyDataSetChanged();
+//                                        }
+//                                    });
+
                                     linesAdapter.notifyDataSetChanged();
                                     holesAdapter.notifyDataSetChanged();
-                                    // TODO: 2017/7/29 notify更新失败，待解决(临时方案👇，无法保存状态)
+                                    // TODO: 2017/7/29 notify更新失败，待解决(临时方案👇，无法保存状态,点击事件回调监听也受影响)
 
 //                                    rvLines.setAdapter(new LinesAdapter(context, lines));
 //                                    rvHoles.setAdapter(new HolesAdapter(context, holes, lines));
@@ -516,6 +583,33 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                     }
                 });
                 settingsPresenter_addHole.addHole(hole);
+                break;
+
+
+//            删除餐线，相应的保温眼也将被删除
+            case FLAG_DELETE_LINE:
+                if (null == lineName_ForDelete) {
+                    System.out.println("aaa 没选餐线而执行了餐线删除函数");
+                    break;
+                }
+                SettingsPresenter_DeleteLine settingsPresenter_deleteLine = new SettingsPresenter_DeleteLine();
+                settingsPresenter_deleteLine.setOnDeleteLineLisener(new SettingsPresenter_DeleteLine.OnDeleteLineLisener() {
+                    @Override
+                    public void error() {
+                        Toast.makeText(context, "删除失败", Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void success() {
+                        Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                        updateNotifyDataSet_LinesHoles();
+                    }
+                });
+                settingsPresenter_deleteLine.deleteLine(new Line(lineName_ForDelete));
+                break;
+
+//            编辑餐线
+            case FLAG_EDIT_LINE:
                 break;
         }
     }

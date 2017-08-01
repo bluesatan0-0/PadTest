@@ -32,15 +32,12 @@ public class LinesAdapter extends RecyclerView.Adapter {
     private ItemClickListener itemClickListener;
     private List<Line> dataList = new ArrayList<Line>();
 
-    private int VIEW_TYPE_HEAD = 0;
-    private int VIEW_TYPE = 1;
 
     public LinesAdapter(Context context, List<Line> lines) {
         this.context = context;
         this.dataList.clear();
         this.dataList.addAll(lines);
-//        headerView对应数据
-        dataList.add(0, new Line(0, "0", "全   部", 0));
+
     }
 
     @Override
@@ -63,10 +60,6 @@ public class LinesAdapter extends RecyclerView.Adapter {
         viewHolder.getBtn_lineName().setText(line.getName());
         viewHolder.setItemPosition(position);
 
-        if (position == 0) {
-            viewHolder.getIv_lineEdit().setVisibility(View.GONE);
-            viewHolder.getIv_lineDelete().setVisibility(View.GONE);
-        }
 
     }
 
@@ -76,13 +69,6 @@ public class LinesAdapter extends RecyclerView.Adapter {
         return dataList.size();
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        if (position == 0) {
-            return VIEW_TYPE_HEAD;
-        }
-        return VIEW_TYPE;
-    }
 
 
     /**

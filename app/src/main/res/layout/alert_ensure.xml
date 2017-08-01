@@ -7,7 +7,7 @@
     android:orientation="vertical">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_title_ensure"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/colorTitle"
@@ -18,7 +18,7 @@
         android:textSize="22sp" />
 
     <TextView
-        android:id="@+id/tv_message"
+        android:id="@+id/tv_message_ensure"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginLeft="80dp"

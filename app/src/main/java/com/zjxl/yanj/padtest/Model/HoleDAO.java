@@ -102,9 +102,11 @@ public class HoleDAO {
         sql.append("select  *  from ");
         sql.append("menu_device ");
         sql.append("WHERE ");
-        sql.append("row = ( select id from menu_rows where name = ' ");
+        sql.append("row = ( select id from menu_rows where name = '");
         sql.append(linesName);
         sql.append("' )  ");
+
+        System.out.println("aaa getHolesByLineName sql:" +sql.toString());
 
         List<Hole> holesList = null;
         Statement statement = null;
