@@ -106,7 +106,7 @@ public class HoleDAO {
         sql.append(linesName);
         sql.append("' )  ");
 
-        System.out.println("aaa getHolesByLineName sql:" +sql.toString());
+        System.out.println("aaa getHolesByLineName sql:" + sql.toString());
 
         List<Hole> holesList = null;
         Statement statement = null;
@@ -189,10 +189,24 @@ public class HoleDAO {
         sql_insert.append("uuid,row,num,dep_id,name");
         sql_insert.append(") value(");
 
-        sql_insert.append("'" + hole.getUuid() + ",'");
-        sql_insert.append(hole.getLineId() + ",");
-        sql_insert.append(hole.getNum() + ",'");
-        sql_insert.append("'" + hole.getName() + ",'");
+//        String
+        sql_insert.append("'" + hole.getUuid() + "'");
+        sql_insert.append(",");
+
+//        int
+        sql_insert.append(hole.getLineId());
+        sql_insert.append(",");
+
+//        int
+        sql_insert.append(hole.getNum());
+        sql_insert.append(",");
+
+//        int
+        sql_insert.append(hole.getDepId());
+        sql_insert.append(",");
+
+//        String
+        sql_insert.append("'" + hole.getName() + "'");
 
         sql_insert.append(") ");
 
@@ -201,7 +215,6 @@ public class HoleDAO {
         System.out.println("aaa sql_insert:" + sql_insert);
         Statement statement = null;
         ResultSet resultSet = null;
-        ResultSet resultSet1 = null;
         int flag = FLAG_ERROR;
 
         try {
@@ -210,8 +223,8 @@ public class HoleDAO {
             if (resultSet.next()) {
                 flag = FLAG_EXIST_UUID;
             } else {
-                resultSet1 = statement.executeQuery(sql_select_row_num.toString());
-                if (resultSet1.next()) {
+                resultSet = statement.executeQuery(sql_select_row_num.toString());
+                if (resultSet.next()) {
                     flag = FLAG_EXIST_ROW_NUM;
                 } else {
 

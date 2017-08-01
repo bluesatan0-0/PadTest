@@ -119,110 +119,59 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         rvHoles.setLayoutManager(linearLayoutManager_holes);
 
 //        初始化列表(餐线、餐眼)数据
-        initData_RecyclerView();
-    }
-
-
-    /**
-     * 初始化列表RecyclerView的数据（餐线+餐眼）
-     */
-    private void initData_RecyclerView() {
 
         updateNotifyDataSet_LinesHoles();
 
-////       设置模块业务类————加载数据（SettingsPresenter_DataLoad）
-//        SettingsPresenter_DataLoad settingsPresenterDataLoad = new SettingsPresenter_DataLoad();
-////        回调监听
-//        settingsPresenterDataLoad.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
-//            @Override
-//            public void loaded_Lines(List<Line> list) {
-//            }
-//
-//            @Override
-//            public void loaded_Holes(List<Hole> holesList) {
-//            }
-//
-//            @Override
-//            public void load_Lines_Holes(List<Line> linesList, final List<Hole> holesList) {
-//                initAdapter_AfterGetData(linesList, holesList);
-//            }
-//        });
-//
-////        开始获取 数据（餐线+餐眼）
-//        settingsPresenterDataLoad.getList_LinesAndHoles();
     }
 
     /**
-     * 获取数据后 设置RecyclerView的适配器adapter
-     * 当model完成数据下载后调用
-     *
-     * @param linesList 新鲜加载的餐线集合
-     * @param holesList 新鲜加载的餐眼集合
+     * 更新数据  两个RecyclerView
      */
-    private void initAdapter_AfterGetData(List<Line> linesList, List<Hole> holesList) {
-        lines.clear();
+    private void updateNotifyDataSet_LinesHoles() {
 
+        SettingsPresenter_DataLoad settingsPresenter_dataLoad = new SettingsPresenter_DataLoad();
+        settingsPresenter_dataLoad.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
+            @Override
+            public void loaded_Lines(List<Line> linesList) {
 
-    }
+            }
 
-    /**
-     * 餐线点击事件  的  回调监听器
-     */
-    class mItemClickListener_rvLines implements LinesAdapter.ItemClickListener {
+            @Override
+            public void loaded_Holes(List<Hole> holesList) {
 
-        @Override
-        public void onBtnNameClick(String lineName) {
+            }
 
-            whenBtnLineNameClick(lineName);
-        }
+            @Override
+            public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
 
+                lines.clear();
+                holes.clear();
+                lines.addAll(linesList);
+                holes.addAll(holesList);
+                System.out.println("aaa linesList:"+linesList.toString());
+                System.out.println("aaa holesList:"+holesList.toString());
 
-        @Override
-        public void onDeleteClick(String lineName) {
-            // TODO: 2017/7/31   编写对应对话框
-            flag = FLAG_DELETE_LINE;
-            lineName_ForDelete = lineName;
-            showAlert();
-        }
-
-        @Override
-        public void onEditClick(String lineName) {
-            // TODO: 2017/7/31   编写对应对话框
-            flag = FLAG_EDIT_LINE;
-            showAlert();
-        }
-
-        /**
-         * 根据点击的line  更新rvHoles中的数据（换成被点击餐线的餐眼）
-         * 当rvLines的item中btnName被点击时，执行
-         *
-         * @param lineName 餐线名称
-         */
-        private void whenBtnLineNameClick(String lineName) {
-            SettingsPresenter_DataLoad settingsPresenter_dataLoad_HolesByLinesName = new SettingsPresenter_DataLoad();
-            settingsPresenter_dataLoad_HolesByLinesName.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
-                @Override
-                public void loaded_Lines(List<Line> linesList) {
-
+                if (null != linesAdapter) {
+                    linesAdapter.notifyDataSetChanged();
+                } else {
+//                    若空则认为是初始化，实例化适配器
+                    linesAdapter = new LinesAdapter(context, lines);
+                    linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
+                    rvLines.setAdapter(linesAdapter);
                 }
 
-                @Override
-                public void loaded_Holes(List<Hole> holesList) {
-                    holes.removeAll(holes);
-                    holes.clear();
-                    holes.addAll(holesList);
-                    System.out.println("aaa whenBtnLineNameClick loaded_Holes_list:" + holesList.toString());
+                if (null != holesAdapter) {
                     holesAdapter.notifyDataSetChanged();
+                } else {
+//                    若空则认为是初始化，实例化适配器
+                    holesAdapter = new HolesAdapter(context, holes, lines);
+                    rvHoles.setAdapter(holesAdapter);
                 }
 
-                @Override
-                public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
+            }
+        });
 
-                }
-            });
-            settingsPresenter_dataLoad_HolesByLinesName.getList_HolesByLinesName(lineName);
-        }
-
+        settingsPresenter_dataLoad.getList_LinesAndHoles();
     }
 
     private void initEvent() {
@@ -277,53 +226,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         }
     }
 
-    /**
-     * 更新数据  两个RecyclerView
-     */
-    private void updateNotifyDataSet_LinesHoles() {
-
-        SettingsPresenter_DataLoad settingsPresenter_dataLoad = new SettingsPresenter_DataLoad();
-        settingsPresenter_dataLoad.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
-            @Override
-            public void loaded_Lines(List<Line> linesList) {
-
-            }
-
-            @Override
-            public void loaded_Holes(List<Hole> holesList) {
-
-            }
-
-            @Override
-            public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
-
-                lines.clear();
-                holes.clear();
-                lines.addAll(linesList);
-                holes.addAll(holesList);
-
-                if (null != linesAdapter) {
-                    linesAdapter.notifyDataSetChanged();
-                } else {
-//                    若空则认为是初始化，实例化适配器
-                    linesAdapter = new LinesAdapter(context, lines);
-                    linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
-                    rvLines.setAdapter(linesAdapter);
-                }
-
-                if (null != holesAdapter) {
-                    holesAdapter.notifyDataSetChanged();
-                } else {
-//                    若空则认为是初始化，实例化适配器
-                    holesAdapter = new HolesAdapter(context, holes, lines);
-                    rvHoles.setAdapter(holesAdapter);
-                }
-
-            }
-        });
-
-        settingsPresenter_dataLoad.getList_LinesAndHoles();
-    }
 
 
     /**
@@ -418,200 +320,177 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 break;
             case FLAG_ADD_LINE:
 //                确认的是添加餐线，校验数据，存储数据，获取新餐线列表，通知更新
-                final Line line = new Line();
+                Line line = new Line();
                 line.setName(((EditText) alertView.findViewById(R.id.et_line_name)).getText().toString());
 
                 if (!line.getName().isEmpty()) {
-                    final SettingsPresenter_AddLine settingsPresenter_AddDevice_addLine = new SettingsPresenter_AddLine();
-                    settingsPresenter_AddDevice_addLine.setOnAddLineLisener(new SettingsPresenter_AddLine.OnAddLineLisener() {
-                        @Override
-                        public void error() {
-                            // TODO: 2017/7/29 优化：错误提示后，窗口不消失；或者改用布局文件添加按钮并监听,运用dialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "insert 餐线 error！", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void exist() {
-                            // TODO: 2017/7/29 优化：错误提示后，窗口不消失；或者改用布局文件添加按钮并监听,运用dialog.dismiss();
-                            Toast.makeText(getApplicationContext(), "该餐线名称已存在，请改用其他名称！", Toast.LENGTH_SHORT).show();
-                        }
-
-                        @Override
-                        public void success() {
-                            Toast.makeText(getApplicationContext(), "保存成功！", Toast.LENGTH_SHORT).show();
-//                            添加成功后更新lines列表
-                            SettingsPresenter_DataLoad settingsPresenter_DataLoad_line = new SettingsPresenter_DataLoad();
-//                            获取list后回调
-                            settingsPresenter_DataLoad_line.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
-                                @Override
-                                public void loaded_Lines(List<Line> linesList) {
-                                    lines.removeAll(lines);
-                                    lines.clear();
-                                    lines.addAll(linesList);
-
-//                                    runOnUiThread(new Runnable() {
-//                                        @Override
-//                                        public void run() {
-//
-//                                            linesAdapter.notifyDataSetChanged();
-//                                            holesAdapter.notifyDataSetChanged();
-//                                        }
-//                                    });
-
-                                    linesAdapter.notifyDataSetChanged();
-                                    holesAdapter.notifyDataSetChanged();
-                                    // TODO: 2017/7/29 notify更新失败，待解决(临时方案👇，无法保存状态,点击事件回调监听也受影响)
-
-//                                    rvLines.setAdapter(new LinesAdapter(context, lines));
-//                                    rvHoles.setAdapter(new HolesAdapter(context, holes, lines));
-                                }
-
-                                @Override
-                                public void loaded_Holes(List<Hole> holesList) {
-
-                                }
-
-                                @Override
-                                public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
-
-                                }
-                            });
-                            settingsPresenter_DataLoad_line.getList_Lines();
-
-                        }
-                    });
-                    settingsPresenter_AddDevice_addLine.addLine(line);
+                    addLine_ToDB(line);
+                } else {
+                    Toast.makeText(this, "餐线名称不能为空", Toast.LENGTH_SHORT).show();
                 }
 
                 break;
             case FLAG_ADD_HOLE:
 //                确认的是添加餐眼，校验数据，存储数据，获取新餐眼列表，通知更新
+                addHole_CheckAndUpdate();
 
-                String holeUuid = ((EditText) alertView.findViewById(R.id.et_hole_uuid)).getText().toString();
-                String holeName = ((EditText) alertView.findViewById(R.id.et_hole_name)).getText().toString();
-                String lineName = ((EditText) alertView.findViewById(R.id.et_line_name)).getText().toString();
-                String num = ((EditText) alertView.findViewById(R.id.et_line_num)).getText().toString();
-
-//                校验
-
-                if (lineName.isEmpty()) {
-                    Toast.makeText(this, "所属餐线不能为空", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                if (holeUuid.isEmpty()) {
-                    Toast.makeText(this, "餐眼编码不能为空", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                if (holeName.isEmpty()) {
-                    Toast.makeText(this, "餐眼名称不能为空", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                if (num.isEmpty()) {
-                    Toast.makeText(this, "餐线内序号不能为空", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-                int lineID = -1;
-                for (Line l : lines) {
-                    if (lineName.equals(l.getName())) lineID = l.getId();
-                }
-                if (-1 == lineID) {
-                    Toast.makeText(this, "餐线名称不存在", Toast.LENGTH_SHORT).show();
-                    break;
-                }
-
-
-//                存储
-                String departmentID = SharedPreference_Utils.getConfigs().get(SharedPreference_Utils.KEY_REMOTE_SERVER_DEPATEMENT_CODE);
-
-                final Hole hole = new Hole();
-                hole.setLineId(lineID);
-                hole.setName(holeName);
-                hole.setUuid(holeUuid);
-                hole.setNum(new Integer(num));
-                hole.setDepId(new Integer(departmentID));
-
-                final SettingsPresenter_AddHole settingsPresenter_addHole = new SettingsPresenter_AddHole();
-                settingsPresenter_addHole.setOnAddHoleLisener(new SettingsPresenter_AddHole.OnAddHoleLisener() {
-                    @Override
-                    public void error() {
-                        // TODO: 2017/7/29 优化：错误提示后，窗口不消失；或者改用布局文件添加按钮并监听,运用dialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "insert餐眼失败！", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void existUuid() {
-                        Toast.makeText(getApplicationContext(), "该uuid已存在！", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    @Override
-                    public void existRowNum() {
-                        Toast.makeText(getApplicationContext(), "所填餐线内序号已存在！", Toast.LENGTH_SHORT).show();
-
-                    }
-
-                    @Override
-                    public void success() {
-                        Toast.makeText(getApplicationContext(), "保存成功！", Toast.LENGTH_SHORT).show();
-//                            添加成功后更新lines列表
-                        SettingsPresenter_DataLoad settingsPresenter_DataLoad_getHoleList = new SettingsPresenter_DataLoad();
-//                            获取list后回调
-                        settingsPresenter_DataLoad_getHoleList.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
-                            @Override
-                            public void loaded_Lines(List<Line> linesList) {
-                            }
-
-                            @Override
-                            public void loaded_Holes(List<Hole> holesList) {
-                                holes.removeAll(holes);
-                                holes.clear();
-                                holes.addAll(holesList);
-
-                                holesAdapter.notifyDataSetChanged();
-                                // TODO: 2017/7/29 notify更新失败，待解决(临时方案👇，无法保存状态)
-
-//                                rvHoles.setAdapter(new HolesAdapter(context, holes, lines));
-                            }
-
-                            @Override
-                            public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
-
-                            }
-                        });
-                        settingsPresenter_DataLoad_getHoleList.getList_Holes();
-
-                    }
-                });
-                settingsPresenter_addHole.addHole(hole);
                 break;
-
 
 //            删除餐线，相应的保温眼也将被删除
             case FLAG_DELETE_LINE:
-                if (null == lineName_ForDelete) {
+                if (null == lineName_ForDelete || lineName_ForDelete.isEmpty()) {
                     System.out.println("aaa 没选餐线而执行了餐线删除函数");
                     break;
                 }
-                SettingsPresenter_DeleteLine settingsPresenter_deleteLine = new SettingsPresenter_DeleteLine();
-                settingsPresenter_deleteLine.setOnDeleteLineLisener(new SettingsPresenter_DeleteLine.OnDeleteLineLisener() {
-                    @Override
-                    public void error() {
-                        Toast.makeText(context, "删除失败", Toast.LENGTH_SHORT).show();
-                    }
-
-                    @Override
-                    public void success() {
-                        Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
-                        updateNotifyDataSet_LinesHoles();
-                    }
-                });
-                settingsPresenter_deleteLine.deleteLine(new Line(lineName_ForDelete));
+                deleteLine_ToDB();
                 break;
 
 //            编辑餐线
             case FLAG_EDIT_LINE:
                 break;
         }
+    }
+
+    /**
+     * 添加餐眼 数据校验 往数据库存储
+     */
+    private void addHole_CheckAndUpdate() {
+        //                校验
+        String holeUuid = ((EditText) alertView.findViewById(R.id.et_hole_uuid)).getText().toString();
+        if (holeUuid.isEmpty()) {
+            Toast.makeText(this, "餐眼编码不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String lineName = ((EditText) alertView.findViewById(R.id.et_line_name)).getText().toString();
+        if (lineName.isEmpty()) {
+            Toast.makeText(this, "所属餐线不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String holeName = ((EditText) alertView.findViewById(R.id.et_hole_name)).getText().toString();
+        if (holeName.isEmpty()) {
+            Toast.makeText(this, "餐眼名称不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        String num = ((EditText) alertView.findViewById(R.id.et_line_num)).getText().toString();
+        if (num.isEmpty()) {
+            Toast.makeText(this, "餐线内序号不能为空", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        int lineID = -1;
+        for (Line l : lines) {
+            if (lineName.equals(l.getName())) lineID = l.getId();
+        }
+        if (-1 == lineID) {
+            Toast.makeText(this, "餐线名称不存在", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+//                存储
+        String departmentID = SharedPreference_Utils.getConfigs().get(SharedPreference_Utils.KEY_REMOTE_SERVER_DEPATEMENT_CODE);
+
+        Hole hole = new Hole();
+        hole.setLineId(lineID);
+        hole.setName(holeName);
+        hole.setUuid(holeUuid);
+        hole.setNum(new Integer(num));
+        hole.setDepId(new Integer(departmentID));
+
+        addHole_ToDB(hole);
+
+        lineID = -1;
+    }
+
+    /**
+     * 往数据库 存储餐眼
+     *
+     * @param hole 要存储的餐眼实例
+     */
+    private void addHole_ToDB(Hole hole) {
+        SettingsPresenter_AddHole settingsPresenter_addHole = new SettingsPresenter_AddHole();
+        settingsPresenter_addHole.setOnAddHoleLisener(new SettingsPresenter_AddHole.OnAddHoleLisener() {
+            @Override
+            public void error() {
+                // TODO: 2017/7/29 优化：错误提示后，窗口不消失；或者改用布局文件添加按钮并监听,运用dialog.dismiss();
+                Toast.makeText(getApplicationContext(), "insert餐眼失败！", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void existUuid() {
+                Toast.makeText(getApplicationContext(), "该uuid已存在！", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void existRowNum() {
+                Toast.makeText(getApplicationContext(), "所填餐线内序号已存在！", Toast.LENGTH_SHORT).show();
+
+            }
+
+            @Override
+            public void success() {
+                Toast.makeText(getApplicationContext(), "保存成功！", Toast.LENGTH_SHORT).show();
+//                            添加成功后更新lines列表
+                updateNotifyDataSet_LinesHoles();
+
+            }
+        });
+        settingsPresenter_addHole.addHole(hole);
+    }
+
+    /**
+     * 删除餐线
+     */
+    private void deleteLine_ToDB() {
+        SettingsPresenter_DeleteLine settingsPresenter_deleteLine = new SettingsPresenter_DeleteLine();
+        settingsPresenter_deleteLine.setOnDeleteLineLisener(new SettingsPresenter_DeleteLine.OnDeleteLineLisener() {
+            @Override
+            public void error() {
+                Toast.makeText(context, "删除失败", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void success() {
+                Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
+                updateNotifyDataSet_LinesHoles();
+                lineName_ForDelete = "";
+            }
+        });
+        settingsPresenter_deleteLine.deleteLine(new Line(lineName_ForDelete));
+    }
+
+    /**
+     * 往数据库 添加餐线
+     *
+     * @param line 需要新增的餐线实例
+     */
+    private void addLine_ToDB(Line line) {
+        SettingsPresenter_AddLine settingsPresenter_AddDevice_addLine = new SettingsPresenter_AddLine();
+        settingsPresenter_AddDevice_addLine.setOnAddLineLisener(new SettingsPresenter_AddLine.OnAddLineLisener() {
+            @Override
+            public void error() {
+                // TODO: 2017/7/29 优化：错误提示后，窗口不消失；或者改用布局文件添加按钮并监听,运用dialog.dismiss();
+                Toast.makeText(getApplicationContext(), "insert 餐线 error！", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void exist() {
+                // TODO: 2017/7/29 优化：错误提示后，窗口不消失；或者改用布局文件添加按钮并监听,运用dialog.dismiss();
+                Toast.makeText(getApplicationContext(), "该餐线名称已存在，请改用其他名称！", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void success() {
+                Toast.makeText(getApplicationContext(), "保存成功！", Toast.LENGTH_SHORT).show();
+//                            添加成功后更新lines列表
+                updateNotifyDataSet_LinesHoles();
+
+            }
+        });
+        settingsPresenter_AddDevice_addLine.addLine(line);
     }
 
     //    private void getTime(String text, long currentTime) {
@@ -623,5 +502,64 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 //        System.out.println(text + time);
 //    }
 
+    /**
+     * 餐线点击事件  的  回调监听器
+     */
+    class mItemClickListener_rvLines implements LinesAdapter.ItemClickListener {
+
+        @Override
+        public void onBtnNameClick(String lineName) {
+
+            whenBtnLineNameClick(lineName);
+        }
+
+
+        @Override
+        public void onDeleteClick(String lineName) {
+            // TODO: 2017/7/31   编写对应对话框
+            flag = FLAG_DELETE_LINE;
+            lineName_ForDelete = lineName;
+            showAlert();
+        }
+
+        @Override
+        public void onEditClick(String lineName) {
+            // TODO: 2017/7/31   编写对应对话框
+            flag = FLAG_EDIT_LINE;
+            showAlert();
+        }
+
+        /**
+         * 根据点击的line  更新rvHoles中的数据（换成被点击餐线的餐眼）
+         * 当rvLines的item中btnName被点击时，执行
+         *
+         * @param lineName 餐线名称
+         */
+        private void whenBtnLineNameClick(String lineName) {
+            SettingsPresenter_DataLoad settingsPresenter_dataLoad_HolesByLinesName = new SettingsPresenter_DataLoad();
+            settingsPresenter_dataLoad_HolesByLinesName.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
+                @Override
+                public void loaded_Lines(List<Line> linesList) {
+
+                }
+
+                @Override
+                public void loaded_Holes(List<Hole> holesList) {
+                    holes.removeAll(holes);
+                    holes.clear();
+                    holes.addAll(holesList);
+                    System.out.println("aaa whenBtnLineNameClick loaded_Holes_list:" + holesList.toString());
+                    holesAdapter.notifyDataSetChanged();
+                }
+
+                @Override
+                public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
+
+                }
+            });
+            settingsPresenter_dataLoad_HolesByLinesName.getList_HolesByLinesName(lineName);
+        }
+
+    }
 
 }
