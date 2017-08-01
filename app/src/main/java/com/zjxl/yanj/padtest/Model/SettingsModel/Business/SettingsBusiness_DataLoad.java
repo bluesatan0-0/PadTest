@@ -1,18 +1,18 @@
-package com.zjxl.yanj.padtest.Presenter;
+package com.zjxl.yanj.padtest.Model.SettingsModel.Business;
 
 import android.os.Handler;
 import android.os.Message;
 
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Bean.Line;
-import com.zjxl.yanj.padtest.Model.HoleDAO;
-import com.zjxl.yanj.padtest.Model.LineDAO;
+import com.zjxl.yanj.padtest.Model.SettingsModel.DAO.HoleDAO;
+import com.zjxl.yanj.padtest.Model.SettingsModel.DAO.LineDAO;
 import com.zjxl.yanj.padtest.Utils.ThreadPool_Util;
 
 import java.util.List;
 
 /**
- * 类名: SettingsPresenter_DataLoad <p>
+ * 类名: SettingsBusiness_DataLoad <p>
  * 创建人: YanJ <p>
  * 创建时间: 2017/7/26 16:21 <p>
  * 描述:  设置模块——获取数据集合
@@ -22,7 +22,7 @@ import java.util.List;
  * 更新描述: <p>
  */
 
-public class SettingsPresenter_DataLoad {
+public class SettingsBusiness_DataLoad {
 
 
     //    ------------------------------------获取集合(餐线餐眼)?👇-------------------------------------------

@@ -1,14 +1,14 @@
-package com.zjxl.yanj.padtest.Presenter;
+package com.zjxl.yanj.padtest.Model.SettingsModel.Business;
 
 import android.os.Handler;
 import android.os.Message;
 
 import com.zjxl.yanj.padtest.Bean.Line;
-import com.zjxl.yanj.padtest.Model.LineDAO;
+import com.zjxl.yanj.padtest.Model.SettingsModel.DAO.LineDAO;
 import com.zjxl.yanj.padtest.Utils.ThreadPool_Util;
 
 /**
- * 类名: SettingsPresenter_DeleteLine <p>
+ * 类名: SettingsBusiness_DeleteLine <p>
  * 创建人: YanJ <p>
  * 创建时间: 2017-08-01 10:16:13 <p>
  * 描述:  设置模块——删除餐线
@@ -18,7 +18,7 @@ import com.zjxl.yanj.padtest.Utils.ThreadPool_Util;
  * 更新描述: <p>
  */
 
-public class SettingsPresenter_DeleteLine {
+public class SettingsBusiness_DeleteLine {
 
 //    ------------------------------------删除餐线👇-------------------------------------------
 

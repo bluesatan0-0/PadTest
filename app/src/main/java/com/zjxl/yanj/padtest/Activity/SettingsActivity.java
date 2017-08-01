@@ -22,10 +22,10 @@ import com.zjxl.yanj.padtest.Adapter.LinesAdapter;
 import com.zjxl.yanj.padtest.Base.BaseActivity;
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Bean.Line;
-import com.zjxl.yanj.padtest.Presenter.SettingsPresenter_AddHole;
-import com.zjxl.yanj.padtest.Presenter.SettingsPresenter_AddLine;
-import com.zjxl.yanj.padtest.Presenter.SettingsPresenter_DataLoad;
-import com.zjxl.yanj.padtest.Presenter.SettingsPresenter_DeleteLine;
+import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_AddLine;
+import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DataLoad;
+import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DeleteLine;
+import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_AddHole;
 import com.zjxl.yanj.padtest.R;
 import com.zjxl.yanj.padtest.Utils.SharedPreference_Utils;
 
@@ -129,8 +129,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
      */
     private void updateNotifyDataSet_LinesHoles() {
 
-        SettingsPresenter_DataLoad settingsPresenter_dataLoad = new SettingsPresenter_DataLoad();
-        settingsPresenter_dataLoad.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
+        SettingsBusiness_DataLoad settingsBusiness_dataLoad = new SettingsBusiness_DataLoad();
+        settingsBusiness_dataLoad.setOnDataLoadedLisener(new SettingsBusiness_DataLoad.OnDataLoadedLisener() {
             @Override
             public void loaded_Lines(List<Line> linesList) {
 
@@ -171,7 +171,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             }
         });
 
-        settingsPresenter_dataLoad.getList_LinesAndHoles();
+        settingsBusiness_dataLoad.getList_LinesAndHoles();
     }
 
     private void initEvent() {
@@ -410,8 +410,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
      * @param hole 要存储的餐眼实例
      */
     private void addHole_ToDB(Hole hole) {
-        SettingsPresenter_AddHole settingsPresenter_addHole = new SettingsPresenter_AddHole();
-        settingsPresenter_addHole.setOnAddHoleLisener(new SettingsPresenter_AddHole.OnAddHoleLisener() {
+        SettingsBusiness_AddHole settingsBusiness_addHole = new SettingsBusiness_AddHole();
+        settingsBusiness_addHole.setOnAddHoleLisener(new SettingsBusiness_AddHole.OnAddHoleLisener() {
             @Override
             public void error() {
                 // TODO: 2017/7/29 优化：错误提示后，窗口不消失；或者改用布局文件添加按钮并监听,运用dialog.dismiss();
@@ -438,15 +438,15 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
             }
         });
-        settingsPresenter_addHole.addHole(hole);
+        settingsBusiness_addHole.addHole(hole);
     }
 
     /**
      * 删除餐线
      */
     private void deleteLine_ToDB() {
-        SettingsPresenter_DeleteLine settingsPresenter_deleteLine = new SettingsPresenter_DeleteLine();
-        settingsPresenter_deleteLine.setOnDeleteLineLisener(new SettingsPresenter_DeleteLine.OnDeleteLineLisener() {
+        SettingsBusiness_DeleteLine settingsBusiness_deleteLine = new SettingsBusiness_DeleteLine();
+        settingsBusiness_deleteLine.setOnDeleteLineLisener(new SettingsBusiness_DeleteLine.OnDeleteLineLisener() {
             @Override
             public void error() {
                 Toast.makeText(context, "删除失败", Toast.LENGTH_SHORT).show();
@@ -459,7 +459,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 lineName_ForDelete = "";
             }
         });
-        settingsPresenter_deleteLine.deleteLine(new Line(lineName_ForDelete));
+        settingsBusiness_deleteLine.deleteLine(new Line(lineName_ForDelete));
     }
 
     /**
@@ -468,8 +468,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
      * @param line 需要新增的餐线实例
      */
     private void addLine_ToDB(Line line) {
-        SettingsPresenter_AddLine settingsPresenter_AddDevice_addLine = new SettingsPresenter_AddLine();
-        settingsPresenter_AddDevice_addLine.setOnAddLineLisener(new SettingsPresenter_AddLine.OnAddLineLisener() {
+        SettingsBusiness_AddLine settingsPresenter_AddDevice_addLine = new SettingsBusiness_AddLine();
+        settingsPresenter_AddDevice_addLine.setOnAddLineLisener(new SettingsBusiness_AddLine.OnAddLineLisener() {
             @Override
             public void error() {
                 // TODO: 2017/7/29 优化：错误提示后，窗口不消失；或者改用布局文件添加按钮并监听,运用dialog.dismiss();
@@ -536,8 +536,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
          * @param lineName 餐线名称
          */
         private void whenBtnLineNameClick(String lineName) {
-            SettingsPresenter_DataLoad settingsPresenter_dataLoad_HolesByLinesName = new SettingsPresenter_DataLoad();
-            settingsPresenter_dataLoad_HolesByLinesName.setOnDataLoadedLisener(new SettingsPresenter_DataLoad.OnDataLoadedLisener() {
+            SettingsBusiness_DataLoad settingsBusiness_dataLoad_HolesByLinesName = new SettingsBusiness_DataLoad();
+            settingsBusiness_dataLoad_HolesByLinesName.setOnDataLoadedLisener(new SettingsBusiness_DataLoad.OnDataLoadedLisener() {
                 @Override
                 public void loaded_Lines(List<Line> linesList) {
 
@@ -557,7 +557,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
                 }
             });
-            settingsPresenter_dataLoad_HolesByLinesName.getList_HolesByLinesName(lineName);
+            settingsBusiness_dataLoad_HolesByLinesName.getList_HolesByLinesName(lineName);
         }
 
     }

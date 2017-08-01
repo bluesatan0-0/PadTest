@@ -1,4 +1,4 @@
-package com.zjxl.yanj.padtest.Model;
+package com.zjxl.yanj.padtest.Model.SettingsModel.DAO;
 
 import com.zjxl.yanj.padtest.Bean.Line;
 import com.zjxl.yanj.padtest.Utils.DBConnect_Util;
@@ -84,10 +84,10 @@ public class LineDAO {
 
 
     /**
+     * 新增餐线
      * 检验该餐线对象是否已存库
-     *
-     * @param line
-     * @return
+     * @param line 被存储的餐线
+     * @return 返回结果flag
      */
     public int addLine(Line line) {
 
