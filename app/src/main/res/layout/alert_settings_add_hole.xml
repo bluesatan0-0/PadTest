@@ -75,7 +75,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBaseline="@id/et_line_name"
         android:layout_toStartOf="@id/et_line_name"
-        android:text="所属餐线(row.id)："
+        android:text="所属餐线(row.name)："
         android:textSize="24sp" />
 
 

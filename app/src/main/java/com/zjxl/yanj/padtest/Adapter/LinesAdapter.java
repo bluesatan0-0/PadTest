@@ -129,12 +129,12 @@ public class LinesAdapter extends RecyclerView.Adapter {
                     mItemClickListener.onBtnNameClick(linesName);
                     break;
 
-                case R.id.iv_line_edit:
-                    mItemClickListener.onEditClick(linesName);
-                    break;
-
                 case R.id.iv_line_delete:
                     mItemClickListener.onDeleteClick(linesName);
+                    break;
+
+                case R.id.iv_line_edit:
+                    mItemClickListener.onEditClick(linesName);
                     break;
             }
         }

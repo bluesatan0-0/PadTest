@@ -22,10 +22,10 @@ import com.zjxl.yanj.padtest.Adapter.LinesAdapter;
 import com.zjxl.yanj.padtest.Base.BaseActivity;
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Bean.Line;
+import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_AddHole;
 import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_AddLine;
 import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DataLoad;
 import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DeleteLine;
-import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_AddHole;
 import com.zjxl.yanj.padtest.R;
 import com.zjxl.yanj.padtest.Utils.SharedPreference_Utils;
 
@@ -68,7 +68,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     private static final int FLAG_DELETE_LINE = 3;
     private static final int FLAG_EDIT_LINE = 4;
     private Button btnAllLines;
-    private String lineName_ForDelete;
+    private String lineName_ForItemClick;
 
 
     @Override
@@ -148,8 +148,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 holes.clear();
                 lines.addAll(linesList);
                 holes.addAll(holesList);
-                System.out.println("aaa linesList:"+linesList.toString());
-                System.out.println("aaa holesList:"+holesList.toString());
+                System.out.println("aaa linesList:" + linesList.toString());
+                System.out.println("aaa holesList:" + holesList.toString());
 
                 if (null != linesAdapter) {
                     linesAdapter.notifyDataSetChanged();
@@ -227,7 +227,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     }
 
 
-
     /**
      * 显示提示框
      */
@@ -267,6 +266,11 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 //            编辑餐线
             case FLAG_EDIT_LINE:
                 alertView = layoutInflater.inflate(R.layout.alert_settings_line_edit, null);
+                EditText etLineName = (EditText) alertView.findViewById(R.id.et_line_name);
+                EditText etLineID = (EditText) alertView.findViewById(R.id.et_line_id);
+                // TODO: 2017/8/1 2017-08-01 19:55:29 待完成
+                etLineName.setText(lineName_ForItemClick);
+                etLineID.setText(getIdByName_line(lineName_ForItemClick));
                 break;
         }
 
@@ -289,6 +293,16 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
     }
 
+    /**
+     * 通过餐线名称获取ID
+     * @return 餐线的id
+     */
+    private int getIdByName_line(String lineName) {
+
+
+        return 0;
+    }
+
 
     /**
      * 提示窗口alertDialog中  按钮单击事件：
@@ -301,22 +315,10 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         // TODO: 2017/7/28 使用which，布局文件中添加按钮，取代代码中添加的“确认”、“取消”
         switch (flag) {
             case FLAG_EDIT_SERVER:
-                ArrayMap<String, String> configs = new ArrayMap<>();
 
-//                确认的是保存服务器设置，校验数据，储存数据，获取新服务器中数据，通知更新
-                // TODO: 2017/7/28  数据校验（连接测试）
 
-                configs.put(SharedPreference_Utils.KEY_DB_IP, ((EditText) alertView.findViewById(R.id.et_db_ip)).getText().toString());
-                configs.put(SharedPreference_Utils.KEY_DB_PORT, ((EditText) alertView.findViewById(R.id.et_db_port)).getText().toString());
-                configs.put(SharedPreference_Utils.KEY_DB_NAME, ((EditText) alertView.findViewById(R.id.et_db_name)).getText().toString());
-                configs.put(SharedPreference_Utils.KEY_DB_USER, ((EditText) alertView.findViewById(R.id.et_db_user)).getText().toString());
-                configs.put(SharedPreference_Utils.KEY_DB_PWD, ((EditText) alertView.findViewById(R.id.et_db_pwd)).getText().toString());
-                configs.put(SharedPreference_Utils.KEY_REMOTE_SERVER_IP, ((EditText) alertView.findViewById(R.id.et_server_ip)).getText().toString());
-                configs.put(SharedPreference_Utils.KEY_REMOTE_SERVER_DEPATEMENT_CODE, ((EditText) alertView.findViewById(R.id.et_server_department)).getText().toString());
-
-                SharedPreference_Utils.getInstance(this).setValues(configs);
-
-                dialog.dismiss();
+                editServer();
+//                dialog.dismiss();
                 break;
             case FLAG_ADD_LINE:
 //                确认的是添加餐线，校验数据，存储数据，获取新餐线列表，通知更新
@@ -338,17 +340,79 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
 //            删除餐线，相应的保温眼也将被删除
             case FLAG_DELETE_LINE:
-                if (null == lineName_ForDelete || lineName_ForDelete.isEmpty()) {
+                if (null == lineName_ForItemClick || lineName_ForItemClick.isEmpty()) {
                     System.out.println("aaa 没选餐线而执行了餐线删除函数");
                     break;
                 }
                 deleteLine_ToDB();
+                lineName_ForItemClick = null;
                 break;
 
 //            编辑餐线
             case FLAG_EDIT_LINE:
+                editLine();
                 break;
         }
+    }
+
+
+    /**
+     * 编辑餐线信息（修改餐线名称）
+     */
+    private void editLine() {
+
+    }
+
+
+    /**
+     * 保存配置信息（数据库、远端服务器）
+     */
+    private void editServer() {
+        ArrayMap<String, String> configs = new ArrayMap<>();
+
+//                确认的是保存服务器设置，校验数据，储存数据，获取新服务器中数据，通知更新
+
+        String db_ip = ((EditText) alertView.findViewById(R.id.et_db_ip)).getText().toString();
+        if (db_ip.isEmpty()) {
+            Toast.makeText(context, "数据库ip不能为空", Toast.LENGTH_SHORT).show();
+        }
+        String db_port = ((EditText) alertView.findViewById(R.id.et_db_port)).getText().toString();
+        if (db_port.isEmpty()) {
+            Toast.makeText(context, "数据库port不能为空", Toast.LENGTH_SHORT).show();
+        }
+        String db_name = ((EditText) alertView.findViewById(R.id.et_db_name)).getText().toString();
+        if (db_name.isEmpty()) {
+            Toast.makeText(context, "数据库name不能为空", Toast.LENGTH_SHORT).show();
+        }
+        String db_user = ((EditText) alertView.findViewById(R.id.et_db_user)).getText().toString();
+        if (db_user.isEmpty()) {
+            Toast.makeText(context, "数据库账户不能为空", Toast.LENGTH_SHORT).show();
+        }
+        String db_pwd = ((EditText) alertView.findViewById(R.id.et_db_pwd)).getText().toString();
+        if (db_pwd.isEmpty()) {
+            Toast.makeText(context, "数据库密码不能为空", Toast.LENGTH_SHORT).show();
+        }
+        String server_ip = ((EditText) alertView.findViewById(R.id.et_server_ip)).getText().toString();
+        if (server_ip.isEmpty()) {
+            Toast.makeText(context, "服务器ip不能为空", Toast.LENGTH_SHORT).show();
+        }
+        String server_department = ((EditText) alertView.findViewById(R.id.et_server_department)).getText().toString();
+        if (server_department.isEmpty()) {
+            Toast.makeText(context, "所属餐厅不能为空", Toast.LENGTH_SHORT).show();
+        }
+
+
+        configs.put(SharedPreference_Utils.KEY_DB_IP, db_ip);
+        configs.put(SharedPreference_Utils.KEY_DB_PORT, db_port);
+        configs.put(SharedPreference_Utils.KEY_DB_NAME, db_name);
+        configs.put(SharedPreference_Utils.KEY_DB_USER, db_user);
+        configs.put(SharedPreference_Utils.KEY_DB_PWD, db_pwd);
+        configs.put(SharedPreference_Utils.KEY_REMOTE_SERVER_IP, server_ip);
+        configs.put(SharedPreference_Utils.KEY_REMOTE_SERVER_DEPATEMENT_CODE, server_department);
+
+        SharedPreference_Utils.getInstance(this).setValues(configs);
+
+        updateNotifyDataSet_LinesHoles();
     }
 
     /**
@@ -456,10 +520,10 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             public void success() {
                 Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
                 updateNotifyDataSet_LinesHoles();
-                lineName_ForDelete = "";
+                lineName_ForItemClick = "";
             }
         });
-        settingsBusiness_deleteLine.deleteLine(new Line(lineName_ForDelete));
+        settingsBusiness_deleteLine.deleteLine(new Line(lineName_ForItemClick));
     }
 
     /**
@@ -518,7 +582,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         public void onDeleteClick(String lineName) {
             // TODO: 2017/7/31   编写对应对话框
             flag = FLAG_DELETE_LINE;
-            lineName_ForDelete = lineName;
+            lineName_ForItemClick = lineName;
             showAlert();
         }
 
@@ -526,6 +590,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         public void onEditClick(String lineName) {
             // TODO: 2017/7/31   编写对应对话框
             flag = FLAG_EDIT_LINE;
+            lineName_ForItemClick = lineName;
             showAlert();
         }
 
