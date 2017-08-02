@@ -86,6 +86,7 @@ public class LineDAO {
     /**
      * 新增餐线
      * 检验该餐线对象是否已存库
+     *
      * @param line 被存储的餐线
      * @return 返回结果flag
      */
@@ -211,6 +212,77 @@ public class LineDAO {
             }
         }
 
+        return flag;
+    }
+
+    /**
+     * 修改餐线
+     * 检验该餐线对象是否已存库
+     *
+     * @param lineName    被修改的餐线
+     * @param newName  新餐线名称
+     * @return 返回结果flag
+     */
+    public int editLine(String lineName, String newName) {
+
+//        查询语句
+        StringBuilder sql_select = new StringBuilder();
+        sql_select.append("select ");
+        sql_select.append("* ");
+        sql_select.append("from ");
+        sql_select.append("menu_rows ");
+        sql_select.append("where name= ");
+
+        sql_select.append("'" + newName  + "'");
+
+//        升级语句语句
+        StringBuilder sql_update = new StringBuilder();
+        sql_update.append("update ");
+        sql_update.append("menu_rows ");
+        sql_update.append("set name");
+        sql_update.append("= ");
+
+        sql_update.append("'" + newName + "'");
+
+        sql_update.append("where ");
+        sql_update.append("name =  ");
+        sql_update.append("'" + lineName + "'");
+
+        System.out.println("aaa sql_select:" + sql_select);
+        System.out.println("aaa sql_insert:" + sql_update);
+        Statement statement = null;
+        ResultSet resultSet = null;
+        int flag = FLAG_ERROR;
+
+        try {
+            statement = connection.createStatement();
+            resultSet = statement.executeQuery(sql_select.toString());
+            if (resultSet.next()) {
+                flag = FLAG_EXIST_LINE_NAME;
+            } else {
+
+                int effectRows = statement.executeUpdate(sql_update.toString());
+                if (effectRows > 0) {
+                    flag = FLAG_SUCCESS;
+                } else {
+                    flag = FLAG_ERROR;
+                }
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                if (null != resultSet) {
+                    resultSet.close();
+                }
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+                System.out.println("数据库关闭失败");
+            }
+        }
         return flag;
     }
 

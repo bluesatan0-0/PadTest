@@ -26,6 +26,7 @@ import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_AddHo
 import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_AddLine;
 import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DataLoad;
 import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DeleteLine;
+import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_EditLine;
 import com.zjxl.yanj.padtest.R;
 import com.zjxl.yanj.padtest.Utils.SharedPreference_Utils;
 
@@ -69,6 +70,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     private static final int FLAG_EDIT_LINE = 4;
     private Button btnAllLines;
     private String lineName_ForItemClick;
+    private EditText etLineName;
 
 
     @Override
@@ -266,11 +268,11 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 //            编辑餐线
             case FLAG_EDIT_LINE:
                 alertView = layoutInflater.inflate(R.layout.alert_settings_line_edit, null);
-                EditText etLineName = (EditText) alertView.findViewById(R.id.et_line_name);
+                etLineName = (EditText) alertView.findViewById(R.id.et_line_name);
                 EditText etLineID = (EditText) alertView.findViewById(R.id.et_line_id);
-                // TODO: 2017/8/1 2017-08-01 19:55:29 待完成
                 etLineName.setText(lineName_ForItemClick);
-                etLineID.setText(getIdByName_line(lineName_ForItemClick));
+                // TODO: 2017/8/1 2017-08-01 19:55:29 显示餐线编号，且不可编辑；原名称，新名称等布局修改
+//                etLineID.setText(getIdByName_line(lineName_ForItemClick));
                 break;
         }
 
@@ -293,16 +295,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
     }
 
-    /**
-     * 通过餐线名称获取ID
-     * @return 餐线的id
-     */
-    private int getIdByName_line(String lineName) {
-
-
-        return 0;
-    }
-
 
     /**
      * 提示窗口alertDialog中  按钮单击事件：
@@ -315,7 +307,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         // TODO: 2017/7/28 使用which，布局文件中添加按钮，取代代码中添加的“确认”、“取消”
         switch (flag) {
             case FLAG_EDIT_SERVER:
-
 
                 editServer();
 //                dialog.dismiss();
@@ -351,6 +342,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 //            编辑餐线
             case FLAG_EDIT_LINE:
                 editLine();
+                lineName_ForItemClick = null;
                 break;
         }
     }
@@ -361,8 +353,52 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
      */
     private void editLine() {
 
+        String lineName_New = etLineName.getText().toString();
+        if (lineName_New.isEmpty()) {
+            Toast.makeText(context, "餐线名称不能为空！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        if (lineName_New.equals(lineName_ForItemClick)) {
+            Toast.makeText(context, "餐线名称不能为旧名称！", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        SettingsBusiness_EditLine settingsBusiness_editLine = new SettingsBusiness_EditLine();
+        settingsBusiness_editLine.setOnEditLineLisener(new SettingsBusiness_EditLine.OnEditLineLisener() {
+            @Override
+            public void error() {
+                Toast.makeText(context, "修改失败！", Toast.LENGTH_SHORT).show();
+                return;
+            }
+
+            @Override
+            public void exist() {
+                Toast.makeText(context, "该餐线名称已存在！", Toast.LENGTH_SHORT).show();
+                return;
+
+            }
+
+            @Override
+            public void success() {
+                Toast.makeText(context, "修改成功！", Toast.LENGTH_SHORT).show();
+                updateNotifyDataSet_LinesHoles();
+            }
+        });
+        System.out.println("aaa lineName_ForItemClick=" + lineName_ForItemClick + "  lineName_New=" + lineName_New);
+        settingsBusiness_editLine.editLine(lineName_ForItemClick, lineName_New);
+
     }
 
+
+    /**
+     * 通过餐线名称获取ID
+     *
+     * @return 餐线的id
+     */
+    private int getIdByName_line(String lineName) {
+
+        return 0;
+    }
 
     /**
      * 保存配置信息（数据库、远端服务器）
