@@ -3,6 +3,7 @@ package com.zjxl.yanj.padtest.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.widget.LinearLayoutManager;
@@ -205,7 +206,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         switch (v.getId()) {
 //            返回主页
             case R.id.ll_back_SettingsMenu:
-                onBackPressed();
+                Intent intent = new Intent(this, MainActivity.class);
+                startActivity(intent);
                 break;
             case R.id.btn_allLines:
                 updateNotifyDataSet_LinesHoles();

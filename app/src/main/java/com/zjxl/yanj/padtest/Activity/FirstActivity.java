@@ -11,6 +11,7 @@ import android.widget.TextView;
 import com.zjxl.yanj.padtest.Base.BaseActivity;
 import com.zjxl.yanj.padtest.R;
 import com.zjxl.yanj.padtest.Utils.SharedPreference_Utils;
+import com.zjxl.yanj.padtest.Utils.ThreadPool_Util;
 import com.zjxl.yanj.padtest.Utils.URL_Util;
 
 /**
@@ -50,9 +51,10 @@ public class FirstActivity extends BaseActivity {
 
         Intent intent = null;
 
-            // TODO: 2017/7/24 编写测试模块时使用，完成测试模块后使用?👆
+        // TODO: 2017/7/24 编写测试模块时使用，完成测试模块后使用?👆
         if (configs.get(SharedPreference_Utils.KEY_DB_IP).equals(URL_Util.DB_IP_TEST)
                 || configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_IP).equals(URL_Util.REMOTE_SERVER_IP_TEST)) {
+//        if(true){
             System.out.println("aaa ip为测试ip，进入测试");
 //            未设置前置机、服务器
 //            初次打开，进入设置模块登录界面
@@ -74,13 +76,13 @@ public class FirstActivity extends BaseActivity {
                 startActivity(finalIntent);
             }
         };
-        new Thread(new Runnable() {
+
+        ThreadPool_Util.doTask(new Runnable() {
             @Override
             public void run() {
-                System.out.println("aaa threadID:" + Thread.currentThread().getId());
                 handler.sendMessageDelayed(Message.obtain(), 1000);
             }
-        }).start();
+        });
 
     }
 }
