@@ -123,7 +123,9 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
 //        初始化列表(餐线、餐眼)数据
 
-        updateNotifyDataSet_LinesHoles();
+        if (!SharedPreference_Utils.getConfigs().get(SharedPreference_Utils.KEY_DB_IP).isEmpty()) {
+            updateNotifyDataSet_LinesHoles();
+        }
 
     }
 
@@ -243,9 +245,15 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 alertView = layoutInflater.inflate(R.layout.alert_settings_edit_server, null);
                 ArrayMap<String, String> configs = SharedPreference_Utils.getInstance(this).getConfigs();
 //                获取配置数据、展示
-                ((EditText) alertView.findViewById(R.id.et_server_ip)).setText(configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_IP));
+
+                String server_ip = configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_IP);
+                if (!server_ip.isEmpty())
+                    ((EditText) alertView.findViewById(R.id.et_server_ip)).setText(server_ip);
+                String db_ip = configs.get(SharedPreference_Utils.KEY_DB_IP);
+                if (!db_ip.isEmpty())
+                    ((EditText) alertView.findViewById(R.id.et_db_ip)).setText(db_ip);
+
                 ((EditText) alertView.findViewById(R.id.et_server_department)).setText(configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_DEPATEMENT_CODE));
-                ((EditText) alertView.findViewById(R.id.et_db_ip)).setText(configs.get(SharedPreference_Utils.KEY_DB_IP));
                 ((EditText) alertView.findViewById(R.id.et_db_port)).setText(configs.get(SharedPreference_Utils.KEY_DB_PORT));
                 ((EditText) alertView.findViewById(R.id.et_db_name)).setText(configs.get(SharedPreference_Utils.KEY_DB_NAME));
                 ((EditText) alertView.findViewById(R.id.et_db_user)).setText(configs.get(SharedPreference_Utils.KEY_DB_USER));
@@ -414,30 +422,37 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         String db_ip = ((EditText) alertView.findViewById(R.id.et_db_ip)).getText().toString();
         if (db_ip.isEmpty()) {
             Toast.makeText(context, "数据库ip不能为空", Toast.LENGTH_SHORT).show();
+            return;
         }
         String db_port = ((EditText) alertView.findViewById(R.id.et_db_port)).getText().toString();
         if (db_port.isEmpty()) {
             Toast.makeText(context, "数据库port不能为空", Toast.LENGTH_SHORT).show();
+            return;
         }
         String db_name = ((EditText) alertView.findViewById(R.id.et_db_name)).getText().toString();
         if (db_name.isEmpty()) {
             Toast.makeText(context, "数据库name不能为空", Toast.LENGTH_SHORT).show();
+            return;
         }
         String db_user = ((EditText) alertView.findViewById(R.id.et_db_user)).getText().toString();
         if (db_user.isEmpty()) {
             Toast.makeText(context, "数据库账户不能为空", Toast.LENGTH_SHORT).show();
+            return;
         }
         String db_pwd = ((EditText) alertView.findViewById(R.id.et_db_pwd)).getText().toString();
         if (db_pwd.isEmpty()) {
             Toast.makeText(context, "数据库密码不能为空", Toast.LENGTH_SHORT).show();
+            return;
         }
         String server_ip = ((EditText) alertView.findViewById(R.id.et_server_ip)).getText().toString();
         if (server_ip.isEmpty()) {
             Toast.makeText(context, "服务器ip不能为空", Toast.LENGTH_SHORT).show();
+            return;
         }
         String server_department = ((EditText) alertView.findViewById(R.id.et_server_department)).getText().toString();
         if (server_department.isEmpty()) {
             Toast.makeText(context, "所属餐厅不能为空", Toast.LENGTH_SHORT).show();
+            return;
         }
 
 

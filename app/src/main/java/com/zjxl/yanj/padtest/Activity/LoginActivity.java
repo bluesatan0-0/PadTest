@@ -62,14 +62,7 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         ArrayMap<String, String> configs = SharedPreference_Utils.getInstance(this).getConfigs();
 
         strAccount = configs.get(SharedPreference_Utils.KEY_ADMIN_NAME);
-        if (strAccount.isEmpty()) {
-            strAccount = "admin";
-        }
-
         strPwd = configs.get(SharedPreference_Utils.KEY_ADMIN_PWD);
-        if (strPwd.isEmpty()) {
-            strPwd = "admin";
-        }
     }
 
     private void initEvent() {

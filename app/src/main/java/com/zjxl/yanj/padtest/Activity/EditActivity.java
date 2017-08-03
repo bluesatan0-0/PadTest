@@ -1,6 +1,7 @@
 package com.zjxl.yanj.padtest.Activity;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.zjxl.yanj.padtest.Base.BaseActivity;
 import com.zjxl.yanj.padtest.R;
@@ -16,7 +17,11 @@ import com.zjxl.yanj.padtest.R;
  * 更新描述: <p>
  */
 
-public class EditActivity extends BaseActivity {
+public class EditActivity extends BaseActivity implements View.OnClickListener {
+
+    private View btnSave;
+    private View btnDownload;
+    private View btnClear;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -29,7 +34,11 @@ public class EditActivity extends BaseActivity {
 
     }
 
-    private void initEvent() {
+    private void initView() {
+
+        btnSave = findViewById(R.id.ll_savePlan);
+        btnDownload = findViewById(R.id.ll_downloadMenu);
+        btnClear = findViewById(R.id.ll_Clear);
 
     }
 
@@ -37,10 +46,9 @@ public class EditActivity extends BaseActivity {
 
     }
 
-    private void initView() {
+    private void initEvent() {
 
-
-
+        btnSave.setOnClickListener(this);
     }
 
 
@@ -55,4 +63,20 @@ public class EditActivity extends BaseActivity {
         super.onResume();
     }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.ll_savePlan:
+                // TODO: 2017/8/3 增加保存排菜信息的代码
+                finish();
+
+                break;
+            case R.id.ll_downloadMenu:
+
+                break;
+            case R.id.ll_Clear:
+
+                break;
+        }
+    }
 }

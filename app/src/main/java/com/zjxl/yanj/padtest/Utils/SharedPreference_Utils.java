@@ -74,7 +74,7 @@ public class SharedPreference_Utils {
 
     //获取某项参数
     public static String getValue(String key) {
-        return sharedPreferences.getString(key, "ERROR");
+        return sharedPreferences.getString(key, "");
     }
 
     //获取全部参数(若为空，则使用URL_Util中的默认值)
@@ -82,10 +82,10 @@ public class SharedPreference_Utils {
 
         ArrayMap<String, String> configs = new ArrayMap<>();
 
-        configs.put(KEY_REMOTE_SERVER_IP, sharedPreferences.getString(KEY_REMOTE_SERVER_IP, URL_Util.REMOTE_SERVER_IP_TEST));
+        configs.put(KEY_REMOTE_SERVER_IP, sharedPreferences.getString(KEY_REMOTE_SERVER_IP, ""));
         configs.put(KEY_REMOTE_SERVER_DEPATEMENT_CODE, sharedPreferences.getString(KEY_REMOTE_SERVER_DEPATEMENT_CODE, URL_Util.REMOTE_SERVER_DEPARTMENT_CODE_TEST));
 
-        configs.put(KEY_DB_IP, sharedPreferences.getString(KEY_DB_IP, URL_Util.DB_IP_TEST));
+        configs.put(KEY_DB_IP, sharedPreferences.getString(KEY_DB_IP, ""));
         configs.put(KEY_DB_PWD, sharedPreferences.getString(KEY_DB_PWD, URL_Util.DB_PWD_TEST));
         configs.put(KEY_DB_PORT, sharedPreferences.getString(KEY_DB_PORT, URL_Util.DB_PORT_TEST));
         configs.put(KEY_DB_NAME, sharedPreferences.getString(KEY_DB_NAME, URL_Util.DB_NAME_TEST));
@@ -93,8 +93,8 @@ public class SharedPreference_Utils {
         configs.put(KEY_DB_CHARATER_SET, sharedPreferences.getString(KEY_DB_CHARATER_SET, URL_Util.DB_CHARACTER_ENCODE));
 
         // TODO: 2017/7/28 默认管理员账户
-        configs.put(KEY_ADMIN_NAME, sharedPreferences.getString(KEY_ADMIN_NAME, ""));
-        configs.put(KEY_ADMIN_PWD, sharedPreferences.getString(KEY_ADMIN_PWD, ""));
+        configs.put(KEY_ADMIN_NAME, sharedPreferences.getString(KEY_ADMIN_NAME, "admin"));
+        configs.put(KEY_ADMIN_PWD, sharedPreferences.getString(KEY_ADMIN_PWD, "admin"));
 
 
         return configs;
@@ -110,13 +110,6 @@ public class SharedPreference_Utils {
         }
         return commit;
     }
-
-//    //获取某项参数，返回操作结果
-//    public static String getValue(String key) {
-//
-//
-//        return sharedPreferences.getString(key, "");
-//    }
 
     //批量设置参数，返回操作结果
     public static boolean setValues(ArrayMap<String, String> data) {
