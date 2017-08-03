@@ -35,6 +35,10 @@
             android:name=".Activity.MainActivity"
             android:screenOrientation="landscape"></activity>
 
+        <activity
+            android:name=".Activity.EditActivity"
+            android:screenOrientation="landscape"></activity>
+
 
     </application>
 

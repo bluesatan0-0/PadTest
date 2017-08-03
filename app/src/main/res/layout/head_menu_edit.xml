@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="119dp"
+    android:background="#00cccccc"
+    android:gravity="right|bottom"
+    android:orientation="horizontal">
+
+    <!--保存排菜-->
+    <LinearLayout
+        android:id="@+id/ll_planDish"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="40px"
+        android:layout_marginRight="30px"
+        android:layout_marginTop="33dp"
+        android:background="#00999999"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@mipmap/navegation_menu_edit_save_off"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="保存排菜"
+            android:textColor="#ffffffff"
+            android:textSize="24px" />
+    </LinearLayout>
+
+    <!--下载今日菜单-->
+    <LinearLayout
+        android:id="@+id/ll_downloadMenu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="40px"
+        android:layout_marginRight="30px"
+        android:layout_marginTop="33dp"
+        android:background="#00999999"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@mipmap/navegation_menu_root_download_off"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="下载今日菜单"
+            android:textColor="#ffffffff"
+            android:textSize="24px" />
+    </LinearLayout>
+
+    <!--清空当前排菜-->
+    <LinearLayout
+        android:id="@+id/ll_uploadPlan"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginLeft="40px"
+        android:layout_marginRight="30px"
+        android:layout_marginTop="33dp"
+        android:background="#00999999"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:scaleType="fitXY"
+            android:src="@mipmap/navegation_menu_edit_clean_off"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="清空当前排菜"
+            android:textColor="#ffffffff"
+            android:textSize="24px" />
+    </LinearLayout>
+
+</LinearLayout>
