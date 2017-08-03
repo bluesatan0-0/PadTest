@@ -5,10 +5,10 @@
     android:paddingBottom="40dp">
 
     <!--菜单样式-->
-    <include layout="@layout/head_layout"></include>
+    <include layout="@layout/head_style"></include>
 
     <!--菜单按钮-->
-    <include layout="@layout/menu_layout_settings"></include>
+    <include layout="@layout/head_menu_settings"></include>
 
 
     <!--内容区：操作按钮-->
@@ -17,7 +17,7 @@
         android:layout_width="match_parent"
         android:layout_height="30dp"
         android:layout_marginRight="40dp"
-        android:layout_marginTop="120dp"
+        android:layout_marginTop="140dp"
         android:gravity="center_horizontal|right">
 
         <!--添加餐线-->
@@ -58,14 +58,14 @@
         android:orientation="vertical">
 
         <Button
-        android:id="@+id/btn_allLines"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center_vertical|left"
-        android:text="全    部"
-        android:paddingLeft="10dp"
-        android:background="#00000000"
-        android:textSize="26px" />
+            android:id="@+id/btn_allLines"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="#00000000"
+            android:gravity="center_vertical|left"
+            android:paddingLeft="10dp"
+            android:text="全    部"
+            android:textSize="26px" />
 
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rv_Lines"

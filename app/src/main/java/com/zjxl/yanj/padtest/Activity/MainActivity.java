@@ -10,6 +10,7 @@ import com.zjxl.yanj.padtest.R;
  * 创建人: YanJ <p>
  * 创建时间: 2017/7/13 11:32 <p>
  * 描述: MainActivity
+ * 首页
  * <p>
  * 更新人: <p>
  * 更新时间: <p>
@@ -38,6 +39,8 @@ public class MainActivity extends BaseActivity {
     }
 
     private void initView() {
+
+
 
     }
 

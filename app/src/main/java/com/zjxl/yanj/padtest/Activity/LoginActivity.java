@@ -50,7 +50,6 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
     }
 
 
-
     private void initView() {
         btnLogin = (Button) findViewById(R.id.btn_login);
         etAccount = (EditText) findViewById(R.id.et_account);
@@ -63,7 +62,14 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
         ArrayMap<String, String> configs = SharedPreference_Utils.getInstance(this).getConfigs();
 
         strAccount = configs.get(SharedPreference_Utils.KEY_ADMIN_NAME);
-        strPwd = configs.get(SharedPreference_Utils.KEY_ADMIN_NAME);
+        if (strAccount.isEmpty()) {
+            strAccount = "admin";
+        }
+
+        strPwd = configs.get(SharedPreference_Utils.KEY_ADMIN_PWD);
+        if (strPwd.isEmpty()) {
+            strPwd = "admin";
+        }
     }
 
     private void initEvent() {
@@ -78,10 +84,10 @@ public class LoginActivity extends BaseActivity implements View.OnClickListener 
             String str = checkLogin();
             if ("".equals(str)) {
 //                进入设置模块
-                Intent intent = new Intent(this,SettingsActivity.class);
+                Intent intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
             } else {
-                Toast.makeText(this, checkLogin(), Toast.LENGTH_SHORT).show();
+                Toast.makeText(this, str, Toast.LENGTH_SHORT).show();
             }
 
         }

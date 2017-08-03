@@ -20,11 +20,12 @@ import java.util.Set;
 public class SharedPreference_Utils {
 
     //    键值对的键名
-    public static final String KEY_REMOTE_SERVER_IP = "KEY_REMOTE_SERVER_IP";
-    public static final String KEY_REMOTE_SERVER_DEPATEMENT_CODE = "KEY_REMOTE_SERVER_DEPATEMENT_CODE";
 
     public static final String KEY_ADMIN_NAME = "KEY_ADMIN_NAME";
     public static final String KEY_ADMIN_PWD = "KEY_ADMIN_PWD";
+
+    public static final String KEY_REMOTE_SERVER_IP = "KEY_REMOTE_SERVER_IP";
+    public static final String KEY_REMOTE_SERVER_DEPATEMENT_CODE = "KEY_REMOTE_SERVER_DEPATEMENT_CODE";
 
     public static final String KEY_DB_IP = "KEY_DB_IP";
     public static final String KEY_DB_PORT = "KEY_DB_PORT";
@@ -92,8 +93,8 @@ public class SharedPreference_Utils {
         configs.put(KEY_DB_CHARATER_SET, sharedPreferences.getString(KEY_DB_CHARATER_SET, URL_Util.DB_CHARACTER_ENCODE));
 
         // TODO: 2017/7/28 默认管理员账户
-        configs.put(KEY_ADMIN_NAME, sharedPreferences.getString(KEY_ADMIN_NAME, "admin"));
-        configs.put(KEY_ADMIN_PWD, sharedPreferences.getString(KEY_ADMIN_PWD, "admin"));
+        configs.put(KEY_ADMIN_NAME, sharedPreferences.getString(KEY_ADMIN_NAME, ""));
+        configs.put(KEY_ADMIN_PWD, sharedPreferences.getString(KEY_ADMIN_PWD, ""));
 
 
         return configs;

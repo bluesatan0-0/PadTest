@@ -1,19 +1,20 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="92dp"
+    android:layout_height="119dp"
     android:background="#00cccccc"
     android:gravity="right|bottom"
-    android:orientation="horizontal"
-    android:paddingBottom="20dp">
+    android:orientation="horizontal">
 
     <!--返回首页-->
     <LinearLayout
         android:id="@+id/ll_back_SettingsMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="top"
         android:layout_marginLeft="40px"
         android:layout_marginRight="30px"
+        android:layout_marginTop="33dp"
         android:background="#00999999"
         android:clickable="true"
         android:gravity="center"
@@ -39,8 +40,10 @@
         android:id="@+id/ll_server_SettingsMenu"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="top"
         android:layout_marginLeft="40px"
         android:layout_marginRight="30px"
+        android:layout_marginTop="33dp"
         android:background="#00999999"
         android:clickable="true"
         android:gravity="center"

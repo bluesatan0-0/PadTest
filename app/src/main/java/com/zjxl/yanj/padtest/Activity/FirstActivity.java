@@ -12,7 +12,6 @@ import com.zjxl.yanj.padtest.Base.BaseActivity;
 import com.zjxl.yanj.padtest.R;
 import com.zjxl.yanj.padtest.Utils.SharedPreference_Utils;
 import com.zjxl.yanj.padtest.Utils.ThreadPool_Util;
-import com.zjxl.yanj.padtest.Utils.URL_Util;
 
 /**
  * 类名: FirstActivity <p>
@@ -52,8 +51,7 @@ public class FirstActivity extends BaseActivity {
         Intent intent = null;
 
         // TODO: 2017/7/24 编写测试模块时使用，完成测试模块后使用?👆
-        if (configs.get(SharedPreference_Utils.KEY_DB_IP).equals(URL_Util.DB_IP_TEST)
-                || configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_IP).equals(URL_Util.REMOTE_SERVER_IP_TEST)) {
+        if (configs.get(SharedPreference_Utils.KEY_ADMIN_NAME).isEmpty()||configs.get(SharedPreference_Utils.KEY_ADMIN_PWD).isEmpty()) {
 //        if(true){
             System.out.println("aaa ip为测试ip，进入测试");
 //            未设置前置机、服务器

@@ -50,7 +50,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_weight="1"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:textSize="26px" />
 
 
@@ -79,7 +79,7 @@
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:layout_weight="1"
-                android:maxLines="1"
+                android:singleLine="true"
                 android:textSize="26px" />
 
         </LinearLayout>
