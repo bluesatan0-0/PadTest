@@ -2,6 +2,9 @@ package com.zjxl.yanj.padtest.Activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
 import com.zjxl.yanj.padtest.Base.BaseActivity;
@@ -25,6 +28,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private View btnUploadPlan;
     private View btnOrderList;
     private View btnSettings;
+    private RecyclerView rvHoles;
+    private RecyclerView rvLines;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -56,12 +61,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnOrderList = findViewById(R.id.ll_orderList);
         btnSettings = findViewById(R.id.ll_settings);
 
-
+        rvLines = (RecyclerView) findViewById(R.id.rv_lines);
+        rvHoles = (RecyclerView) findViewById(R.id.rv_holes);
     }
 
     private void initData() {
 
+        LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        rvLines.setLayoutManager(linesLayoutManager);
 
+        GridLayoutManager holesLayoutManager = new GridLayoutManager(this, 4);
+        rvHoles.setLayoutManager(holesLayoutManager);
     }
 
     private void initEvent() {
