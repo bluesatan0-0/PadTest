@@ -208,6 +208,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             case R.id.ll_back_SettingsMenu:
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
+                finish();
                 break;
             case R.id.btn_allLines:
                 updateNotifyDataSet_LinesHoles();

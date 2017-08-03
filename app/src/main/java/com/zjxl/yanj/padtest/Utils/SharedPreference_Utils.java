@@ -111,6 +111,13 @@ public class SharedPreference_Utils {
         return commit;
     }
 
+//    //获取某项参数，返回操作结果
+//    public static String getValue(String key) {
+//
+//
+//        return sharedPreferences.getString(key, "");
+//    }
+
     //批量设置参数，返回操作结果
     public static boolean setValues(ArrayMap<String, String> data) {
         SharedPreferences.Editor edit = sharedPreferences.edit();
