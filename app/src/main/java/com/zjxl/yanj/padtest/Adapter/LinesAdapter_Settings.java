@@ -15,7 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 类名: LinesAdapter <p>
+ * 类名: LinesAdapter_Settings <p>
  * 创建人: YanJ <p>
  * 创建时间: 2017/7/26 16:16 <p>
  * 描述: 设置界面——餐线列表，适配器
@@ -25,7 +25,7 @@ import java.util.List;
  * 更新描述: <p>
  */
 
-public class LinesAdapter extends RecyclerView.Adapter {
+public class LinesAdapter_Settings extends RecyclerView.Adapter {
 
 
     private Context context;
@@ -33,7 +33,7 @@ public class LinesAdapter extends RecyclerView.Adapter {
     private List<Line> dataList = new ArrayList<Line>();
 
 
-    public LinesAdapter(Context context, List<Line> lines) {
+    public LinesAdapter_Settings(Context context, List<Line> lines) {
         this.context = context;
         this.dataList.clear();
         this.dataList.addAll(lines);
@@ -43,7 +43,7 @@ public class LinesAdapter extends RecyclerView.Adapter {
     @Override
     public ViewHolder_LinesAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.item_line, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_line_settings, parent, false);
 
         if (null == itemClickListener) {
             System.out.println("aaa itemClickListener is null");

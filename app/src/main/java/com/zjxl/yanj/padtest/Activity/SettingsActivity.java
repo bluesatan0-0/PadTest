@@ -18,8 +18,8 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.zjxl.yanj.padtest.Adapter.HolesAdapter;
-import com.zjxl.yanj.padtest.Adapter.LinesAdapter;
+import com.zjxl.yanj.padtest.Adapter.HolesAdapter_Settings;
+import com.zjxl.yanj.padtest.Adapter.LinesAdapter_Settings;
 import com.zjxl.yanj.padtest.Base.BaseActivity;
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Bean.Line;
@@ -59,8 +59,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
     private List<Line> lines;
     private List<Hole> holes;
-    private LinesAdapter linesAdapter;
-    private HolesAdapter holesAdapter;
+    private LinesAdapter_Settings linesAdapter_settings;
+    private HolesAdapter_Settings holesAdapter_settings;
 
     private View alertView = null;
     private int flag;
@@ -156,21 +156,21 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 System.out.println("aaa linesList:" + linesList.toString());
                 System.out.println("aaa holesList:" + holesList.toString());
 
-                if (null != linesAdapter) {
-                    linesAdapter.notifyDataSetChanged();
+                if (null != linesAdapter_settings) {
+                    linesAdapter_settings.notifyDataSetChanged();
                 } else {
 //                    若空则认为是初始化，实例化适配器
-                    linesAdapter = new LinesAdapter(context, lines);
-                    linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
-                    rvLines.setAdapter(linesAdapter);
+                    linesAdapter_settings = new LinesAdapter_Settings(context, lines);
+                    linesAdapter_settings.setOnItemClickListener(new mItemClickListener_rvLines());
+                    rvLines.setAdapter(linesAdapter_settings);
                 }
 
-                if (null != holesAdapter) {
-                    holesAdapter.notifyDataSetChanged();
+                if (null != holesAdapter_settings) {
+                    holesAdapter_settings.notifyDataSetChanged();
                 } else {
 //                    若空则认为是初始化，实例化适配器
-                    holesAdapter = new HolesAdapter(context, holes, lines);
-                    rvHoles.setAdapter(holesAdapter);
+                    holesAdapter_settings = new HolesAdapter_Settings(context, holes, lines);
+                    rvHoles.setAdapter(holesAdapter_settings);
                 }
 
             }
@@ -623,7 +623,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     /**
      * 餐线点击事件  的  回调监听器
      */
-    class mItemClickListener_rvLines implements LinesAdapter.ItemClickListener {
+    class mItemClickListener_rvLines implements LinesAdapter_Settings.ItemClickListener {
 
         @Override
         public void onBtnNameClick(String lineName) {
@@ -668,7 +668,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                     holes.clear();
                     holes.addAll(holesList);
                     System.out.println("aaa whenBtnLineNameClick loaded_Holes_list:" + holesList.toString());
-                    holesAdapter.notifyDataSetChanged();
+                    holesAdapter_settings.notifyDataSetChanged();
                 }
 
                 @Override

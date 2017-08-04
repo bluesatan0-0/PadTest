@@ -15,10 +15,10 @@ import com.zjxl.yanj.padtest.R;
 import java.util.List;
 
 /**
- * 类名: HolesAdapter <p>
+ * 类名: HolesAdapter_Main <p>
  * 创建人: YanJ <p>
  * 创建时间: 2017/7/26 16:16 <p>
- * 描述: 设置界面——设备列表，适配器
+ * 描述: 主页界面——设备列表，适配器
  * <p>
  * <p>
  * 更新人: <p>
@@ -26,14 +26,14 @@ import java.util.List;
  * 更新描述: <p>
  */
 
-public class HolesAdapter extends RecyclerView.Adapter implements View.OnClickListener {
+public class HolesAdapter_Main extends RecyclerView.Adapter implements View.OnClickListener {
 
     private Context context;
     private List<Hole> dataList;
     private List<Line> linesList;
     private Line line;
 
-    public HolesAdapter(Context context, List<Hole> holes, List<Line> linesList) {
+    public HolesAdapter_Main(Context context, List<Hole> holes, List<Line> linesList) {
         this.context = context;
         this.dataList = holes;
         this.linesList = linesList;
@@ -43,7 +43,7 @@ public class HolesAdapter extends RecyclerView.Adapter implements View.OnClickLi
     @Override
     public ViewHolder_HolesAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.item_device, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_hole_settings, parent, false);
         return new ViewHolder_HolesAdapter(view);
     }
 

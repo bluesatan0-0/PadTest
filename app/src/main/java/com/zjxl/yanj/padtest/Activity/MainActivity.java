@@ -1,5 +1,6 @@
 package com.zjxl.yanj.padtest.Activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
@@ -7,14 +8,22 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 
+import com.zjxl.yanj.padtest.Adapter.HolesAdapter_Main;
+import com.zjxl.yanj.padtest.Adapter.LinesAdapter_Main;
 import com.zjxl.yanj.padtest.Base.BaseActivity;
+import com.zjxl.yanj.padtest.Bean.Hole;
+import com.zjxl.yanj.padtest.Bean.Line;
+import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DataLoad;
 import com.zjxl.yanj.padtest.R;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 类名: MainActivity <p>
  * 创建人: YanJ <p>
  * 创建时间: 2017/7/13 11:32 <p>
- * 描述: MainActivity     首页
+ * 描述: MainActivity     主页
  * <p>
  * 更新人: yanj<p>
  * 更新时间: 2017-08-03 14:20:29 <p>
@@ -30,6 +39,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private View btnSettings;
     private RecyclerView rvHoles;
     private RecyclerView rvLines;
+
+    private List<Line> lines;
+    private List<Hole> holes;
+    private LinesAdapter_Main linesAdapter_main;
+    private HolesAdapter_Main holesAdapter_main;
+    private Context context;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -66,12 +81,66 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initData() {
+        lines = new ArrayList<Line>();
+        holes = new ArrayList<Hole>();
 
-        LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this,LinearLayoutManager.VERTICAL,false);
+        LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvLines.setLayoutManager(linesLayoutManager);
 
         GridLayoutManager holesLayoutManager = new GridLayoutManager(this, 4);
         rvHoles.setLayoutManager(holesLayoutManager);
+
+        rvLines.setHasFixedSize(true);
+        rvHoles.setHasFixedSize(true);
+
+        updateNotifyDataSet_LinesHoles();
+    }
+
+    private void updateNotifyDataSet_LinesHoles() {
+
+        SettingsBusiness_DataLoad settingsBusiness_dataLoad = new SettingsBusiness_DataLoad();
+        settingsBusiness_dataLoad.setOnDataLoadedLisener(new SettingsBusiness_DataLoad.OnDataLoadedLisener() {
+            @Override
+            public void loaded_Lines(List<Line> linesList) {
+
+            }
+
+            @Override
+            public void loaded_Holes(List<Hole> holesList) {
+
+            }
+
+            @Override
+            public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
+
+                lines.clear();
+                holes.clear();
+                lines.addAll(linesList);
+                holes.addAll(holesList);
+                System.out.println("aaa linesList:" + linesList.toString());
+                System.out.println("aaa holesList:" + holesList.toString());
+
+                if (null != linesAdapter_main) {
+                    linesAdapter_main.notifyDataSetChanged();
+                } else {
+//                    若空则认为是初始化，实例化适配器
+                    linesAdapter_main = new LinesAdapter_Main(context, lines);
+                    linesAdapter_main.setOnItemClickListener(new mItemClickListener_rvLines());
+                    rvLines.setAdapter(linesAdapter_main);
+                }
+
+                if (null != holesAdapter_main) {
+                    holesAdapter_main.notifyDataSetChanged();
+                } else {
+//                    若空则认为是初始化，实例化适配器
+                    holesAdapter_main = new HolesAdapter_Main(context, holes, lines);
+                    rvHoles.setAdapter(holesAdapter_main);
+                }
+
+            }
+        });
+
+        settingsBusiness_dataLoad.getList_LinesAndHoles();
     }
 
     private void initEvent() {
@@ -107,4 +176,60 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 break;
         }
     }
+
+
+    /**
+     * 餐线点击事件  的  回调监听器
+     */
+    class mItemClickListener_rvLines implements LinesAdapter_Main.ItemClickListener {
+
+        @Override
+        public void onBtnNameClick(String lineName) {
+
+            whenBtnLineNameClick(lineName);
+        }
+
+        @Override
+        public void onDeleteClick(String lineName) {
+
+        }
+
+        @Override
+        public void onEditClick(String lineName) {
+
+        }
+
+    }
+
+    /**
+     * 根据点击的line  更新rvHoles中的数据（换成被点击餐线的餐眼）
+     * 当rvLines的item中btnName被点击时，执行
+     *
+     * @param lineName 餐线名称
+     */
+    private void whenBtnLineNameClick(String lineName) {
+        SettingsBusiness_DataLoad settingsBusiness_dataLoad_HolesByLinesName = new SettingsBusiness_DataLoad();
+        settingsBusiness_dataLoad_HolesByLinesName.setOnDataLoadedLisener(new SettingsBusiness_DataLoad.OnDataLoadedLisener() {
+            @Override
+            public void loaded_Lines(List<Line> linesList) {
+
+            }
+
+            @Override
+            public void loaded_Holes(List<Hole> holesList) {
+                holes.removeAll(holes);
+                holes.clear();
+                holes.addAll(holesList);
+                System.out.println("aaa whenBtnLineNameClick loaded_Holes_list:" + holesList.toString());
+                holesAdapter_main.notifyDataSetChanged();
+            }
+
+            @Override
+            public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
+
+            }
+        });
+        settingsBusiness_dataLoad_HolesByLinesName.getList_HolesByLinesName(lineName);
+    }
+
 }
