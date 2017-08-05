@@ -11,6 +11,7 @@ import android.view.View;
 import com.zjxl.yanj.padtest.Adapter.HolesAdapter_Main;
 import com.zjxl.yanj.padtest.Adapter.LinesAdapter_Main;
 import com.zjxl.yanj.padtest.Base.BaseActivity;
+import com.zjxl.yanj.padtest.Bean.Dish;
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Bean.Line;
 import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DataLoad;
@@ -42,6 +43,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private List<Line> lines;
     private List<Hole> holes;
+    private List<Dish> dishes;
     private LinesAdapter_Main linesAdapter_main;
     private HolesAdapter_Main holesAdapter_main;
     private Context context;
@@ -81,8 +83,12 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     }
 
     private void initData() {
+        context = this;
+
         lines = new ArrayList<Line>();
         holes = new ArrayList<Hole>();
+        dishes = new ArrayList<Dish>();
+
 
         LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvLines.setLayoutManager(linesLayoutManager);
@@ -133,7 +139,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     holesAdapter_main.notifyDataSetChanged();
                 } else {
 //                    若空则认为是初始化，实例化适配器
-                    holesAdapter_main = new HolesAdapter_Main(context, holes, lines);
+                    holesAdapter_main = new HolesAdapter_Main(context, holes, lines, dishes);
                     rvHoles.setAdapter(holesAdapter_main);
                 }
 
@@ -187,16 +193,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         public void onBtnNameClick(String lineName) {
 
             whenBtnLineNameClick(lineName);
-        }
-
-        @Override
-        public void onDeleteClick(String lineName) {
-
-        }
-
-        @Override
-        public void onEditClick(String lineName) {
-
         }
 
     }

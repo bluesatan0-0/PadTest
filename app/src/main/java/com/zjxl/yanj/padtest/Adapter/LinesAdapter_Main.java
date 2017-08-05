@@ -6,7 +6,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.ImageView;
 
 import com.zjxl.yanj.padtest.Bean.Line;
 import com.zjxl.yanj.padtest.R;
@@ -15,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * 类名: LinesAdapter_Settings <p>
+ * 类名: LinesAdapter_Main <p>
  * 创建人: YanJ <p>
  * 创建时间: 2017/7/26 16:16 <p>
  * 描述: 设置界面——餐线列表，适配器
@@ -43,7 +42,7 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
     @Override
     public ViewHolder_LinesAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.item_line_settings, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_line_main, parent,false);
 
         if (null == itemClickListener) {
             System.out.println("aaa itemClickListener is null");
@@ -57,9 +56,6 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
 
         Line line = dataList.get(position);
         ViewHolder_LinesAdapter viewHolder = (ViewHolder_LinesAdapter) holder;
-        viewHolder.getBtn_lineName().setText(line.getName());
-        viewHolder.setItemPosition(position);
-
 
     }
 
@@ -76,9 +72,6 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
     public interface ItemClickListener {
         void onBtnNameClick(String lineName);
 
-        void onDeleteClick(String lineName);
-
-        void onEditClick(String lineName);
     }
 
     /**
@@ -95,8 +88,6 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
 
 
         private Button btn_lineName;
-        private ImageView iv_lineDelete;
-        private ImageView iv_lineEdit;
         private int itemPosition;
         private ItemClickListener mItemClickListener;
 
@@ -104,14 +95,10 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
             super(itemView);
 
             btn_lineName = (Button) itemView.findViewById(R.id.btn_lineName);
-            iv_lineDelete = (ImageView) itemView.findViewById(R.id.iv_line_delete);
-            iv_lineEdit = (ImageView) itemView.findViewById(R.id.iv_line_edit);
 
             mItemClickListener = listener;
 
             btn_lineName.setOnClickListener(this);
-            iv_lineDelete.setOnClickListener(this);
-            iv_lineEdit.setOnClickListener(this);
 
         }
 
@@ -123,40 +110,7 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
             Button btnName = (Button) parent.findViewById(R.id.btn_lineName);
             String linesName = btnName.getText().toString();
 
-            switch (v.getId()) {
-
-                case R.id.btn_lineName:
-                    mItemClickListener.onBtnNameClick(linesName);
-                    break;
-
-                case R.id.iv_line_delete:
-                    mItemClickListener.onDeleteClick(linesName);
-                    break;
-
-                case R.id.iv_line_edit:
-                    mItemClickListener.onEditClick(linesName);
-                    break;
-            }
-        }
-
-        public void setItemPosition(int itemPosition) {
-            this.itemPosition = itemPosition;
-        }
-
-        public int getItemPosition() {
-            return itemPosition;
-        }
-
-        public Button getBtn_lineName() {
-            return btn_lineName;
-        }
-
-        public ImageView getIv_lineEdit() {
-            return iv_lineEdit;
-        }
-
-        public ImageView getIv_lineDelete() {
-            return iv_lineDelete;
+            mItemClickListener.onBtnNameClick(linesName);
         }
     }
 

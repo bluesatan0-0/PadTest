@@ -3,7 +3,7 @@ package com.zjxl.yanj.padtest.Bean;
 import org.litepal.crud.DataSupport;
 
 /**
- * 类名: Plate <p>
+ * 类名: Dish <p>
  * 创建人: YanJ <p>
  * 创建时间: 2017/7/14 18:59 <p>
  * 描述:
@@ -17,7 +17,7 @@ import org.litepal.crud.DataSupport;
 
 
 
-public class Plate extends DataSupport {
+public class Dish extends DataSupport {
 
     /**
      * amount : 2
@@ -43,10 +43,10 @@ public class Plate extends DataSupport {
     private String cate_name;
     private String no;
 
-    public Plate() {
+    public Dish() {
     }
 
-    public Plate(int id, String stock_id, String name, int amount, String price, int sell_100gram_price, String pic, String cate, String cate_name, String no) {
+    public Dish(int id, String stock_id, String name, int amount, String price, int sell_100gram_price, String pic, String cate, String cate_name, String no) {
         this.id = id;
         this.stock_id = stock_id;
         this.name = name;
@@ -61,7 +61,7 @@ public class Plate extends DataSupport {
 
     @Override
     public String toString() {
-        return "Plate{" +
+        return "Dish{" +
                 "id='" + id + '\'' +
                 ", stock_id='" + stock_id + '\'' +
                 ", name='" + name + '\'' +

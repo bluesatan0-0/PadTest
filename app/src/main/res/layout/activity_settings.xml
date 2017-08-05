@@ -95,6 +95,15 @@
             android:background="#ffFFF6F2"
             android:orientation="horizontal">
 
+            <TextView
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:background="@drawable/shape_column"
+                android:gravity="center"
+                android:text="保温眼编码(hole.uuid)"
+                android:textColor="#bb000000"
+                android:textSize="26px" />
 
             <TextView
                 android:layout_width="0dp"
@@ -106,15 +115,6 @@
                 android:textColor="#bb000000"
                 android:textSize="26px" />
 
-            <TextView
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:background="@drawable/shape_column"
-                android:gravity="center"
-                android:text="餐线名称(line.name)"
-                android:textColor="#bb000000"
-                android:textSize="26px" />
 
             <TextView
                 android:layout_width="0dp"
@@ -122,9 +122,10 @@
                 android:layout_weight="1"
                 android:background="@drawable/shape_column"
                 android:gravity="center"
-                android:text="餐眼编码(hole.uuid)"
+                android:text="所属餐线(line.name)"
                 android:textColor="#bb000000"
                 android:textSize="26px" />
+
 
             <TextView
                 android:layout_width="0dp"
@@ -139,7 +140,7 @@
             <TextView
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="2"
+                android:layout_weight="1.5"
                 android:background="@drawable/shape_column"
                 android:gravity="center"
                 android:text="  操  作  "

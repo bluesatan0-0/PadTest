@@ -8,4 +8,12 @@
 
     <color name="color_ButtonText_normal">#46BE47</color>
     <color name="color_ButtonText_pressed">#FF7F1C</color>
+
+    <color name="color_hole_item_unselect">#EEEEEE</color>
+    <color name="color_hole_item_selected">#6DD26E</color>
+
+    <color name="color_hole_item_text_setted">#CBA99A</color>
+    <color name="color_hole_item_text_unset">#ADADAD</color>
+    <color name="color_hole_item_text_air_setted">#FFF6F2</color>
+    <color name="color_hole_item_text_air_unset">#F2F2F2</color>
 </resources>

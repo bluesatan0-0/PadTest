@@ -5,9 +5,10 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zjxl.yanj.padtest.Bean.Dish;
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Bean.Line;
 import com.zjxl.yanj.padtest.R;
@@ -21,29 +22,31 @@ import java.util.List;
  * 描述: 主页界面——设备列表，适配器
  * <p>
  * <p>
- * 更新人: <p>
- * 更新时间: <p>
- * 更新描述: <p>
+ * 更新人: 严江<p>
+ * 更新时间: 2017-08-05 14:33:30<p>
+ * 更新描述: 修改为首页餐眼item <p>
  */
 
-public class HolesAdapter_Main extends RecyclerView.Adapter implements View.OnClickListener {
+public class HolesAdapter_Main extends RecyclerView.Adapter {
 
     private Context context;
     private List<Hole> dataList;
     private List<Line> linesList;
+    private List<Dish> dishesList;
     private Line line;
 
-    public HolesAdapter_Main(Context context, List<Hole> holes, List<Line> linesList) {
+    public HolesAdapter_Main(Context context, List<Hole> holes, List<Line> linesList, List<Dish> dishesList) {
         this.context = context;
         this.dataList = holes;
         this.linesList = linesList;
+        this.dishesList = dishesList;
 //        headerView对应数据
     }
 
     @Override
     public ViewHolder_HolesAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        View view = LayoutInflater.from(context).inflate(R.layout.item_hole_settings, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.item_hole_main, parent, false);
         return new ViewHolder_HolesAdapter(view);
     }
 
@@ -52,49 +55,61 @@ public class HolesAdapter_Main extends RecyclerView.Adapter implements View.OnCl
 
         Hole hole = dataList.get(position);
         int lineId = hole.getLineId();
-        String lineName = null;
+        StringBuilder code = new StringBuilder();
 
+//        获取餐线code
         if (null != line && lineId == line.getId()) {
-            lineName = line.getName();
+            code.append(line.getCode());
         } else {
             for (Line line : linesList) {
                 if (lineId == line.getId()) {
                     this.line = line;
-                    lineName = line.getName();
+                    code.append(line.getCode());
                 }
             }
         }
-//        获取lineName👆
-
-        String holeStatu = null;
-        switch (hole.getStatu()) {
-            case -2:
-                holeStatu = "离线";
-                break;
-            case 0:
-                holeStatu = "离线";
-                break;
-            case 1:
-                holeStatu = "在线";
-                break;
-            case -4:
-                holeStatu = "未保活";
-                break;
+//        获取餐眼num
+        if (hole.getNum() < 10) {
+            code.append("0");
         }
+        code.append("" + hole.getNum());
+
+
+//        获取lineCode👆
+
+
+        int statuResID = R.mipmap.item_hole_empty;
+        Dish dish = dishesList.get(position);
+        ViewHolder_HolesAdapter holder_HolesAdapter = (ViewHolder_HolesAdapter) holder;
+        if (null == dish) {
+            holder_HolesAdapter.ivStatu.setImageResource(statuResID);
+            holder_HolesAdapter.tvHoleCode.setText(code.toString());
+            holder_HolesAdapter.itemPosition = position;
+        } else {
+
+
+//        存在菜品👇 在线离线
+            switch (hole.getStatu()) {
+
+                case 1:
+                    statuResID = R.mipmap.item_hole_online;
+                    break;
+                default:
+                    statuResID = R.mipmap.item_hole_offline;
+                    break;
+            }
 //        获取holeStatu👆
 
-        ViewHolder_HolesAdapter holder_HolesAdapter = (ViewHolder_HolesAdapter) holder;
+            holder_HolesAdapter.tvDishName.setText(code);
+            holder_HolesAdapter.tvDishPrice.setText(dish.getSell_100gram_price());
+            holder_HolesAdapter.ivStatu.setImageResource(statuResID);
+//        获取菜品图片
+//            holder_HolesAdapter.ivDish.setImageBitmap();
 
-        holder_HolesAdapter.getTvHoleName().setText(hole.getName());
-        holder_HolesAdapter.getTvLineName().setText(lineName);
-        holder_HolesAdapter.getTvHoleCode().setText(hole.getUuid());
-        holder_HolesAdapter.getTvHoleStatu().setText(holeStatu);
+//        重量初始化不设置（默认显示0）
+//        holder_HolesAdapter.getTvWeight().setText(holeStatu);
 
-        holder_HolesAdapter.getBtnDeviceEdit().setOnClickListener(this);
-        holder_HolesAdapter.getBtnDeviceCheck().setOnClickListener(this);
-        holder_HolesAdapter.getBtnDeviceDelete().setOnClickListener(this);
-
-
+        }
     }
 
     @Override
@@ -102,82 +117,46 @@ public class HolesAdapter_Main extends RecyclerView.Adapter implements View.OnCl
         return dataList.size();
     }
 
-    // TODO: 2017/7/27 设置点击事件
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.btn_device_edit:
-
-                break;
-            case R.id.btn_device_check:
-
-                break;
-            case R.id.btn_device_delete:
-
-                break;
-        }
-    }
+//         TODO: 2017/7/27 主页item设置点击事件
+//    @Override
+//    public void onClick(View v) {
+//        switch (v.getId()) {
+//            case R.id.btn_device_edit:
+//
+//                break;
+//            case R.id.btn_device_check:
+//
+//                break;
+//            case R.id.btn_device_delete:
+//
+//                break;
+//        }
+//    }
 
 
     class ViewHolder_HolesAdapter extends RecyclerView.ViewHolder {
 
-        private TextView tvHoleName;
-        private TextView tvLineName;
-        private TextView tvHoleCode;
-        private TextView tvHoleStatu;
-        private Button btnDeviceEdit;
-        private Button btnDeviceCheck;
-        private Button btnDeviceDelete;
-        private int itemPosition;
+        public int itemPosition;
+        public ImageView ivStatu;
+        public ImageView ivDish;
+        public TextView tvHoleCode;
+        public TextView tvDishName;
+        public TextView tvDishPrice;
+        public TextView tvWeight;
 
         public ViewHolder_HolesAdapter(View itemView) {
             super(itemView);
 
-            tvHoleName = (TextView) itemView.findViewById(R.id.tv_hole_name);
-            tvLineName = (TextView) itemView.findViewById(R.id.tv_line_name);
             tvHoleCode = (TextView) itemView.findViewById(R.id.tv_hole_code);
-            tvHoleStatu = (TextView) itemView.findViewById(R.id.tv_hole_statu);
-            btnDeviceEdit = (Button) itemView.findViewById(R.id.btn_device_edit);
-            btnDeviceCheck = (Button) itemView.findViewById(R.id.btn_device_check);
-            btnDeviceDelete = (Button) itemView.findViewById(R.id.btn_device_delete);
+            tvDishName = (TextView) itemView.findViewById(R.id.tv_dish_name);
+            tvDishPrice = (TextView) itemView.findViewById(R.id.tv_dish_price);
+            tvWeight = (TextView) itemView.findViewById(R.id.tv_weight);
+
+            ivStatu = (ImageView) itemView.findViewById(R.id.iv_statu);
+            ivDish = (ImageView) itemView.findViewById(R.id.iv_dish_icon);
 
         }
 
-        public void setItemPosition(int itemPosition) {
-            this.itemPosition = itemPosition;
-        }
-
-        public int getItemPosition() {
-            return itemPosition;
-        }
-
-        public TextView getTvHoleName() {
-            return tvHoleName;
-        }
-
-        public TextView getTvLineName() {
-            return tvLineName;
-        }
-
-        public TextView getTvHoleCode() {
-            return tvHoleCode;
-        }
-
-        public TextView getTvHoleStatu() {
-            return tvHoleStatu;
-        }
-
-        public Button getBtnDeviceEdit() {
-            return btnDeviceEdit;
-        }
-
-        public Button getBtnDeviceCheck() {
-            return btnDeviceCheck;
-        }
-
-        public Button getBtnDeviceDelete() {
-            return btnDeviceDelete;
-        }
     }
 
 }
