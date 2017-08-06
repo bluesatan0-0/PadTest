@@ -40,7 +40,7 @@
     <!--餐线编码-->
 
     <EditText
-        android:id="@+id/et_line_id"
+        android:id="@+id/et_line_code"
         android:layout_width="300dp"
         android:layout_height="wrap_content"
         android:layout_alignParentRight="true"
@@ -48,15 +48,14 @@
         android:layout_marginRight="50dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/shape_edittext_border"
-        android:editable="false"
         android:textSize="24sp" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignBaseline="@id/et_line_id"
-        android:layout_toStartOf="@id/et_line_id"
-        android:text="餐线编码(id)："
+        android:layout_alignBaseline="@id/et_line_code"
+        android:layout_toStartOf="@id/et_line_code"
+        android:text="餐线编码(code)："
         android:textSize="24sp" />
 
 

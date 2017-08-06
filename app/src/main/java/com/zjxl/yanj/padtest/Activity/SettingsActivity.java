@@ -121,6 +121,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         rvLines.setLayoutManager(linearLayoutManager_lines);
         rvHoles.setLayoutManager(linearLayoutManager_holes);
 
+
+
 //        初始化列表(餐线、餐眼)数据
 
         if (!SharedPreference_Utils.getConfigs().get(SharedPreference_Utils.KEY_DB_IP).isEmpty()) {
@@ -151,6 +153,8 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
                 lines.clear();
                 holes.clear();
+                lines.removeAll(linesList);
+                holes.removeAll(holes);
                 lines.addAll(linesList);
                 holes.addAll(holesList);
                 System.out.println("aaa linesList:" + linesList.toString());

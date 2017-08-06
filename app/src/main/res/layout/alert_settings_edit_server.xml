@@ -26,7 +26,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginTop="20dp"
         android:background="@drawable/shape_edittext_border"
-        android:hint="120.26.88.91"
+        android:text="120.26.88.91"
         android:textSize="24sp" />
 
     <TextView
@@ -148,7 +148,7 @@
         android:layout_marginRight="50dp"
         android:layout_marginTop="22dp"
         android:background="@drawable/shape_edittext_border"
-        android:hint="192.168.2.241"
+        android:text="192.168.2.241"
         android:textSize="24sp" />
 
     <TextView

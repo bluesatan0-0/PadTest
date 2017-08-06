@@ -10,7 +10,6 @@ import android.widget.Button;
 import com.zjxl.yanj.padtest.Bean.Line;
 import com.zjxl.yanj.padtest.R;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -29,13 +28,12 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
 
     private Context context;
     private ItemClickListener itemClickListener;
-    private List<Line> dataList = new ArrayList<Line>();
+    private List<Line> dataList;
 
 
     public LinesAdapter_Main(Context context, List<Line> lines) {
         this.context = context;
-        this.dataList.clear();
-        this.dataList.addAll(lines);
+        this.dataList=lines;
 
     }
 

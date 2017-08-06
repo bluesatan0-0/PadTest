@@ -37,27 +37,27 @@
         android:text="餐线名称(name)："
         android:textSize="24sp" />
 
-    <!--&lt;!&ndash;餐线编码&ndash;&gt;-->
+    <!--餐线编码-->
 
-    <!--<EditText-->
-        <!--android:id="@+id/et_line_code"-->
-        <!--android:layout_width="300dp"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignParentRight="true"-->
-        <!--android:layout_below="@id/et_line_name"-->
-        <!--android:layout_marginRight="50dp"-->
-        <!--android:layout_marginTop="20dp"-->
-        <!--android:background="@drawable/shape_edittext_border"-->
-        <!--android:textSize="24sp" />-->
+    <EditText
+        android:id="@+id/et_line_code"
+        android:layout_width="300dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_below="@id/et_line_name"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:background="@drawable/shape_edittext_border"
+        android:textSize="24sp" />
 
-    <!--<TextView-->
-        <!--android:id="@+id/tv_line_code"-->
-        <!--android:layout_width="wrap_content"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:layout_alignBaseline="@id/et_line_code"-->
-        <!--android:layout_toStartOf="@id/et_line_code"-->
-        <!--android:text="餐线编码："-->
-        <!--android:textSize="24sp" />-->
+    <TextView
+        android:id="@+id/tv_line_code"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@+id/et_line_code"
+        android:layout_alignStart="@+id/tv_line_name"
+        android:text="餐线编码(code)："
+        android:textSize="24sp" />
 
 
 </RelativeLayout>
