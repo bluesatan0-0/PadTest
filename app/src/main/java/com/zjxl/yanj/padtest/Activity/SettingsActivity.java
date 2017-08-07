@@ -284,10 +284,10 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             case FLAG_EDIT_LINE:
                 alertView = layoutInflater.inflate(R.layout.alert_settings_line_edit, null);
                 etLineName = (EditText) alertView.findViewById(R.id.et_line_name);
-                EditText etLineID = (EditText) alertView.findViewById(R.id.et_line_id);
+                EditText etLineCode = (EditText) alertView.findViewById(R.id.et_line_code);
                 etLineName.setText(lineName_ForItemClick);
-                // TODO: 2017/8/1 2017-08-01 19:55:29 显示餐线编号，且不可编辑；原名称，新名称等布局修改
-//                etLineID.setText(getIdByName_line(lineName_ForItemClick));
+                // TODO: 2017/8/1 2017-08-01 19:55:29 显示餐线编号，用于首页拼接餐眼序号后显示
+//                etLineCode.setText(getIdByName_line(lineName_ForItemClick));
                 break;
         }
 

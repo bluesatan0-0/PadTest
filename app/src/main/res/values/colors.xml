@@ -9,7 +9,7 @@
     <color name="color_ButtonText_normal">#46BE47</color>
     <color name="color_ButtonText_pressed">#FF7F1C</color>
 
-    <color name="color_hole_item_unselect">#EEEEEE</color>
+    <color name="color_hole_item_unselect">#F6F6F6</color>
     <color name="color_hole_item_selected">#6DD26E</color>
 
     <color name="color_hole_item_text_setted">#CBA99A</color>

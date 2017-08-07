@@ -78,38 +78,38 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
 //        获取lineCode👆
 
 
-        int statuResID = R.mipmap.item_hole_empty;
-        Dish dish = dishesList.get(position);
-        ViewHolder_HolesAdapter holder_HolesAdapter = (ViewHolder_HolesAdapter) holder;
-        if (null == dish) {
-            holder_HolesAdapter.ivStatu.setImageResource(statuResID);
-            holder_HolesAdapter.tvHoleCode.setText(code.toString());
-            holder_HolesAdapter.itemPosition = position;
-        } else {
-
-
-//        存在菜品👇 在线离线
-            switch (hole.getStatu()) {
-
-                case 1:
-                    statuResID = R.mipmap.item_hole_online;
-                    break;
-                default:
-                    statuResID = R.mipmap.item_hole_offline;
-                    break;
-            }
-//        获取holeStatu👆
-
-            holder_HolesAdapter.tvDishName.setText(code);
-            holder_HolesAdapter.tvDishPrice.setText(dish.getSell_100gram_price());
-            holder_HolesAdapter.ivStatu.setImageResource(statuResID);
-//        获取菜品图片
-//            holder_HolesAdapter.ivDish.setImageBitmap();
-
-//        重量初始化不设置（默认显示0）
-//        holder_HolesAdapter.getTvWeight().setText(holeStatu);
-
-        }
+//        int statuResID = R.mipmap.item_hole_empty;
+//        Dish dish = dishesList.get(position);
+//        ViewHolder_HolesAdapter holder_HolesAdapter = (ViewHolder_HolesAdapter) holder;
+//        if (null == dish) {
+//            holder_HolesAdapter.ivStatu.setImageResource(statuResID);
+//            holder_HolesAdapter.tvHoleCode.setText(code.toString());
+//            holder_HolesAdapter.itemPosition = position;
+//        } else {
+//
+//
+////        存在菜品👇 在线离线
+//            switch (hole.getStatu()) {
+//
+//                case 1:
+//                    statuResID = R.mipmap.item_hole_online;
+//                    break;
+//                default:
+//                    statuResID = R.mipmap.item_hole_offline;
+//                    break;
+//            }
+////        获取holeStatu👆
+//
+//            holder_HolesAdapter.tvDishName.setText(code);
+//            holder_HolesAdapter.tvDishPrice.setText(dish.getSell_100gram_price());
+//            holder_HolesAdapter.ivStatu.setImageResource(statuResID);
+////        获取菜品图片
+////            holder_HolesAdapter.ivDish.setImageBitmap();
+//
+////        重量初始化不设置（默认显示0）
+////        holder_HolesAdapter.getTvWeight().setText(holeStatu);
+//
+//        }
     }
 
     @Override
