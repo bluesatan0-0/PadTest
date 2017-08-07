@@ -3,7 +3,7 @@ package com.zjxl.yanj.padtest.Bean;
 import java.util.List;
 
 /**
- * 类名: PlatesList <p>
+ * 类名: MenuList <p>
  * 创建人: YanJ <p>
  * 创建时间: 2017/7/13 14:22 <p>
  * 描述: 菜品清单数据对象
@@ -13,7 +13,7 @@ import java.util.List;
  * 更新描述: <p>
  */
 
-public class PlatesList {
+public class MenuList {
 
     /**
      * code : 1

@@ -3,7 +3,7 @@ package com.zjxl.yanj.padtest.Model.SettingsModel.Business;
 import android.os.Handler;
 import android.os.Message;
 
-import com.zjxl.yanj.padtest.Model.SettingsModel.DAO.LineDAO;
+import com.zjxl.yanj.padtest.Model.DAO.LineDAO;
 import com.zjxl.yanj.padtest.Utils.ThreadPool_Util;
 
 /**

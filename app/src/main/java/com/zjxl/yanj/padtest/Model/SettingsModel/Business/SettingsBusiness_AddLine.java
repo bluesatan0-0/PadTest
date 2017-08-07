@@ -4,7 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import com.zjxl.yanj.padtest.Bean.Line;
-import com.zjxl.yanj.padtest.Model.SettingsModel.DAO.LineDAO;
+import com.zjxl.yanj.padtest.Model.DAO.LineDAO;
 import com.zjxl.yanj.padtest.Utils.ThreadPool_Util;
 
 /**

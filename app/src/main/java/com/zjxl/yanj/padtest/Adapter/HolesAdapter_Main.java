@@ -8,9 +8,9 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.zjxl.yanj.padtest.Bean.Dish;
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Bean.Line;
+import com.zjxl.yanj.padtest.Bean.Plate;
 import com.zjxl.yanj.padtest.R;
 
 import java.util.List;
@@ -30,16 +30,16 @@ import java.util.List;
 public class HolesAdapter_Main extends RecyclerView.Adapter {
 
     private Context context;
-    private List<Hole> dataList;
+    private List<Hole> holesList;
     private List<Line> linesList;
-    private List<Dish> dishesList;
+    private List<Plate> plateList;
     private Line line;
 
-    public HolesAdapter_Main(Context context, List<Hole> holes, List<Line> linesList, List<Dish> dishesList) {
+    public HolesAdapter_Main(Context context, List<Hole> holes, List<Line> linesList, List<Plate> plateList) {
         this.context = context;
-        this.dataList = holes;
+        this.holesList = holes;
         this.linesList = linesList;
-        this.dishesList = dishesList;
+        this.plateList = plateList;
 //        headerView对应数据
     }
 
@@ -53,7 +53,7 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        Hole hole = dataList.get(position);
+        Hole hole = holesList.get(position);
         int lineId = hole.getLineId();
         StringBuilder code = new StringBuilder();
 
@@ -114,24 +114,9 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
 
     @Override
     public int getItemCount() {
-        return dataList.size();
+        return holesList.size();
     }
 
-//         TODO: 2017/7/27 主页item设置点击事件
-//    @Override
-//    public void onClick(View v) {
-//        switch (v.getId()) {
-//            case R.id.btn_device_edit:
-//
-//                break;
-//            case R.id.btn_device_check:
-//
-//                break;
-//            case R.id.btn_device_delete:
-//
-//                break;
-//        }
-//    }
 
 
     class ViewHolder_HolesAdapter extends RecyclerView.ViewHolder {

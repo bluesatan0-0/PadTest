@@ -11,9 +11,11 @@ import android.view.View;
 import com.zjxl.yanj.padtest.Adapter.HolesAdapter_Main;
 import com.zjxl.yanj.padtest.Adapter.LinesAdapter_Main;
 import com.zjxl.yanj.padtest.Base.BaseActivity;
-import com.zjxl.yanj.padtest.Bean.Dish;
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Bean.Line;
+import com.zjxl.yanj.padtest.Bean.MenuList;
+import com.zjxl.yanj.padtest.Bean.Plate;
+import com.zjxl.yanj.padtest.Model.MainModel.Business.MainBusiness_DataLoad;
 import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DataLoad;
 import com.zjxl.yanj.padtest.R;
 
@@ -27,8 +29,8 @@ import java.util.List;
  * 描述: MainActivity     主页
  * <p>
  * 更新人: yanj<p>
- * 更新时间: 2017-08-03 14:20:29 <p>
- * 更新描述: 实现功能<p>
+ * 更新时间: 2017-08-07 10:56:42 <p>
+ * 更新描述: 实现功能（数据库操作模块）<p>
  */
 
 public class MainActivity extends BaseActivity implements View.OnClickListener {
@@ -43,7 +45,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private List<Line> lines;
     private List<Hole> holes;
-    private List<Dish> dishes;
+    private List<Plate> plates;
+    private MenuList menuList;
     private LinesAdapter_Main linesAdapter_main;
     private HolesAdapter_Main holesAdapter_main;
     private Context context;
@@ -87,7 +90,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         lines = new ArrayList<Line>();
         holes = new ArrayList<Hole>();
-        dishes = new ArrayList<Dish>();
+        plates = new ArrayList<Plate>();
 
 
         LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -104,27 +107,21 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private void updateNotifyDataSet_LinesHoles() {
 
-        SettingsBusiness_DataLoad settingsBusiness_dataLoad = new SettingsBusiness_DataLoad();
-        settingsBusiness_dataLoad.setOnDataLoadedLisener(new SettingsBusiness_DataLoad.OnDataLoadedLisener() {
-            @Override
-            public void loaded_Lines(List<Line> linesList) {
-
-            }
+        MainBusiness_DataLoad mainBusiness_dataLoad = new MainBusiness_DataLoad();
+        mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void loaded_Holes(List<Hole> holesList) {
-
-            }
-
-            @Override
-            public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
+            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, List<Plate> plateList) {
 
                 lines.clear();
                 holes.clear();
+                plates.clear();
                 lines.addAll(linesList);
                 holes.addAll(holesList);
+                plates.addAll(plateList);
                 System.out.println("aaa linesList:" + linesList.toString());
                 System.out.println("aaa holesList:" + holesList.toString());
+                System.out.println("aaa plateList:" + plateList.toString());
 
                 if (null != linesAdapter_main) {
                     linesAdapter_main.notifyDataSetChanged();
@@ -139,14 +136,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     holesAdapter_main.notifyDataSetChanged();
                 } else {
 //                    若空则认为是初始化，实例化适配器
-                    holesAdapter_main = new HolesAdapter_Main(context, holes, lines, dishes);
+                    holesAdapter_main = new HolesAdapter_Main(context, holes, lines, plates);
                     rvHoles.setAdapter(holesAdapter_main);
                 }
 
             }
         });
 
-        settingsBusiness_dataLoad.getList_LinesAndHoles();
+        mainBusiness_dataLoad.getList_Lines_Holes_Plates();
     }
 
     private void initEvent() {

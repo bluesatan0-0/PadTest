@@ -1,4 +1,4 @@
-package com.zjxl.yanj.padtest.Model.SettingsModel.DAO;
+package com.zjxl.yanj.padtest.Model.DAO;
 
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Utils.DBConnect_Util;

@@ -7,14 +7,14 @@ import org.litepal.crud.DataSupport;
  * 创建人: YanJ <p>
  * 创建时间: 2017/7/14 18:59 <p>
  * 描述:
- *
+ * 菜单表(MENU_PLAN_STOCK)
+ * version 1.0.0 2017-08-07
+ * <p>
  * <p>
  * 更新人: <p>
  * 更新时间: <p>
  * 更新描述: <p>
  */
-
-
 
 
 public class Dish extends DataSupport {
