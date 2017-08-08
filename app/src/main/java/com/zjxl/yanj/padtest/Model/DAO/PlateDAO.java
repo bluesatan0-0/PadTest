@@ -1,5 +1,7 @@
 package com.zjxl.yanj.padtest.Model.DAO;
 
+import android.util.ArrayMap;
+
 import com.zjxl.yanj.padtest.Bean.Plate;
 import com.zjxl.yanj.padtest.Utils.DBConnect_Util;
 
@@ -7,8 +9,6 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * 类名: PlateDAO <p>
@@ -33,22 +33,36 @@ public class PlateDAO {
 
 
     /**
-     * 获取排菜成功的餐眼集合
+     * 获取 所有 排菜成功的餐眼集合
      *
      * @return 餐眼集合（排菜成功状态）含菜品基本信息
      */
-    public List<Plate> getPlates() {
+    public ArrayMap<String, Plate> getPlates() {
 
         StringBuilder sql_select = new StringBuilder();
 
         sql_select.append(" select * from menu_order where status=1 and device_code in (select menu_device.uuid from menu_device)");
 
-        List<Plate> plates = new ArrayList<Plate>();
+        return getPlates(sql_select.toString());
+
+    }
+
+
+    /**
+     * 根据sql语句
+     * 获取排菜成功的餐眼集合
+     *
+     * @param sql 数据库查询语句 menu_order表
+     * @return 餐眼集合（排菜成功状态）含菜品基本信息
+     */
+    public ArrayMap<String, Plate> getPlates(String sql) {
+
+        ArrayMap<String, Plate> plates = new ArrayMap<String, Plate>();
         Statement statement = null;
         ResultSet resultSet = null;
         try {
             statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql_select.toString());
+            resultSet = statement.executeQuery(sql.toString());
             while (resultSet.next()) {
 
                 Plate plate = new Plate();
@@ -67,7 +81,7 @@ public class PlateDAO {
                 plate.setKcal_nrv(resultSet.getBigDecimal("kcal_nrv"));
                 plate.setMenu_url(resultSet.getString("menu_url"));
 
-                plates.add(plate);
+                plates.put(resultSet.getString("device_code"), plate);
 
             }
         } catch (SQLException e) {
@@ -83,44 +97,12 @@ public class PlateDAO {
      * @param lineName 餐线名称
      * @return 餐眼集合（排菜成功的）
      */
-    public List<Plate> getPlatesByLineName(String lineName) {
+    public ArrayMap<String, Plate> getPlatesByLineName(String lineName) {
         StringBuilder sql_select = new StringBuilder();
 
         sql_select.append("select * from menu_order where status=1 and device_code in (select menu_device.uuid from menu_device WHERE row = (SELECT id from menu_rows WHERE name = '");
         sql_select.append(lineName);
         sql_select.append("')) ");
-
-        List<Plate> plates = new ArrayList<Plate>();
-        Statement statement = null;
-        ResultSet resultSet = null;
-        try {
-            statement = connection.createStatement();
-            resultSet = statement.executeQuery(sql_select.toString());
-            while (resultSet.next()) {
-
-                Plate plate = new Plate();
-
-                plate.setId(resultSet.getString("id"));
-                plate.setDevice_id(resultSet.getInt("device_id"));
-                plate.setDevice_code(resultSet.getString("device_code"));
-                plate.setDish_id(resultSet.getInt("dish_id"));
-                plate.setDish_code(resultSet.getString("dish_code"));
-                plate.setDish_name(resultSet.getString("dish_name"));
-                plate.setPrice(resultSet.getBigDecimal("price"));
-                plate.setCreate_date(resultSet.getInt("create_date"));
-                plate.setStatus(resultSet.getInt("status"));
-                plate.setLeft_amount(resultSet.getBigDecimal("left_amount"));
-                plate.setKcal(resultSet.getBigDecimal("kcal"));
-                plate.setKcal_nrv(resultSet.getBigDecimal("kcal_nrv"));
-                plate.setMenu_url(resultSet.getString("menu_url"));
-
-                plates.add(plate);
-
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-        return plates;
+        return getPlates(sql_select.toString());
     }
 }

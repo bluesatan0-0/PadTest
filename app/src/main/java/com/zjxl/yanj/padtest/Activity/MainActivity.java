@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.ArrayMap;
 import android.view.View;
 
 import com.zjxl.yanj.padtest.Adapter.HolesAdapter_Main;
@@ -16,7 +17,6 @@ import com.zjxl.yanj.padtest.Bean.Line;
 import com.zjxl.yanj.padtest.Bean.MenuList;
 import com.zjxl.yanj.padtest.Bean.Plate;
 import com.zjxl.yanj.padtest.Model.MainModel.Business.MainBusiness_DataLoad;
-import com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DataLoad;
 import com.zjxl.yanj.padtest.R;
 
 import java.util.ArrayList;
@@ -45,7 +45,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private List<Line> lines;
     private List<Hole> holes;
-    private List<Plate> plates;
+    private ArrayMap<String,Plate> plates;
     private MenuList menuList;
     private LinesAdapter_Main linesAdapter_main;
     private HolesAdapter_Main holesAdapter_main;
@@ -90,7 +90,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         lines = new ArrayList<Line>();
         holes = new ArrayList<Hole>();
-        plates = new ArrayList<Plate>();
+        plates = new ArrayMap<String,Plate>();
 
 
         LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -111,14 +111,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, List<Plate> plateList) {
+            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String,Plate> plateList) {
 
                 lines.clear();
                 holes.clear();
                 plates.clear();
                 lines.addAll(linesList);
                 holes.addAll(holesList);
-                plates.addAll(plateList);
+                plates = plateList;
                 System.out.println("aaa linesList:" + linesList.toString());
                 System.out.println("aaa holesList:" + holesList.toString());
                 System.out.println("aaa plateList:" + plateList.toString());
@@ -137,6 +137,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 } else {
 //                    若空则认为是初始化，实例化适配器
                     holesAdapter_main = new HolesAdapter_Main(context, holes, lines, plates);
+                    // TODO: 2017/8/7 点击餐盘，进入该餐盘的设置模式
+//                    linesAdapter_main.setOnItemClickListener(new mItemClickListener_rvLines());
                     rvHoles.setAdapter(holesAdapter_main);
                 }
 
@@ -182,7 +184,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
 
     /**
-     * 餐线点击事件  的  回调监听器
+     * 餐线列表点击事件  的  回调监听器
      */
     class mItemClickListener_rvLines implements LinesAdapter_Main.ItemClickListener {
 
@@ -190,6 +192,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         public void onBtnNameClick(String lineName) {
 
             whenBtnLineNameClick(lineName);
+            System.out.println("aaa 点击了餐线"+lineName);
         }
 
     }
@@ -201,28 +204,15 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
      * @param lineName 餐线名称
      */
     private void whenBtnLineNameClick(String lineName) {
-        SettingsBusiness_DataLoad settingsBusiness_dataLoad_HolesByLinesName = new SettingsBusiness_DataLoad();
-        settingsBusiness_dataLoad_HolesByLinesName.setOnDataLoadedLisener(new SettingsBusiness_DataLoad.OnDataLoadedLisener() {
-            @Override
-            public void loaded_Lines(List<Line> linesList) {
-
-            }
+        MainBusiness_DataLoad mainBusiness_dataLoad = new MainBusiness_DataLoad();
+        mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void loaded_Holes(List<Hole> holesList) {
-                holes.removeAll(holes);
-                holes.clear();
-                holes.addAll(holesList);
-                System.out.println("aaa whenBtnLineNameClick loaded_Holes_list:" + holesList.toString());
-                holesAdapter_main.notifyDataSetChanged();
-            }
-
-            @Override
-            public void load_Lines_Holes(List<Line> linesList, List<Hole> holesList) {
-
+            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String,Plate> plateList) {
+                // TODO: 2017/8/7 餐线点击后，下载完成该餐线的餐盘信息，需完成：切换餐盘列表
             }
         });
-        settingsBusiness_dataLoad_HolesByLinesName.getList_HolesByLinesName(lineName);
+        mainBusiness_dataLoad.getList_PlatesByLineName(lineName);
     }
 
 }

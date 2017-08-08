@@ -112,7 +112,6 @@ public class LinesAdapter_Settings extends RecyclerView.Adapter {
 
         }
 
-        // TODO: 2017/7/27 设置点击事件
         @Override
         public void onClick(View v) {
 

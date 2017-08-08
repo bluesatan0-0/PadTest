@@ -55,6 +55,8 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
         Line line = dataList.get(position);
         ViewHolder_LinesAdapter viewHolder = (ViewHolder_LinesAdapter) holder;
 
+        viewHolder.btn_lineName.setText(line.getName());
+
     }
 
 
@@ -85,8 +87,8 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
     class ViewHolder_LinesAdapter extends RecyclerView.ViewHolder implements View.OnClickListener {
 
 
-        private Button btn_lineName;
-        private int itemPosition;
+        public Button btn_lineName;
+        public int itemPosition;
         private ItemClickListener mItemClickListener;
 
         public ViewHolder_LinesAdapter(View itemView, ItemClickListener listener) {
@@ -100,7 +102,6 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
 
         }
 
-        // TODO: 2017/7/27 设置点击事件
         @Override
         public void onClick(View v) {
 

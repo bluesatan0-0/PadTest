@@ -2,6 +2,7 @@ package com.zjxl.yanj.padtest.Model.MainModel.Business;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.ArrayMap;
 
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Bean.Line;
@@ -48,7 +49,7 @@ public class MainBusiness_DataLoad {
                     Object[] datas = (Object[]) msg.obj;
                     List<Line> linesList = (List<Line>) datas[0];
                     List<Hole> holesList = (List<Hole>) datas[1];
-                    List<Plate> platesList = (List<Plate>) datas[2];
+                    ArrayMap<String,Plate> platesList = (ArrayMap<String,Plate>) datas[2];
 
                     if ((null != linesList) && (null != holesList) && (null != platesList)) {
                         onDataLoadedLisener.load_Lines_Holes_Dishes(linesList, holesList, platesList);
@@ -92,7 +93,9 @@ public class MainBusiness_DataLoad {
     }
 
     /**
-     * 获取排菜餐眼集合plates
+     * 通过 餐线名
+     * 获取  某条餐线  排菜成功的  餐眼集合plates
+     * @param lineName
      */
     public void getList_PlatesByLineName(final String lineName) {
 
@@ -128,7 +131,7 @@ public class MainBusiness_DataLoad {
     public interface OnDataLoadedLisener {
 
         //        餐线+餐眼+排菜  完成加载
-        void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, List<Plate> plateList);
+        void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String,Plate> plateList);
     }
 
 //    ------------------------------------获取集合(餐线+餐眼+排菜)👆-------------------------------------------
