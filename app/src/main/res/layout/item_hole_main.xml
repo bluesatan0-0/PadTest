@@ -49,6 +49,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="番茄炒蛋"
+                android:textColor="#353535"
                 android:textSize="24px" />
 
 
@@ -63,12 +64,14 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="1.00"
+                    android:textColor="#A1A1A1"
                     android:textSize="18px" />
 
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="元/100g"
+                    android:textColor="#A1A1A1"
                     android:textSize="18px" />
             </LinearLayout>
 
@@ -105,12 +108,12 @@
 
     <!--状态图-->
     <ImageView
-    android:id="@+id/iv_statu"
-    android:layout_width="376px"
-    android:layout_height="254px"
-    android:layout_centerInParent="true"
-    android:layout_margin="2px"
-    android:scaleType="fitXY"
-    android:src="@mipmap/item_hole_empty" />
+        android:id="@+id/iv_statu"
+        android:layout_width="376px"
+        android:layout_height="254px"
+        android:layout_centerInParent="true"
+        android:layout_margin="2px"
+        android:scaleType="fitXY"
+        android:src="@mipmap/item_hole_empty" />
 
 </RelativeLayout>

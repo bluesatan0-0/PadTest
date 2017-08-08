@@ -4,8 +4,11 @@ import android.app.Application;
 import android.content.Context;
 import android.content.pm.ApplicationInfo;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.squareup.leakcanary.LeakCanary;
 import com.squareup.leakcanary.RefWatcher;
+import com.zjxl.yanj.padtest.Utils.MyImageLoader;
 import com.zjxl.yanj.padtest.Utils.SharedPreference_Utils;
 import com.zjxl.yanj.padtest.Utils.ThreadPool_Util;
 
@@ -26,19 +29,52 @@ public class BaseApplication extends Application {
 
     private static BaseApplication instance;
     private static RefWatcher mRefWatcher;
+    private RequestQueue mRequestQueue;
+    private MyImageLoader mImageLoader;
 
 
-    //    获取BaseApplication实例
+    /**
+     * 获取BaseApplication实例
+     *
+     * @return
+     */
     public static BaseApplication getInstance() {
         return instance;
     }
 
-    //    获取LeakCanary实例
+    /**
+     * 获取LeakCanary实例
+     *
+     * @return
+     */
     public static RefWatcher getRefWatcher() {
         return getInstance().mRefWatcher;
     }
 
-    //    获取应用是否处于调试状态
+    /**
+     * 获取volley的请求队列（已完成初始化）
+     *
+     * @return
+     */
+    public static RequestQueue getRequestQueue() {
+        return getInstance().mRequestQueue;
+    }
+
+    /**
+     * 获取图片加载工具（基于volley）
+     *
+     * @return
+     */
+    public static MyImageLoader getImageLoader() {
+        return getInstance().mImageLoader;
+    }
+
+    /**
+     * 获取应用是否处于调试状态
+     *
+     * @param context
+     * @return
+     */
     public static boolean isDebug(Context context) {
         boolean isDebug = null != context.getApplicationInfo() && (context.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0;
         return isDebug;
@@ -62,7 +98,6 @@ public class BaseApplication extends Application {
         SharedPreference_Utils.getInstance(this);
 
 
-
 //        初始化线程池——数据访问型（并发线程数量多，用时短）
         ThreadPool_Util.getInstance(this);
 
@@ -77,7 +112,13 @@ public class BaseApplication extends Application {
 //        });
 
 
+//        volley初始化
+        mRequestQueue = Volley.newRequestQueue(this);
+//        图片加载器的初始化（基于volley）
+        mImageLoader = new MyImageLoader(this);
+
 
     }
+
 
 }

@@ -65,4 +65,5 @@ dependencies {
     releaseCompile 'com.squareup.leakcanary:leakcanary-android-no-op:1.5.1'
     compile files('libs/mysql-connector-java-5.1.30-bin.jar')
     compile 'org.litepal.android:core:1.5.1'
+    compile 'eu.the4thfloor.volley:com.android.volley:2015.05.28'
 }

@@ -9,10 +9,12 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.zjxl.yanj.padtest.Base.BaseApplication;
 import com.zjxl.yanj.padtest.Bean.Hole;
 import com.zjxl.yanj.padtest.Bean.Line;
 import com.zjxl.yanj.padtest.Bean.Plate;
 import com.zjxl.yanj.padtest.R;
+import com.zjxl.yanj.padtest.Utils.MyImageLoader;
 
 import java.util.List;
 
@@ -30,18 +32,19 @@ import java.util.List;
 
 public class HolesAdapter_Main extends RecyclerView.Adapter {
 
-    private Context context;
+    private final MyImageLoader imageLoader;
+    private BaseApplication context;
     private List<Hole> holesList;
     private List<Line> linesList;
     private ArrayMap<String, Plate> plateList;
     private Line line;
 
     public HolesAdapter_Main(Context context, List<Hole> holes, List<Line> linesList, ArrayMap<String, Plate> plateList) {
-        this.context = context;
+        this.context = (BaseApplication) context.getApplicationContext();
         this.holesList = holes;
         this.linesList = linesList;
         this.plateList = plateList;
-//        headerView对应数据
+        imageLoader = this.context.getImageLoader();
     }
 
     @Override
@@ -78,21 +81,19 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
         }
         code.append("" + lineNum);
 
-
 //        获取lineCode👆
 
-
-        int statuResID = R.mipmap.item_hole_empty;
-
-        Plate plate = plateList.get(hole.getUuid());
 
         ViewHolder_HolesAdapter holder_HolesAdapter = (ViewHolder_HolesAdapter) holder;
 
         holder_HolesAdapter.tvCode.setText(code.toString());
         holder_HolesAdapter.itemPosition = position;
 
+        Plate plate = plateList.get(hole.getUuid());
+        int statuResID = R.mipmap.item_hole_empty;
+
 //        未排菜的餐眼
-        if (null==plate) {
+        if (null == plate) {
             holder_HolesAdapter.ivStatu.setImageResource(statuResID);
         } else {
 
@@ -103,8 +104,8 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
                 statuResID = R.mipmap.item_hole_offline;
             }
 
-            holder_HolesAdapter.tvCode.setBackgroundColor(0xffFFF6F2);
             holder_HolesAdapter.tvCode.setTextColor(0xffCBA99A);
+            holder_HolesAdapter.tvCode.setBackgroundColor(0xffFFF6F2);
 //        获取holeStatu👆
             holder_HolesAdapter.ivStatu.setImageResource(statuResID);
             holder_HolesAdapter.tvDishPrice.setText(plate.getPrice() + "");
@@ -113,9 +114,11 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
 
 
 //        获取菜品图片
-            // TODO: 2017/8/7 下载菜品图片
-            // TODO: 2017/8/7 三级缓存策略
-//            holder_HolesAdapter.ivDish.setImageBitmap();
+//            'http://192.168.2.241/skin/images/no_cai_pic.jpg
+            String menu_url = plate.getMenu_url();
+            if (null != menu_url && !menu_url.isEmpty()) {
+                imageLoader.setBitmapToImageView(menu_url, holder_HolesAdapter.ivDish);
+            }
 
         }
     }
