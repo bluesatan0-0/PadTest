@@ -96,6 +96,10 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
 
 //        未排菜的餐眼
         if (null == plate) {
+
+            holder_HolesAdapter.tvCode.setTextColor(0xffADADAD);
+            holder_HolesAdapter.tvCode.setBackgroundColor(0xffF2F2F2);
+
             holder_HolesAdapter.ivStatu.setImageResource(statuResID);
         } else {
 

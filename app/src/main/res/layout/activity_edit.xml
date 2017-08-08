@@ -3,6 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#ffffffff"
     tools:context="com.acuit.yanj.padtest.Activity.MainActivity">
 
     <include layout="@layout/head_style" />
@@ -12,7 +13,7 @@
     <LinearLayout
         android:id="@+id/ll_lines"
         android:layout_width="wrap_content"
-        android:layout_height="584px"
+        android:layout_height="600px"
         android:layout_marginLeft="26dp"
         android:layout_marginTop="186px"
         android:orientation="vertical">
@@ -48,7 +49,7 @@
     <View
         android:id="@+id/view_border"
         android:layout_width="match_parent"
-        android:layout_height="8px"
+        android:layout_height="10px"
         android:layout_below="@id/ll_lines"
         android:background="#F2F2F2"></View>
 
