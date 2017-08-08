@@ -14,16 +14,16 @@
         android:layout_gravity="top"
         android:layout_marginLeft="40px"
         android:layout_marginRight="30px"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="38px"
         android:background="#00999999"
         android:clickable="true"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
+            android:layout_width="60px"
+            android:layout_height="40px"
+            android:scaleType="centerInside"
             android:src="@mipmap/navegation_menu_edit_save_off"></ImageView>
 
         <TextView
@@ -43,16 +43,16 @@
         android:layout_gravity="top"
         android:layout_marginLeft="40px"
         android:layout_marginRight="30px"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="38px"
         android:background="#00999999"
         android:clickable="true"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
+            android:layout_width="60px"
+            android:layout_height="40px"
+            android:scaleType="centerInside"
             android:src="@mipmap/navegation_menu_root_download_off"></ImageView>
 
         <TextView
@@ -72,16 +72,16 @@
         android:layout_gravity="top"
         android:layout_marginLeft="40px"
         android:layout_marginRight="30px"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="38px"
         android:background="#00999999"
         android:clickable="true"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:scaleType="fitXY"
+            android:layout_width="60px"
+            android:layout_height="40px"
+            android:scaleType="centerInside"
             android:src="@mipmap/navegation_menu_edit_clean_off"></ImageView>
 
         <TextView

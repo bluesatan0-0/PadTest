@@ -14,16 +14,16 @@
         android:layout_gravity="top"
         android:layout_marginLeft="40px"
         android:layout_marginRight="30px"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="38px"
         android:background="#00999999"
         android:clickable="true"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:scaleType="fitXY"
+            android:layout_width="60px"
+            android:layout_height="40px"
+            android:scaleType="centerInside"
             android:src="@mipmap/navegation_menu_settings_back_off"></ImageView>
 
         <TextView
@@ -43,16 +43,16 @@
         android:layout_gravity="top"
         android:layout_marginLeft="40px"
         android:layout_marginRight="30px"
-        android:layout_marginTop="33dp"
+        android:layout_marginTop="38px"
         android:background="#00999999"
         android:clickable="true"
         android:gravity="center"
         android:orientation="vertical">
 
         <ImageView
-            android:layout_width="30dp"
-            android:layout_height="30dp"
-            android:scaleType="fitXY"
+            android:layout_width="60px"
+            android:layout_height="40px"
+            android:scaleType="centerInside"
             android:src="@drawable/selector_menu_settings_server"></ImageView>
 
         <TextView
