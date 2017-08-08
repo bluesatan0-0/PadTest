@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="#FFFFFF"
     android:paddingBottom="40dp"
-    tools:context="com.zjxl.yanj.padtest.Activity.MainActivity">
+    tools:context="com.acuit.yanj.padtest.Activity.MainActivity">
 
     <include layout="@layout/head_style" />
 

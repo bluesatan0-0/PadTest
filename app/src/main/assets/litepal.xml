@@ -6,7 +6,7 @@
     <version value="2" />
 
     <list>
-        <mapping class="com.zjxl.yanj.padtest.Bean.Dish"/>
+        <mapping class="com.acuit.yanj.padtest.Bean.Dish"/>
 
     </list>
 
