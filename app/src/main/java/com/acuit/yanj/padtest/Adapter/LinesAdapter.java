@@ -13,7 +13,7 @@ import com.acuit.yanj.padtest.R;
 import java.util.List;
 
 /**
- * 类名: LinesAdapter_Main <p>
+ * 类名: LinesAdapter <p>
  * 创建人: YanJ <p>
  * 创建时间: 2017/7/26 16:16 <p>
  * 描述: 设置界面——餐线列表，适配器
@@ -23,7 +23,7 @@ import java.util.List;
  * 更新描述: <p>
  */
 
-public class LinesAdapter_Main extends RecyclerView.Adapter {
+public class LinesAdapter extends RecyclerView.Adapter {
 
 
     private Context context;
@@ -31,7 +31,7 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
     private List<Line> dataList;
 
 
-    public LinesAdapter_Main(Context context, List<Line> lines) {
+    public LinesAdapter(Context context, List<Line> lines) {
         this.context = context;
         this.dataList=lines;
 

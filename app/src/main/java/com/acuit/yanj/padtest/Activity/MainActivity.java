@@ -11,7 +11,7 @@ import android.view.View;
 import android.widget.Button;
 
 import com.acuit.yanj.padtest.Adapter.HolesAdapter_Main;
-import com.acuit.yanj.padtest.Adapter.LinesAdapter_Main;
+import com.acuit.yanj.padtest.Adapter.LinesAdapter;
 import com.acuit.yanj.padtest.Base.BaseActivity;
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
@@ -48,7 +48,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private List<Hole> holes;
     private ArrayMap<String,Plate> plates;
     private MenuList menuList;
-    private LinesAdapter_Main linesAdapter_main;
+    private LinesAdapter linesAdapter_;
     private HolesAdapter_Main holesAdapter_main;
     private Context context;
     private Button btnAllLines;
@@ -127,13 +127,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 System.out.println("aaa holesList:" + holesList.toString());
                 System.out.println("aaa plateList:" + plateList.toString());
 
-                if (null != linesAdapter_main) {
-                    linesAdapter_main.notifyDataSetChanged();
+                if (null != linesAdapter_) {
+                    linesAdapter_.notifyDataSetChanged();
                 } else {
 //                    若空则认为是初始化，实例化适配器
-                    linesAdapter_main = new LinesAdapter_Main(context, lines);
-                    linesAdapter_main.setOnItemClickListener(new mItemClickListener_rvLines());
-                    rvLines.setAdapter(linesAdapter_main);
+                    linesAdapter_ = new LinesAdapter(context, lines);
+                    linesAdapter_.setOnItemClickListener(new mItemClickListener_rvLines());
+                    rvLines.setAdapter(linesAdapter_);
                 }
 
                 if (null != holesAdapter_main) {
@@ -142,7 +142,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //                    若空则认为是初始化，实例化适配器
                     holesAdapter_main = new HolesAdapter_Main(context, holes, lines, plates);
                     // TODO: 2017/8/7 点击餐盘，进入该餐盘的设置模式
-//                    linesAdapter_main.setOnItemClickListener(new mItemClickListener_rvLines());
+//                    linesAdapter_.setOnItemClickListener(new mItemClickListener_rvLines());
                     rvHoles.setAdapter(holesAdapter_main);
                 }
 
@@ -195,7 +195,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     /**
      * 餐线列表点击事件  的  回调监听器
      */
-    class mItemClickListener_rvLines implements LinesAdapter_Main.ItemClickListener {
+    class mItemClickListener_rvLines implements LinesAdapter.ItemClickListener {
 
         @Override
         public void onBtnNameClick(String lineName) {

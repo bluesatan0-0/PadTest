@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="260px"
+    android:layout_height="250px"
+    android:layout_marginRight="30px"
+    android:background="@drawable/selector_hole_item_tobe_select">
+
+
+    <!--菜品区-->
+
+    <ImageView
+        android:id="@+id/iv_dish_pic"
+        android:layout_width="260px"
+        android:layout_height="194px"
+        android:scaleType="centerCrop" />
+
+
+    <TextView
+        android:id="@+id/tv_dish_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/iv_dish_pic"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="20px"
+        android:text="番茄炒蛋"
+        android:textColor="#353535"
+        android:textSize="24px" />
+
+
+</RelativeLayout>

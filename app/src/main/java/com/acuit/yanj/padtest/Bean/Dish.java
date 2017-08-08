@@ -1,6 +1,6 @@
 package com.acuit.yanj.padtest.Bean;
 
-import org.litepal.crud.DataSupport;
+import java.math.BigDecimal;
 
 /**
  * 类名: Dish <p>
@@ -17,142 +17,286 @@ import org.litepal.crud.DataSupport;
  */
 
 
-public class Dish extends DataSupport {
+public class Dish implements java.io.Serializable {
+    /** 版本号 */
+    private static final long serialVersionUID = -270905260069975397L;
 
-    /**
-     * amount : 2
-     * cate : 16
-     * cate_name : 卤味类
-     * id : 1948
-     * name : 浙大烤鸡（kg）
-     * no :
-     * pic : http://smart.zjulab.com/upload/stock/show/1428943879156.jpg
-     * price : 50.00
-     * stock_id : 1948
-     * sell_100gram_price : 0
-     */
+    /**  */
+    private String id;
 
-    private int id;
-    private String stock_id;
-    private String name;
-    private int amount;
-    private String price;
-    private int sell_100gram_price;
+    /**  */
+    private Integer stock_id;
+
+    /**  */
+    private BigDecimal price;
+
+    /**  */
+    private BigDecimal sell_100gram_price;
+
+    /** 计划量分或者千克的单位 */
+    private BigDecimal amount;
+
+    /** 图片 */
     private String pic;
-    private String cate;
-    private String cate_name;
-    private String no;
+
+    /**  */
+    private Integer cate;
+
+    /** 图片 */
+    private String cat_name;
+
+    /** 日期 */
+    private String date;
+
+    /** 餐别：1早餐，2午餐，3晚餐，4夜宵，5其他 */
+    private Integer part;
+
+    /** 产品名 */
+    private String name;
+
 
     public Dish() {
     }
 
-    public Dish(int id, String stock_id, String name, int amount, String price, int sell_100gram_price, String pic, String cate, String cate_name, String no) {
+    public Dish(String id, Integer stock_id, BigDecimal price, BigDecimal sell_100gram_price, BigDecimal amount, String pic, Integer cate, String cat_name, String date, Integer part, String name) {
         this.id = id;
         this.stock_id = stock_id;
-        this.name = name;
-        this.amount = amount;
         this.price = price;
         this.sell_100gram_price = sell_100gram_price;
+        this.amount = amount;
         this.pic = pic;
         this.cate = cate;
-        this.cate_name = cate_name;
-        this.no = no;
+        this.cat_name = cat_name;
+        this.date = date;
+        this.part = part;
+        this.name = name;
     }
+
 
     @Override
     public String toString() {
         return "Dish{" +
                 "id='" + id + '\'' +
-                ", stock_id='" + stock_id + '\'' +
-                ", name='" + name + '\'' +
-                ", amount=" + amount +
-                ", price='" + price + '\'' +
+                ", stock_id=" + stock_id +
+                ", price=" + price +
                 ", sell_100gram_price=" + sell_100gram_price +
+                ", amount=" + amount +
                 ", pic='" + pic + '\'' +
-                ", cate='" + cate + '\'' +
-                ", cate_name='" + cate_name + '\'' +
-                ", no='" + no + '\'' +
+                ", cate=" + cate +
+                ", cat_name='" + cat_name + '\'' +
+                ", date='" + date + '\'' +
+                ", part=" + part +
+                ", name='" + name + '\'' +
                 '}';
     }
 
 
-    public int getAmount() {
-        return amount;
+    /**
+     * 获取
+     *
+     * @return
+     */
+    public String getId() {
+        return this.id;
     }
 
-    public void setAmount(int amount) {
-        this.amount = amount;
-    }
-
-    public String getCate() {
-        return cate;
-    }
-
-    public void setCate(String cate) {
-        this.cate = cate;
-    }
-
-    public String getCate_name() {
-        return cate_name;
-    }
-
-    public void setCate_name(String cate_name) {
-        this.cate_name = cate_name;
-    }
-
-    public int getId() {
-        return id;
-    }
-
-    public void setId(int id) {
+    /**
+     * 设置
+     *
+     * @param id
+     *
+     */
+    public void setId(String id) {
         this.id = id;
     }
 
-    public String getName() {
-        return name;
+    /**
+     * 获取
+     *
+     * @return
+     */
+    public Integer getStock_id() {
+        return this.stock_id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    /**
+     * 设置
+     *
+     * @param stock_id
+     *
+     */
+    public void setStock_id(Integer stock_id) {
+        this.stock_id = stock_id;
     }
 
-    public String getNo() {
-        return no;
+    /**
+     * 获取
+     *
+     * @return
+     */
+    public BigDecimal getPrice() {
+        return this.price;
     }
 
-    public void setNo(String no) {
-        this.no = no;
+    /**
+     * 设置
+     *
+     * @param price
+     *
+     */
+    public void setPrice(BigDecimal price) {
+        this.price = price;
     }
 
+    /**
+     * 获取
+     *
+     * @return
+     */
+    public BigDecimal getSell_100gram_price() {
+        return this.sell_100gram_price;
+    }
+
+    /**
+     * 设置
+     *
+     * @param sell_100gram_price
+     *
+     */
+    public void setSell_100gram_price(BigDecimal sell_100gram_price) {
+        this.sell_100gram_price = sell_100gram_price;
+    }
+
+    /**
+     * 获取计划量分或者千克的单位
+     *
+     * @return 计划量分或者千克的单位
+     */
+    public BigDecimal getAmount() {
+        return this.amount;
+    }
+
+    /**
+     * 设置计划量分或者千克的单位
+     *
+     * @param amount
+     *          计划量分或者千克的单位
+     */
+    public void setAmount(BigDecimal amount) {
+        this.amount = amount;
+    }
+
+    /**
+     * 获取图片
+     *
+     * @return 图片
+     */
     public String getPic() {
-        return pic;
+        return this.pic;
     }
 
+    /**
+     * 设置图片
+     *
+     * @param pic
+     *          图片
+     */
     public void setPic(String pic) {
         this.pic = pic;
     }
 
-    public String getPrice() {
-        return price;
+    /**
+     * 获取
+     *
+     * @return
+     */
+    public Integer getCate() {
+        return this.cate;
     }
 
-    public void setPrice(String price) {
-        this.price = price;
+    /**
+     * 设置
+     *
+     * @param cate
+     *
+     */
+    public void setCate(Integer cate) {
+        this.cate = cate;
     }
 
-    public String getStock_id() {
-        return stock_id;
+    /**
+     * 获取图片
+     *
+     * @return 图片
+     */
+    public String getCat_name() {
+        return this.cat_name;
     }
 
-    public void setStock_id(String stock_id) {
-        this.stock_id = stock_id;
+    /**
+     * 设置图片
+     *
+     * @param cat_name
+     *          图片
+     */
+    public void setCat_name(String cat_name) {
+        this.cat_name = cat_name;
     }
 
-    public int getSell_100gram_price() {
-        return sell_100gram_price;
+    /**
+     * 获取日期
+     *
+     * @return 日期
+     */
+    public String getDate() {
+        return this.date;
     }
 
-    public void setSell_100gram_price(int sell_100gram_price) {
-        this.sell_100gram_price = sell_100gram_price;
+    /**
+     * 设置日期
+     *
+     * @param date
+     *          日期
+     */
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    /**
+     * 获取餐别：1早餐，2午餐，3晚餐，4夜宵，5其他
+     *
+     * @return 餐别：1早餐
+     */
+    public Integer getPart() {
+        return this.part;
+    }
+
+    /**
+     * 设置餐别：1早餐，2午餐，3晚餐，4夜宵，5其他
+     *
+     * @param part
+     *          餐别：1早餐，2午餐，3晚餐，4夜宵，5其他
+     */
+    public void setPart(Integer part) {
+        this.part = part;
+    }
+
+    /**
+     * 获取产品名
+     *
+     * @return 产品名
+     */
+    public String getName() {
+        return this.name;
+    }
+
+    /**
+     * 设置产品名
+     *
+     * @param name
+     *          产品名
+     */
+    public void setName(String name) {
+        this.name = name;
     }
 }

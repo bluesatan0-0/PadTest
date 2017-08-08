@@ -4,9 +4,11 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.ArrayMap;
 
+import com.acuit.yanj.padtest.Bean.Dish;
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
 import com.acuit.yanj.padtest.Bean.Plate;
+import com.acuit.yanj.padtest.Model.DAO.DishDAO;
 import com.acuit.yanj.padtest.Model.DAO.HoleDAO;
 import com.acuit.yanj.padtest.Model.DAO.LineDAO;
 import com.acuit.yanj.padtest.Model.DAO.PlateDAO;
@@ -33,7 +35,7 @@ public class EditBusiness_DataLoad {
     private OnDataLoadedLisener onDataLoadedLisener;
 
     public static final int LOADED_HOLES_BY_NAME = 2;
-    public static final int LOADED_LINES_HOLES_PLATES = 3;
+    public static final int LOADED_LINES_HOLES_PLATES_DISHES = 3;
 
     /**
      * 消息处理————获取集合(餐线，餐眼，排菜)
@@ -44,15 +46,16 @@ public class EditBusiness_DataLoad {
             switch (msg.what) {
 
 //                餐线+餐眼 加载完成
-                case LOADED_LINES_HOLES_PLATES:
+                case LOADED_LINES_HOLES_PLATES_DISHES:
 
                     Object[] datas = (Object[]) msg.obj;
                     List<Line> linesList = (List<Line>) datas[0];
                     List<Hole> holesList = (List<Hole>) datas[1];
                     ArrayMap<String, Plate> platesList = (ArrayMap<String, Plate>) datas[2];
+                    List<Dish> dishesList = (List<Dish>) datas[3];
 
                     if ((null != linesList) && (null != holesList) && (null != platesList)) {
-                        onDataLoadedLisener.load_Lines_Holes_Dishes(linesList, holesList, platesList);
+                        onDataLoadedLisener.load_Lines_Holes_Plates_Dishes(linesList, holesList, platesList,dishesList);
                     } else {
                         System.out.println("aaa 排菜餐眼查询结果集为空");
                     }
@@ -62,7 +65,7 @@ public class EditBusiness_DataLoad {
                     holesList = (ArrayList<Hole>)  msg.obj;
 
                     if ((null != holesList)) {
-                        onDataLoadedLisener.load_Lines_Holes_Dishes(null, holesList,null);
+                        onDataLoadedLisener.load_Lines_Holes_Plates_Dishes(null, holesList, null, null);
                     } else {
                         System.out.println("aaa 排菜餐眼查询结果集为空");
                     }
@@ -76,7 +79,7 @@ public class EditBusiness_DataLoad {
     };
 
     /**
-     * 获取餐线+餐眼+排菜
+     * 获取餐线+餐眼+排菜+菜单
      */
     public void getList_Lines_Holes_Plates() {
 
@@ -84,7 +87,7 @@ public class EditBusiness_DataLoad {
             @Override
             public void run() {
 
-                Object[] dataLists = new Object[3];
+                Object[] dataLists = new Object[4];
 
                 LineDAO lineDAO = new LineDAO();
                 dataLists[0] = lineDAO.getAllLines();
@@ -95,9 +98,12 @@ public class EditBusiness_DataLoad {
                 PlateDAO plateDAO = new PlateDAO();
                 dataLists[2] = plateDAO.getPlates();
 
+                DishDAO dishDAO = new DishDAO();
+                dataLists[3] = dishDAO.getLastDishes();
+
                 Message msg = Message.obtain();
                 msg.obj = dataLists;
-                msg.what = LOADED_LINES_HOLES_PLATES;
+                msg.what = LOADED_LINES_HOLES_PLATES_DISHES;
                 handler_GetList.sendMessage(msg);
             }
         });
@@ -109,7 +115,7 @@ public class EditBusiness_DataLoad {
      *
      * @param lineName
      */
-    public void getList_PlatesByLineName(final String lineName) {
+    public void getList_HolesByLineName(final String lineName) {
 
         ThreadPool_Util.doTask(new Runnable() {
             @Override
@@ -143,7 +149,7 @@ public class EditBusiness_DataLoad {
     public interface OnDataLoadedLisener {
 
         //        餐线+餐眼+排菜  完成加载
-        void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList);
+        void load_Lines_Holes_Plates_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList,List<Dish> dishList);
     }
 
 //    ------------------------------------获取集合(餐线+餐眼+排菜)👆-------------------------------------------
