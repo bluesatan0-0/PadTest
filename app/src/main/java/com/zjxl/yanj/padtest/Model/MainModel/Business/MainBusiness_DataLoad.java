@@ -12,9 +12,8 @@ import com.zjxl.yanj.padtest.Model.DAO.LineDAO;
 import com.zjxl.yanj.padtest.Model.DAO.PlateDAO;
 import com.zjxl.yanj.padtest.Utils.ThreadPool_Util;
 
+import java.util.ArrayList;
 import java.util.List;
-
-import static com.zjxl.yanj.padtest.Model.SettingsModel.Business.SettingsBusiness_DataLoad.LOADED_LINES;
 
 /**
  * 类名: MainBusiness_DataLoad <p>
@@ -33,6 +32,7 @@ public class MainBusiness_DataLoad {
 
     private OnDataLoadedLisener onDataLoadedLisener;
 
+    public static final int LOADED_HOLES_BY_NAME = 2;
     public static final int LOADED_LINES_HOLES_PLATES = 3;
 
     /**
@@ -49,13 +49,24 @@ public class MainBusiness_DataLoad {
                     Object[] datas = (Object[]) msg.obj;
                     List<Line> linesList = (List<Line>) datas[0];
                     List<Hole> holesList = (List<Hole>) datas[1];
-                    ArrayMap<String,Plate> platesList = (ArrayMap<String,Plate>) datas[2];
+                    ArrayMap<String, Plate> platesList = (ArrayMap<String, Plate>) datas[2];
 
                     if ((null != linesList) && (null != holesList) && (null != platesList)) {
                         onDataLoadedLisener.load_Lines_Holes_Dishes(linesList, holesList, platesList);
                     } else {
                         System.out.println("aaa 排菜餐眼查询结果集为空");
                     }
+                    break;
+                case LOADED_HOLES_BY_NAME:
+
+                    holesList = (ArrayList<Hole>)  msg.obj;
+
+                    if ((null != holesList)) {
+                        onDataLoadedLisener.load_Lines_Holes_Dishes(null, holesList,null);
+                    } else {
+                        System.out.println("aaa 排菜餐眼查询结果集为空");
+                    }
+                    System.out.println("aaa handler_GetList:" + holesList);
                     break;
 
                 default:
@@ -95,6 +106,7 @@ public class MainBusiness_DataLoad {
     /**
      * 通过 餐线名
      * 获取  某条餐线  排菜成功的  餐眼集合plates
+     *
      * @param lineName
      */
     public void getList_PlatesByLineName(final String lineName) {
@@ -103,10 +115,10 @@ public class MainBusiness_DataLoad {
             @Override
             public void run() {
 
-                PlateDAO plateDAO = new PlateDAO();
+                HoleDAO holeDAO = new HoleDAO();
                 Message msg = Message.obtain();
-                msg.obj = plateDAO.getPlatesByLineName(lineName);
-                msg.what = LOADED_LINES;
+                msg.obj = holeDAO.getHolesByLineName(lineName);
+                msg.what = LOADED_HOLES_BY_NAME;
                 handler_GetList.sendMessage(msg);
             }
         });
@@ -131,7 +143,7 @@ public class MainBusiness_DataLoad {
     public interface OnDataLoadedLisener {
 
         //        餐线+餐眼+排菜  完成加载
-        void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String,Plate> plateList);
+        void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList);
     }
 
 //    ------------------------------------获取集合(餐线+餐眼+排菜)👆-------------------------------------------

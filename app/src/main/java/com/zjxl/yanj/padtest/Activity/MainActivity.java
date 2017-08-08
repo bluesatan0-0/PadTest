@@ -8,6 +8,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.ArrayMap;
 import android.view.View;
+import android.widget.Button;
 
 import com.zjxl.yanj.padtest.Adapter.HolesAdapter_Main;
 import com.zjxl.yanj.padtest.Adapter.LinesAdapter_Main;
@@ -50,6 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private LinesAdapter_Main linesAdapter_main;
     private HolesAdapter_Main holesAdapter_main;
     private Context context;
+    private Button btnAllLines;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -80,6 +82,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnUploadPlan = findViewById(R.id.ll_uploadPlan);
         btnOrderList = findViewById(R.id.ll_orderList);
         btnSettings = findViewById(R.id.ll_settings);
+
+        btnAllLines = (Button) findViewById(R.id.btn_allLines);
 
         rvLines = (RecyclerView) findViewById(R.id.rv_lines);
         rvHoles = (RecyclerView) findViewById(R.id.rv_holes);
@@ -118,7 +122,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 plates.clear();
                 lines.addAll(linesList);
                 holes.addAll(holesList);
-                plates = plateList;
+                plates.putAll(plateList);
                 System.out.println("aaa linesList:" + linesList.toString());
                 System.out.println("aaa holesList:" + holesList.toString());
                 System.out.println("aaa plateList:" + plateList.toString());
@@ -155,6 +159,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         btnUploadPlan.setOnClickListener(this);
         btnOrderList.setOnClickListener(this);
         btnSettings.setOnClickListener(this);
+
+        btnAllLines.setOnClickListener(this);
     }
 
 
@@ -179,6 +185,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 intent = new Intent(this, SettingsActivity.class);
                 startActivity(intent);
                 break;
+            case R.id.btn_allLines:
+                updateNotifyDataSet_LinesHoles();
+                break;
         }
     }
 
@@ -192,7 +201,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         public void onBtnNameClick(String lineName) {
 
             whenBtnLineNameClick(lineName);
-            System.out.println("aaa 点击了餐线"+lineName);
         }
 
     }
@@ -210,6 +218,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String,Plate> plateList) {
                 // TODO: 2017/8/7 餐线点击后，下载完成该餐线的餐盘信息，需完成：切换餐盘列表
+                System.out.println("aaa 点击了餐线 holes:"+holesList.toString());
+                holes.clear();
+                holes.addAll(holesList);
+                holesAdapter_main.notifyDataSetChanged();
+
             }
         });
         mainBusiness_dataLoad.getList_PlatesByLineName(lineName);

@@ -108,7 +108,6 @@ public class LinesAdapter_Main extends RecyclerView.Adapter {
             View parent = (View) v.getParent();
             Button btnName = (Button) parent.findViewById(R.id.btn_lineName);
             String linesName = btnName.getText().toString();
-
             mItemClickListener.onBtnNameClick(linesName);
         }
     }

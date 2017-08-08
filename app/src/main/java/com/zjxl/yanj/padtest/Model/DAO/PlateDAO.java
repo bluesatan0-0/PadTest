@@ -91,18 +91,5 @@ public class PlateDAO {
         return plates;
     }
 
-    /**
-     * 按餐线名称，从数据库查询排菜成功的餐眼
-     *
-     * @param lineName 餐线名称
-     * @return 餐眼集合（排菜成功的）
-     */
-    public ArrayMap<String, Plate> getPlatesByLineName(String lineName) {
-        StringBuilder sql_select = new StringBuilder();
 
-        sql_select.append("select * from menu_order where status=1 and device_code in (select menu_device.uuid from menu_device WHERE row = (SELECT id from menu_rows WHERE name = '");
-        sql_select.append(lineName);
-        sql_select.append("')) ");
-        return getPlates(sql_select.toString());
-    }
 }
