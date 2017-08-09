@@ -2,6 +2,9 @@ package com.acuit.yanj.padtest.Utils;
 
 import android.util.ArrayMap;
 import android.util.Log;
+import android.widget.Toast;
+
+import com.acuit.yanj.padtest.Base.BaseApplication;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -54,6 +57,7 @@ public class DBConnect_Util {
             Log.e(TAG, "aaa: 获取jdbc包失败");
             e.printStackTrace();
         } catch (SQLException e) {
+            Toast.makeText(BaseApplication.getInstance(), "连接数据库失败，请检查网络！", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "aaa: 创建MySqlconnection失败");
             e.printStackTrace();
         }

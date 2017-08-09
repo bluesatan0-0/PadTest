@@ -1,16 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="378px"
-    android:layout_height="280px"
+    android:layout_height="296px"
     android:layout_marginBottom="36px"
     android:layout_marginRight="38px"
-    android:background="@drawable/selector_hole_item_tobe_select">
+    android:background="@drawable/selector_hole_item_tobe_select"
+    android:paddingTop="4px">
 
     <!--编号区-->
 
     <TextView
         android:id="@+id/tv_code"
-        android:layout_width="378px"
+        android:layout_width="368px"
         android:layout_height="74px"
         android:layout_centerHorizontal="true"
         android:background="@color/color_hole_item_text_air_unset"
@@ -109,8 +110,8 @@
     <!--状态图-->
     <ImageView
         android:id="@+id/iv_statu"
-        android:layout_width="376px"
-        android:layout_height="254px"
+        android:layout_width="368px"
+        android:layout_height="290px"
         android:layout_centerInParent="true"
         android:layout_margin="2px"
         android:scaleType="fitXY"

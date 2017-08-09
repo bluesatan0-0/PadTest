@@ -37,7 +37,7 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
     private List<Line> linesList;
     private ArrayMap<String, Plate> plateList;
     private Line line;
-    private int preSelected = -1;
+    private ViewHolder_HolesAdapter preSelected_ViewHolder = null;
     private OnItemClickListener itemClickListener;
 
     public HolesAdapter_Edit(Context context, List<Hole> holes, List<Line> linesList, ArrayMap<String, Plate> plateList) {
@@ -52,10 +52,10 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
     public ViewHolder_HolesAdapter onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View view = LayoutInflater.from(context).inflate(R.layout.item_hole_main, parent, false);
-        if (null==itemClickListener) {
+        if (null == itemClickListener) {
             System.out.println("aaa HolesAdapter_Edit.itemClickListener is null");
         }
-        return new ViewHolder_HolesAdapter(view,itemClickListener);
+        return new ViewHolder_HolesAdapter(view, itemClickListener);
     }
 
     @Override
@@ -127,6 +127,11 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
             }
 
         }
+
+        if (null == HolesAdapter_Edit.this.preSelected_ViewHolder) {
+            HolesAdapter_Edit.this.preSelected_ViewHolder = (ViewHolder_HolesAdapter) holder;
+            HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(true);
+        }
     }
 
     @Override
@@ -162,11 +167,14 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
         public TextView tvDishPrice;
         public TextView tvWeight;
 
+        public View itemView;
+
         // TODO: 2017/8/7 item点击事件回调（餐盘item点击进入该餐盘的编辑模式）
 
-        public ViewHolder_HolesAdapter(View itemView,OnItemClickListener listener) {
+        public ViewHolder_HolesAdapter(View itemView, OnItemClickListener listener) {
             super(itemView);
 
+            this.itemView = itemView;
             tvCode = (TextView) itemView.findViewById(R.id.tv_code);
             tvDishName = (TextView) itemView.findViewById(R.id.tv_dish_name);
             tvDishPrice = (TextView) itemView.findViewById(R.id.tv_dish_price);
@@ -183,10 +191,10 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
         @Override
         public void onClick(View v) {
 
-            RecyclerView parent = (RecyclerView) v.getParent();
-            parent.getChildAt(preSelected).setSelected(false);
+            HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(false);
             v.setSelected(true);
-            preSelected = itemPosition;
+
+            preSelected_ViewHolder = this;
             onItemClickListener.onItemViewClick(itemPosition);
         }
     }
