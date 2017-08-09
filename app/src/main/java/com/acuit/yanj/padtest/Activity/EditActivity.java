@@ -77,6 +77,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+        updateNotifyDataSet_LinesHoles();
     }
 
 

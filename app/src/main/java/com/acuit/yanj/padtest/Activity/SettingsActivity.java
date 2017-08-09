@@ -91,6 +91,12 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         finish();
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        updateNotifyDataSet_LinesHolesPlatesDishes();
+    }
+
     private void initView() {
 
         btnBack = findViewById(R.id.ll_back_SettingsMenu);
@@ -126,7 +132,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 //        初始化列表(餐线、餐眼)数据
 
         if (!SharedPreference_Utils.getConfigs().get(SharedPreference_Utils.KEY_DB_IP).isEmpty()) {
-            updateNotifyDataSet_LinesHoles();
+            updateNotifyDataSet_LinesHolesPlatesDishes();
         }
 
     }
@@ -134,7 +140,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     /**
      * 更新数据  两个RecyclerView
      */
-    private void updateNotifyDataSet_LinesHoles() {
+    private void updateNotifyDataSet_LinesHolesPlatesDishes() {
 
         SettingsBusiness_DataLoad settingsBusiness_dataLoad = new SettingsBusiness_DataLoad();
         settingsBusiness_dataLoad.setOnDataLoadedLisener(new SettingsBusiness_DataLoad.OnDataLoadedLisener() {
@@ -217,7 +223,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
                 finish();
                 break;
             case R.id.btn_allLines:
-                updateNotifyDataSet_LinesHoles();
+                updateNotifyDataSet_LinesHolesPlatesDishes();
                 break;
 //            设置服务器
             case R.id.ll_server_SettingsMenu:
@@ -396,7 +402,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void success() {
                 Toast.makeText(context, "修改成功！", Toast.LENGTH_SHORT).show();
-                updateNotifyDataSet_LinesHoles();
+                updateNotifyDataSet_LinesHolesPlatesDishes();
             }
         });
         System.out.println("aaa lineName_ForItemClick=" + lineName_ForItemClick + "  lineName_New=" + lineName_New);
@@ -470,7 +476,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
 
         SharedPreference_Utils.getInstance(this).setValues(configs);
 
-        updateNotifyDataSet_LinesHoles();
+        updateNotifyDataSet_LinesHolesPlatesDishes();
     }
 
     /**
@@ -556,7 +562,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             public void success() {
                 Toast.makeText(getApplicationContext(), "保存成功！", Toast.LENGTH_SHORT).show();
 //                            添加成功后更新lines列表
-                updateNotifyDataSet_LinesHoles();
+                updateNotifyDataSet_LinesHolesPlatesDishes();
 
             }
         });
@@ -577,7 +583,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             @Override
             public void success() {
                 Toast.makeText(context, "删除成功", Toast.LENGTH_SHORT).show();
-                updateNotifyDataSet_LinesHoles();
+                updateNotifyDataSet_LinesHolesPlatesDishes();
                 lineName_ForItemClick = "";
             }
         });
@@ -608,7 +614,7 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
             public void success() {
                 Toast.makeText(getApplicationContext(), "保存成功！", Toast.LENGTH_SHORT).show();
 //                            添加成功后更新lines列表
-                updateNotifyDataSet_LinesHoles();
+                updateNotifyDataSet_LinesHolesPlatesDishes();
 
             }
         });

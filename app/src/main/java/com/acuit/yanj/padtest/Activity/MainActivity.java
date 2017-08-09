@@ -72,6 +72,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
+        updateNotifyDataSet_LinesHolesPlates();
     }
 
 
@@ -106,10 +107,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         rvLines.setHasFixedSize(true);
         rvHoles.setHasFixedSize(true);
 
-        updateNotifyDataSet_LinesHoles();
+        updateNotifyDataSet_LinesHolesPlates();
     }
 
-    private void updateNotifyDataSet_LinesHoles() {
+    private void updateNotifyDataSet_LinesHolesPlates() {
 
         MainBusiness_DataLoad mainBusiness_dataLoad = new MainBusiness_DataLoad();
         mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
@@ -186,7 +187,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivity(intent);
                 break;
             case R.id.btn_allLines:
-                updateNotifyDataSet_LinesHoles();
+                updateNotifyDataSet_LinesHolesPlates();
                 break;
         }
     }
