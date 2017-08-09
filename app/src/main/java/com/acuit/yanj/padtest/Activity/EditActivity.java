@@ -22,6 +22,7 @@ import com.acuit.yanj.padtest.Bean.Plate;
 import com.acuit.yanj.padtest.Model.EditBusiness.EditBusiness_DataLoad;
 import com.acuit.yanj.padtest.Model.MainBusiness.MainBusiness_DataLoad;
 import com.acuit.yanj.padtest.R;
+import com.acuit.yanj.padtest.Utils.GetPlate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -50,13 +51,14 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private List<Line> lines;
     private List<Hole> holes;
     private List<Dish> dishes;
-    private ArrayMap<String,Plate> plates;
+    private ArrayMap<String, Plate> plates;
     private MenuList menuList;
     private LinesAdapter linesAdapter;
     private HolesAdapter_Edit holesAdapter;
     private DishesAdapter dishesAdapter;
     private Context context;
     private Button btnAllLines;
+    private int selectedHolePosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -77,7 +79,8 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        updateNotifyDataSet_LinesHoles();
+//        updateNotifyDataSet_LinesHoles();
+//        避免排菜信息未上传丢失
     }
 
 
@@ -99,7 +102,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         lines = new ArrayList<Line>();
         holes = new ArrayList<Hole>();
         dishes = new ArrayList<Dish>();
-        plates = new ArrayMap<String,Plate>();
+        plates = new ArrayMap<String, Plate>();
 
 
         LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -115,6 +118,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         rvLines.setHasFixedSize(true);
         rvHoles.setHasFixedSize(true);
 
+        // TODO: 2017/8/9 优化显示速度，使用intent页面传值，避免重复获取Holes、Lines、Plates三个集合（视具体使用场景，局域网速度快可能没必要）
         updateNotifyDataSet_LinesHoles();
     }
 
@@ -124,7 +128,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         editBusiness_dataLoad.setOnDataLoadedLisener(new EditBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void load_Lines_Holes_Plates_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String,Plate> plateList,List<Dish> dishesList) {
+            public void load_Lines_Holes_Plates_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList, List<Dish> dishesList) {
 
                 lines.clear();
                 holes.clear();
@@ -206,25 +210,42 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
     /**
      * 待选菜单 列表item 点击事件  的 回调监听器
+     * 将菜品设置给选中的餐眼
      */
-    class mItemClickListener_rvDishes implements DishesAdapter.OnItemClickListener{
+    class mItemClickListener_rvDishes implements DishesAdapter.OnItemClickListener {
 
         @Override
         public void onItemViewClick(Dish dish) {
-            System.out.println("aaa mItemClickListener_rvDishes.onItemViewClick is not implement! ");
-            // TODO: 2017/8/8 当餐眼被选中时，等待待选菜单被点中，获取点中的菜品，存入plates
+            Hole hole = holes.get(selectedHolePosition);
+            Plate plate = GetPlate.GetPlate_FromHoleAndDish(hole, dish);
+
+            int indexOfKey = plates.indexOfKey(hole.getUuid());
+
+//            System.out.println("aaa plates:" + plates.toString());
+//            System.out.println("aaa hole.getUuid():" + hole.getUuid());
+//            System.out.println("aaa selectedPosition:" + selectedHolePosition);
+//            System.out.println("aaa indexOfKey:" + indexOfKey);
+
+            if (0 > indexOfKey) {
+                plates.put(hole.getUuid(), plate);
+            } else {
+                plates.setValueAt(indexOfKey, plate);
+            }
+
+            System.out.println("aaa plates:" + plates.toString());
+            holesAdapter.notifyDataSetChanged();
         }
     }
 
     /**
      * 餐眼 列表item 点击事件  的 回调监听器
+     * 设置选中状态
      */
-    class mItemClickListener_rvHoles implements HolesAdapter_Edit.OnItemClickListener{
+    class mItemClickListener_rvHoles implements HolesAdapter_Edit.OnItemClickListener {
 
         @Override
         public void onItemViewClick(int position) {
-            System.out.println("aaa mItemClickListener_rvHoles.onItemViewClick is not implement! ");
-            // TODO: 2017/8/8 当餐眼被选中时，等待待选菜单被点中，获取点中的菜品，存入plates
+            selectedHolePosition = position;
         }
     }
 
@@ -253,9 +274,9 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String,Plate> plateList) {
+            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList) {
                 // TODO: 2017/8/7 餐线点击后，下载完成该餐线的餐盘信息，需完成：切换餐盘列表
-                System.out.println("aaa 点击了餐线 holes:"+holesList.toString());
+                System.out.println("aaa 点击了餐线 holes:" + holesList.toString());
                 holes.clear();
                 holes.addAll(holesList);
                 holesAdapter.notifyDataSetChanged();
