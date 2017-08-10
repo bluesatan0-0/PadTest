@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.ArrayMap;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.acuit.yanj.padtest.Adapter.DishesAdapter;
 import com.acuit.yanj.padtest.Adapter.HolesAdapter_Edit;
@@ -211,7 +212,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                 ReturnResult();
                 break;
             case R.id.ll_downloadMenu:
-
+                downloadMenuList();
                 break;
 
             case R.id.btn_allLines:
@@ -227,6 +228,75 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         setResult(2, intent);
         finish();
     }
+
+
+//-------------------------------------下载今日菜单👇-----------------------------------------------------
+    /**
+     * 点击下载今日菜单后
+     */
+    private void downloadMenuList() {
+
+        MainBusiness_DataLoad mainBusiness_dataLoad = new MainBusiness_DataLoad();
+        mainBusiness_dataLoad.setOnDownloadListener(new MainBusiness_DataLoad.OnDownloadListener() {
+            @Override
+            public void downloadMenu(ArrayList<Dish> dishesList) {
+                System.out.println("aaa 下载的菜单为：" + dishesList.toString());
+
+//                将下载的菜单存数据库，拿出数据库的菜品来排菜;
+                saveDownloadedDishes(dishesList);
+
+            }
+        });
+        mainBusiness_dataLoad.DownloadMenu();
+    }
+
+    /**
+     * 将下载的菜单存数据库，拿出数据库的菜品来排菜;
+     * @param dishesList
+     */
+    private void saveDownloadedDishes(ArrayList<Dish> dishesList) {
+
+        EditBusiness_DataLoad editBusiness_dataLoad = new EditBusiness_DataLoad();
+        editBusiness_dataLoad.setOnSaveDishesListener(new EditBusiness_DataLoad.OnSaveDishesListener() {
+            @Override
+            public void success() {
+//                从数据库获取新菜单
+                updateNotifyDataSet_Dishes();
+
+            }
+
+            @Override
+            public void error() {
+                Toast.makeText(context, "储存今日菜单失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        editBusiness_dataLoad.saveDishes(dishesList);
+    }
+
+    /**
+     * 从数据库获取新菜单
+     */
+    private void updateNotifyDataSet_Dishes() {
+        EditBusiness_DataLoad editBusiness_dataLoad = new EditBusiness_DataLoad();
+        editBusiness_dataLoad.setOnDataLoadedLisener(new EditBusiness_DataLoad.OnDataLoadedLisener() {
+            @Override
+            public void load_Lines_Holes_Plates_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList, List<Dish> dishList) {
+                dishes.clear();
+                dishes.addAll(dishList);
+                dishesAdapter.notifyDataSetChanged();
+
+                // TODO: 2017/8/10 比对holes+plates 与dishes 不在的无效化
+
+
+            }
+        });
+
+        editBusiness_dataLoad.getList_Dishes();
+    }
+
+//-------------------------------------下载今日菜单?👆-----------------------------------------------------
+
 
 
     /**
@@ -295,7 +365,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList) {
+            public void load_Lines_Holes_Plates(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList) {
                 // TODO: 2017/8/7 餐线点击后，下载完成该餐线的餐盘信息，需完成：切换餐盘列表
                 System.out.println("aaa 点击了餐线 holes:" + holesList.toString());
                 holes.clear();

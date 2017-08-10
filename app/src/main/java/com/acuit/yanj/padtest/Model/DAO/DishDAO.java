@@ -93,10 +93,77 @@ public class DishDAO {
         return dishes;
     }
 
+    /**
+     * 保存 下载的 今日菜单
+     *
+     * @param dishesList 今日菜单
+     * @return 操作结果
+     */
+    public boolean save(ArrayList<Dish> dishesList) {
 
-//    存储新下载的菜单
+
+        Statement statement = null;
+        StringBuilder sql = new StringBuilder();
 
 
+        try {
+            connection.setAutoCommit(false);
+            statement = connection.createStatement();
+
+            for (Dish dish : dishesList) {
+                sql.replace(0, sql.length(), "");
+
+//                INSERT INTO menu_plan_stock
+//                        (stock_id,price,sell_100gram_price,amount,pic,cate,cat_name,date,part,name)
+//                VALUES(2000,20.00,5.00,2.00,'http;//.jpg',1,'卤味','2017-07-15',1,'酱猪蹄')
+
+                sql.append(" INSERT INTO menu_plan_stock ");
+                sql.append(" (stock_id,price,sell_100gram_price,amount,cate,part,pic,cat_name,date,name) VALUES(");
+
+                sql.append(dish.getStock_id());
+                sql.append(",");
+                sql.append(dish.getPrice());
+                sql.append(",");
+                sql.append(dish.getSell_100gram_price());
+                sql.append(",");
+                sql.append(dish.getAmount());
+                sql.append(",");
+
+                sql.append(dish.getCate());
+                sql.append(",");
+                sql.append(dish.getPart());
+                sql.append(",'");
+                sql.append(dish.getPic());
+                sql.append("','");
+                sql.append(dish.getCat_name());
+                sql.append("','");
+                sql.append(dish.getDate());
+                sql.append("','");
+                sql.append(dish.getName());
+                sql.append("')");
+
+                int i = statement.executeUpdate(sql.toString());
+                if (0 >= i) {
+                    return false;
+                }
+            }
+            connection.commit();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                return true;
+            }
+        }
+
+    }
 
 
 }

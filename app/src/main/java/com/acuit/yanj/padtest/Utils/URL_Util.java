@@ -70,7 +70,7 @@ public class URL_Util {
 //    远端服务器接口 REMOTE_SERVER_API
 
     public final static String REMOTE_SERVER_SCHEME = "http:" + File.separator + File.separator;
-    public final static String REMOTE_SERVER_SUFFIX = File.separator + "apis.php?c=Z_braindisc&a=platesetting";
+    public final static String REMOTE_SERVER_SUFFIX = File.separator + "apis.php?c=Z_braindisc&a=platesettings";
 
     //    测试地址直接使用（已拼装好）
     public final static String REMOTE_SERVER_IP_TEST = "192.168.2.241";

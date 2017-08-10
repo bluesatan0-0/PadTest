@@ -18,7 +18,7 @@ public class MenuList {
     /**
      * code : 1
      * part : 2
-     * plan_prods : [{"amount":4,"cate":"16","cate_name":"卤味类","id":"2003","name":"白灼白虾(kg)","no":"","pic":"http://smart.zjulab.com/skin/images/no_cai_pic.jpg","price":"66.00","stock_id":"2003"},{"amount":2,"cate":"16","cate_name":"卤味类","id":"1948","name":"浙大烤鸡（kg）","no":"","pic":"http://smart.zjulab.com/upload/stock/show/1428943879156.jpg","price":"50.00","stock_id":"1948"}]
+     * plan_prods : [{"amount":100,"cate":"16","cate_name":"卤味类","id":"731","name":"卤猪耳朵(kg)","no":"","pic":"http://192.168.2.241/skin/images/no_cai_pic.jpg","price":"78.00","sell_100gram_price":0,"stock_id":"731"},{"amount":100,"cate":"16","cate_name":"卤味类","id":"730","name":"杭州酱肉（kg）","no":"","pic":"http://192.168.2.241/skin/images/no_cai_pic.jpg","price":"66.00","sell_100gram_price":0,"stock_id":"730"}]
      * prods : []
      * sub_code : 0
      */
@@ -71,15 +71,16 @@ public class MenuList {
 
     public static class PlanProdsBean {
         /**
-         * amount : 4
+         * amount : 100
          * cate : 16
          * cate_name : 卤味类
-         * id : 2003
-         * name : 白灼白虾(kg)
+         * id : 731
+         * name : 卤猪耳朵(kg)
          * no :
-         * pic : http://smart.zjulab.com/skin/images/no_cai_pic.jpg
-         * price : 66.00
-         * stock_id : 2003
+         * pic : http://192.168.2.241/skin/images/no_cai_pic.jpg
+         * price : 78.00
+         * sell_100gram_price : 0
+         * stock_id : 731
          */
 
         private int amount;
@@ -90,6 +91,7 @@ public class MenuList {
         private String no;
         private String pic;
         private String price;
+        private int sell_100gram_price;
         private String stock_id;
 
         public int getAmount() {
@@ -154,6 +156,14 @@ public class MenuList {
 
         public void setPrice(String price) {
             this.price = price;
+        }
+
+        public int getSell_100gram_price() {
+            return sell_100gram_price;
+        }
+
+        public void setSell_100gram_price(int sell_100gram_price) {
+            this.sell_100gram_price = sell_100gram_price;
         }
 
         public String getStock_id() {

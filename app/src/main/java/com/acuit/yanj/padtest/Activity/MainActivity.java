@@ -16,13 +16,16 @@ import com.acuit.yanj.padtest.Adapter.LinesAdapter;
 import com.acuit.yanj.padtest.Base.BaseActivity;
 import com.acuit.yanj.padtest.Base.BaseArrayList;
 import com.acuit.yanj.padtest.Base.BaseArrayMap;
+import com.acuit.yanj.padtest.Bean.Dish;
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
 import com.acuit.yanj.padtest.Bean.MenuList;
 import com.acuit.yanj.padtest.Bean.Plate;
+import com.acuit.yanj.padtest.Model.EditBusiness.EditBusiness_DataLoad;
 import com.acuit.yanj.padtest.Model.MainBusiness.MainBusiness_DataLoad;
 import com.acuit.yanj.padtest.R;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -49,6 +52,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private BaseArrayList<Line> lines;
     private BaseArrayList<Hole> holes;
+    private BaseArrayList<Dish> dishes;
     private BaseArrayMap<String, Plate> plates;
     private MenuList menuList;
     private LinesAdapter linesAdapter;
@@ -112,6 +116,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         lines = new BaseArrayList<Line>();
         holes = new BaseArrayList<Hole>();
+        dishes = new BaseArrayList<Dish>();
         plates = new BaseArrayMap<String, Plate>();
 
 
@@ -133,7 +138,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList) {
+            public void load_Lines_Holes_Plates(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList) {
 
                 lines.clear();
                 holes.clear();
@@ -195,10 +200,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 startActivityForResult(intent, 1);
                 break;
             case R.id.ll_downloadMenu:
-
+                downloadMenuList();
                 break;
             case R.id.ll_uploadPlan:
-                UploadPlan();
+                uploadPlatesPlan();
                 break;
             case R.id.ll_orderList:
 
@@ -213,10 +218,80 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         }
     }
 
+
+//-------------------------------------下载今日菜单👇-----------------------------------------------------
+    /**
+     * 点击下载今日菜单后
+     */
+    private void downloadMenuList() {
+
+        MainBusiness_DataLoad mainBusiness_dataLoad = new MainBusiness_DataLoad();
+        mainBusiness_dataLoad.setOnDownloadListener(new MainBusiness_DataLoad.OnDownloadListener() {
+            @Override
+            public void downloadMenu(ArrayList<Dish> dishesList) {
+                System.out.println("aaa 下载的菜单为：" + dishesList.toString());
+
+//                将下载的菜单存数据库，拿出数据库的菜品来排菜;
+                saveDownloadedDishes(dishesList);
+
+            }
+        });
+        mainBusiness_dataLoad.DownloadMenu();
+    }
+
+    /**
+     * 将下载的菜单存数据库，拿出数据库的菜品来排菜;
+     * @param dishesList
+     */
+    private void saveDownloadedDishes(ArrayList<Dish> dishesList) {
+
+        EditBusiness_DataLoad editBusiness_dataLoad = new EditBusiness_DataLoad();
+        editBusiness_dataLoad.setOnSaveDishesListener(new EditBusiness_DataLoad.OnSaveDishesListener() {
+            @Override
+            public void success() {
+//                从数据库获取新菜单
+                updateNotifyDataSet_Dishes();
+
+            }
+
+            @Override
+            public void error() {
+                Toast.makeText(context, "储存今日菜单失败", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        editBusiness_dataLoad.saveDishes(dishesList);
+    }
+
+    /**
+     * 从数据库获取新菜单
+     */
+    private void updateNotifyDataSet_Dishes() {
+        EditBusiness_DataLoad editBusiness_dataLoad = new EditBusiness_DataLoad();
+        editBusiness_dataLoad.setOnDataLoadedLisener(new EditBusiness_DataLoad.OnDataLoadedLisener() {
+            @Override
+            public void load_Lines_Holes_Plates_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList, List<Dish> dishList) {
+                dishes.clear();
+                dishes.addAll(dishList);
+
+                // TODO: 2017/8/10 比对holes+plates 与dishes 不在的无效化
+
+
+
+            }
+        });
+
+        editBusiness_dataLoad.getList_Dishes();
+    }
+
+//-------------------------------------下载今日菜单?👆-----------------------------------------------------
+
+
+
     /**
      * 将当前排菜信息存入数据库
      */
-    private void UploadPlan() {
+    private void uploadPlatesPlan() {
         MainBusiness_DataLoad mainBusiness_dataLoad_UP = new MainBusiness_DataLoad();
         mainBusiness_dataLoad_UP.setOnUpdateListener(new MainBusiness_DataLoad.OnUpdateListener() {
             @Override
@@ -258,7 +333,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList) {
+            public void load_Lines_Holes_Plates(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList) {
                 // TODO: 2017/8/7 餐线点击后，下载完成该餐线的餐盘信息，需完成：切换餐盘列表
                 System.out.println("aaa 点击了餐线 holes:" + holesList.toString());
                 holes.clear();
