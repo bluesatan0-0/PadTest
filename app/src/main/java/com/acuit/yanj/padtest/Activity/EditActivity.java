@@ -14,6 +14,7 @@ import com.acuit.yanj.padtest.Adapter.DishesAdapter;
 import com.acuit.yanj.padtest.Adapter.HolesAdapter_Edit;
 import com.acuit.yanj.padtest.Adapter.LinesAdapter;
 import com.acuit.yanj.padtest.Base.BaseActivity;
+import com.acuit.yanj.padtest.Base.BaseArrayMap;
 import com.acuit.yanj.padtest.Bean.Dish;
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
@@ -51,7 +52,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private List<Line> lines;
     private List<Hole> holes;
     private List<Dish> dishes;
-    private ArrayMap<String, Plate> plates;
+    private BaseArrayMap<String, Plate> plates;
     private MenuList menuList;
     private LinesAdapter linesAdapter;
     private HolesAdapter_Edit holesAdapter;
@@ -83,6 +84,11 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 //        避免排菜信息未上传丢失
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ReturnResult();
+    }
 
     private void initView() {
 
@@ -102,7 +108,13 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         lines = new ArrayList<Line>();
         holes = new ArrayList<Hole>();
         dishes = new ArrayList<Dish>();
-        plates = new ArrayMap<String, Plate>();
+        plates = new BaseArrayMap<String, Plate>();
+
+        // TODO: 2017/8/10 使用页面传值，加快显示速度，需重写adapter初始化的逻辑（只查询菜单集合）
+//        Intent data = getIntent();
+//        lines.addAll((Collection<? extends Line>) data.getSerializableExtra("Lines"));
+//        holes.addAll((Collection<? extends Hole>) data.getSerializableExtra("Holes"));
+//        plates.putAll((Map<? extends String, ? extends Plate>) data.getSerializableExtra("Plates"));
 
 
         LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -118,12 +130,12 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         rvLines.setHasFixedSize(true);
         rvHoles.setHasFixedSize(true);
 
-        // TODO: 2017/8/9 优化显示速度，使用intent页面传值，避免重复获取Holes、Lines、Plates三个集合（视具体使用场景，局域网速度快可能没必要）
         updateNotifyDataSet_LinesHoles();
     }
 
     private void updateNotifyDataSet_LinesHoles() {
 
+        // TODO: 2017/8/9 优化显示速度，使用intent页面传值，避免重复获取Holes、Lines、Plates三个集合（视具体使用场景，局域网速度快可能没必要）
         EditBusiness_DataLoad editBusiness_dataLoad = new EditBusiness_DataLoad();
         editBusiness_dataLoad.setOnDataLoadedLisener(new EditBusiness_DataLoad.OnDataLoadedLisener() {
 
@@ -161,6 +173,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                     rvHoles.setAdapter(holesAdapter);
                 }
 
+                
                 if (null != dishesAdapter) {
                     dishesAdapter.notifyDataSetChanged();
                 } else {
@@ -195,7 +208,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                 holesAdapter.notifyDataSetChanged();
                 break;
             case R.id.ll_savePlan:
-
+                ReturnResult();
                 break;
             case R.id.ll_downloadMenu:
 
@@ -205,6 +218,14 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                 updateNotifyDataSet_LinesHoles();
                 break;
         }
+    }
+
+    private void ReturnResult() {
+        Intent intent;
+        intent = new Intent();
+        intent.putExtra("Plates", plates);
+        setResult(2, intent);
+        finish();
     }
 
 

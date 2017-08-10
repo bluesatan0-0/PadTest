@@ -13,6 +13,8 @@ import android.widget.Button;
 import com.acuit.yanj.padtest.Adapter.HolesAdapter_Main;
 import com.acuit.yanj.padtest.Adapter.LinesAdapter;
 import com.acuit.yanj.padtest.Base.BaseActivity;
+import com.acuit.yanj.padtest.Base.BaseArrayList;
+import com.acuit.yanj.padtest.Base.BaseArrayMap;
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
 import com.acuit.yanj.padtest.Bean.MenuList;
@@ -20,8 +22,8 @@ import com.acuit.yanj.padtest.Bean.Plate;
 import com.acuit.yanj.padtest.Model.MainBusiness.MainBusiness_DataLoad;
 import com.acuit.yanj.padtest.R;
 
-import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类名: MainActivity <p>
@@ -44,9 +46,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView rvHoles;
     private RecyclerView rvLines;
 
-    private List<Line> lines;
-    private List<Hole> holes;
-    private ArrayMap<String,Plate> plates;
+    private BaseArrayList<Line> lines;
+    private BaseArrayList<Hole> holes;
+    private BaseArrayMap<String, Plate> plates;
     private MenuList menuList;
     private LinesAdapter linesAdapter_;
     private HolesAdapter_Main holesAdapter_main;
@@ -72,9 +74,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     @Override
     protected void onResume() {
         super.onResume();
-        updateNotifyDataSet_LinesHolesPlates();
+//        updateNotifyDataSet_LinesHolesPlates();
+
     }
 
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 1 && resultCode == 2) {
+            plates.clear();
+            plates.putAll((Map<? extends String, ? extends Plate>) data.getSerializableExtra("Plates"));
+            holesAdapter_main.notifyDataSetChanged();
+        }
+    }
 
     private void initView() {
 
@@ -93,9 +105,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private void initData() {
         context = this;
 
-        lines = new ArrayList<Line>();
-        holes = new ArrayList<Hole>();
-        plates = new ArrayMap<String,Plate>();
+        lines = new BaseArrayList<Line>();
+        holes = new BaseArrayList<Hole>();
+        plates = new BaseArrayMap<String,Plate>();
 
 
         LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -116,7 +128,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String,Plate> plateList) {
+            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList) {
 
                 lines.clear();
                 holes.clear();
@@ -171,7 +183,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.ll_planDish:
                 intent = new Intent(this, EditActivity.class);
-                startActivity(intent);
+                intent.putExtra("Lines", lines);
+                intent.putExtra("Holes", holes);
+                intent.putExtra("Plates", plates);
+
+                startActivityForResult(intent, 1);
                 break;
             case R.id.ll_downloadMenu:
 
@@ -217,9 +233,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String,Plate> plateList) {
+            public void load_Lines_Holes_Dishes(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList) {
                 // TODO: 2017/8/7 餐线点击后，下载完成该餐线的餐盘信息，需完成：切换餐盘列表
-                System.out.println("aaa 点击了餐线 holes:"+holesList.toString());
+                System.out.println("aaa 点击了餐线 holes:" + holesList.toString());
                 holes.clear();
                 holes.addAll(holesList);
                 holesAdapter_main.notifyDataSetChanged();

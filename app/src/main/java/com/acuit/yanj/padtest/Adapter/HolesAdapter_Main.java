@@ -2,7 +2,6 @@ package com.acuit.yanj.padtest.Adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
-import android.util.ArrayMap;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -10,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.acuit.yanj.padtest.Base.BaseApplication;
+import com.acuit.yanj.padtest.Base.BaseArrayMap;
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
 import com.acuit.yanj.padtest.Bean.Plate;
@@ -35,10 +35,10 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
     private BaseApplication context;
     private List<Hole> holesList;
     private List<Line> linesList;
-    private ArrayMap<String, Plate> plateList;
+    private BaseArrayMap<String, Plate> plateList;
     private Line line;
 
-    public HolesAdapter_Main(Context context, List<Hole> holes, List<Line> linesList, ArrayMap<String, Plate> plateList) {
+    public HolesAdapter_Main(Context context, List<Hole> holes, List<Line> linesList, BaseArrayMap<String, Plate> plateList) {
         this.context = (BaseApplication) context.getApplicationContext();
         this.holesList = holes;
         this.linesList = linesList;
