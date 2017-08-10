@@ -4,6 +4,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.util.ArrayMap;
 
+import com.acuit.yanj.padtest.Base.BaseArrayMap;
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
 import com.acuit.yanj.padtest.Bean.Plate;
@@ -31,7 +32,9 @@ public class MainBusiness_DataLoad {
     //    ------------------------------------获取集合(餐线餐眼，排菜)?👇-------------------------------------------
 
     private OnDataLoadedLisener onDataLoadedLisener;
+    private OnUpdateListener onUpdateListener;
 
+    public static final int FLAGE_UPDATE_PLATES = 1;
     public static final int LOADED_HOLES_BY_NAME = 2;
     public static final int LOADED_LINES_HOLES_PLATES = 3;
 
@@ -59,10 +62,10 @@ public class MainBusiness_DataLoad {
                     break;
                 case LOADED_HOLES_BY_NAME:
 
-                    holesList = (ArrayList<Hole>)  msg.obj;
+                    holesList = (ArrayList<Hole>) msg.obj;
 
                     if ((null != holesList)) {
-                        onDataLoadedLisener.load_Lines_Holes_Dishes(null, holesList,null);
+                        onDataLoadedLisener.load_Lines_Holes_Dishes(null, holesList, null);
                     } else {
                         System.out.println("aaa 排菜餐眼查询结果集为空");
                     }
@@ -73,6 +76,7 @@ public class MainBusiness_DataLoad {
             }
         }
     };
+
 
     /**
      * 获取餐线+餐眼+排菜
@@ -125,9 +129,77 @@ public class MainBusiness_DataLoad {
 
 
     /**
+     * 消息处理————获取更新结果 （排菜信息）
+     */
+    private Handler handler_UpdateResult = new Handler() {
+        @Override
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
+//               排菜 储存完成
+                case FLAGE_UPDATE_PLATES:
+                    if (1 == msg.arg1) {
+                        onUpdateListener.success();
+                    } else {
+                        onUpdateListener.error();
+                    }
+                    break;
+
+                default:
+                    break;
+            }
+        }
+    };
+
+
+    /**
+     * 更新排菜信息的操作结果，回调
+     */
+    public interface OnUpdateListener {
+
+        void success();
+
+        void error();
+    }
+
+    public void setOnUpdateListener(OnUpdateListener onUpdateListener) {
+        this.onUpdateListener = onUpdateListener;
+    }
+
+    /**
+     * 储存排菜结果
+     *
+     * @param plates 排菜信息集合
+     */
+    public void uploadPlates(final BaseArrayMap<String, Plate> plates) {
+        ThreadPool_Util.doTask(new Runnable() {
+            @Override
+            public void run() {
+                PlateDAO plateDAO = new PlateDAO();
+                ArrayList<Plate> platesList = new ArrayList<Plate>();
+                platesList.clear();
+                for (String key : plates.keySet()) {
+                    platesList.add(plates.get(key));
+                }
+
+                boolean result = plateDAO.update(platesList);
+                Message msg = Message.obtain();
+                msg.what = FLAGE_UPDATE_PLATES;
+                if (result) {
+                    msg.arg1 = 1;
+                } else {
+                    msg.arg1 = 0;
+                }
+                handler_UpdateResult.sendMessage(msg);
+            }
+        });
+    }
+
+
+    /**
      * 设置监听器（餐线加载完成）
      */
     public void setOnDataLoadedLisener(OnDataLoadedLisener onDataLoadedLisener) {
+
         if (null != onDataLoadedLisener) {
             this.onDataLoadedLisener = onDataLoadedLisener;
         } else {

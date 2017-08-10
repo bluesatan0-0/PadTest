@@ -9,6 +9,8 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
+import java.util.Date;
 
 /**
  * 类名: PlateDAO <p>
@@ -92,4 +94,78 @@ public class PlateDAO {
     }
 
 
+    /**
+     * 存储排菜信息
+     *
+     * @param plates 排菜信息集合
+     */
+    public boolean update(ArrayList<Plate> plates) {
+
+        Statement statement = null;
+        StringBuilder sql = new StringBuilder();
+
+
+        try {
+            connection.setAutoCommit(false);
+            statement = connection.createStatement();
+
+            for (Plate plate : plates) {
+                sql.replace(0, sql.length(), "");
+
+                sql.append(" replace into menu_order (");
+                sql.append("device_id,device_code,status,dish_id,dish_code,dish_name,price,create_date,menu_url");
+                sql.append(" ) values( ");
+
+                sql.append(plate.getDevice_id());
+                sql.append(",");
+
+                sql.append(plate.getDevice_code());
+                sql.append(",");
+
+                //status 默认状态为0
+                sql.append(0);
+                sql.append(",");
+
+                sql.append(plate.getDish_id());
+                sql.append(",'");
+
+                sql.append(plate.getDish_code());
+                sql.append("','");
+
+                sql.append(plate.getDish_name());
+                sql.append("',");
+
+                sql.append(plate.getPrice());
+                sql.append(",");
+
+//                存储时间
+                sql.append(((new Date(System.currentTimeMillis())).getTime()) / 1000);
+                sql.append(",'");
+
+                sql.append(plate.getMenu_url());
+                sql.append("')");
+
+
+                int i = statement.executeUpdate(sql.toString());
+                if (0 >= i) {
+                    return false;
+                }
+            }
+            connection.commit();
+
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            } finally {
+                return true;
+            }
+        }
+
+    }
 }

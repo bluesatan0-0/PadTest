@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.util.ArrayMap;
 import android.view.View;
 import android.widget.Button;
+import android.widget.Toast;
 
 import com.acuit.yanj.padtest.Adapter.HolesAdapter_Main;
 import com.acuit.yanj.padtest.Adapter.LinesAdapter;
@@ -50,7 +51,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private BaseArrayList<Hole> holes;
     private BaseArrayMap<String, Plate> plates;
     private MenuList menuList;
-    private LinesAdapter linesAdapter_;
+    private LinesAdapter linesAdapter;
     private HolesAdapter_Main holesAdapter_main;
     private Context context;
     private Button btnAllLines;
@@ -84,6 +85,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         if (requestCode == 1 && resultCode == 2) {
             plates.clear();
             plates.putAll((Map<? extends String, ? extends Plate>) data.getSerializableExtra("Plates"));
+            if (null == holesAdapter_main) {
+                holesAdapter_main = new HolesAdapter_Main(context, holes, lines, plates);
+                rvHoles.setAdapter(holesAdapter_main);
+            }
             holesAdapter_main.notifyDataSetChanged();
         }
     }
@@ -107,7 +112,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
         lines = new BaseArrayList<Line>();
         holes = new BaseArrayList<Hole>();
-        plates = new BaseArrayMap<String,Plate>();
+        plates = new BaseArrayMap<String, Plate>();
 
 
         LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -140,13 +145,13 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 System.out.println("aaa holesList:" + holesList.toString());
                 System.out.println("aaa plateList:" + plateList.toString());
 
-                if (null != linesAdapter_) {
-                    linesAdapter_.notifyDataSetChanged();
+                if (null != linesAdapter) {
+                    linesAdapter.notifyDataSetChanged();
                 } else {
 //                    若空则认为是初始化，实例化适配器
-                    linesAdapter_ = new LinesAdapter(context, lines);
-                    linesAdapter_.setOnItemClickListener(new mItemClickListener_rvLines());
-                    rvLines.setAdapter(linesAdapter_);
+                    linesAdapter = new LinesAdapter(context, lines);
+                    linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
+                    rvLines.setAdapter(linesAdapter);
                 }
 
                 if (null != holesAdapter_main) {
@@ -155,7 +160,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 //                    若空则认为是初始化，实例化适配器
                     holesAdapter_main = new HolesAdapter_Main(context, holes, lines, plates);
                     // TODO: 2017/8/7 点击餐盘，进入该餐盘的设置模式
-//                    linesAdapter_.setOnItemClickListener(new mItemClickListener_rvLines());
+//                    linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
                     rvHoles.setAdapter(holesAdapter_main);
                 }
 
@@ -193,7 +198,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
                 break;
             case R.id.ll_uploadPlan:
-
+                UploadPlan();
                 break;
             case R.id.ll_orderList:
 
@@ -206,6 +211,26 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 updateNotifyDataSet_LinesHolesPlates();
                 break;
         }
+    }
+
+    /**
+     * 将当前排菜信息存入数据库
+     */
+    private void UploadPlan() {
+        MainBusiness_DataLoad mainBusiness_dataLoad_UP = new MainBusiness_DataLoad();
+        mainBusiness_dataLoad_UP.setOnUpdateListener(new MainBusiness_DataLoad.OnUpdateListener() {
+            @Override
+            public void success() {
+                Toast.makeText(context, "排菜上传成功！", Toast.LENGTH_SHORT).show();
+            }
+
+            @Override
+            public void error() {
+                Toast.makeText(context, "上传失败！", Toast.LENGTH_SHORT).show();
+            }
+        });
+
+        mainBusiness_dataLoad_UP.uploadPlates(plates);
     }
 
 

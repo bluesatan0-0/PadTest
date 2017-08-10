@@ -34,7 +34,8 @@ public class DBConnect_Util {
 
 
     //    获取Mysql数据库连接，须在子线程中使用。
-    public synchronized static Connection getDBConnection() {
+//    public synchronized static Connection getDBConnection() {
+    public  static Connection getDBConnection() {
 
         ArrayMap<String, String> configs = SharedPreference_Utils.getConfigs();
 
