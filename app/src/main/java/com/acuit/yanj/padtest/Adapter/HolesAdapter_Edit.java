@@ -142,6 +142,7 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
         }
     }
 
+
     @Override
     public int getItemCount() {
         return holesList.size();
@@ -177,7 +178,6 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
 
         public View itemView;
 
-        // TODO: 2017/8/7 item点击事件回调（餐盘item点击进入该餐盘的编辑模式）
 
         public ViewHolder_HolesAdapter(View itemView, OnItemClickListener listener) {
             super(itemView);

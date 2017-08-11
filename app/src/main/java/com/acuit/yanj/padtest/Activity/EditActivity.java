@@ -20,7 +20,6 @@ import com.acuit.yanj.padtest.Base.BaseArrayMap;
 import com.acuit.yanj.padtest.Bean.Dish;
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
-import com.acuit.yanj.padtest.Bean.MenuList;
 import com.acuit.yanj.padtest.Bean.Plate;
 import com.acuit.yanj.padtest.Model.EditBusiness.EditBusiness_DataLoad;
 import com.acuit.yanj.padtest.Model.MainBusiness.MainBusiness_DataLoad;
@@ -56,15 +55,19 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private BaseArrayList<Line> lines;
     private BaseArrayList<Hole> holes;
     private BaseArrayList<Dish> dishes;
-    private BaseArrayList<String> invalidateHolesUuid;
     private BaseArrayMap<String, Plate> plates;
-    private MenuList menuList;
+
+    private BaseArrayList<Hole> tempHoles;
+    private BaseArrayMap<String, Plate> tempPlates;
+
     private LinesAdapter linesAdapter;
     private HolesAdapter_Edit holesAdapter;
     private DishesAdapter dishesAdapter;
+
     private Context context;
     private Button btnAllLines;
     private int selectedHolePosition;
+    private BaseArrayList<String> invalidateHolesUuid;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -118,6 +121,9 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         plates = new BaseArrayMap<String, Plate>();
         invalidateHolesUuid = new BaseArrayList<String>();
 
+        tempHoles = new BaseArrayList<Hole>();
+        tempPlates = new BaseArrayMap<String, Plate>();
+
         // TODO: 2017/8/10 使用页面传值，加快显示速度，需重写adapter初始化的逻辑（只查询菜单集合）
         Intent data = getIntent();
         lines.addAll((Collection<? extends Line>) data.getSerializableExtra("Lines"));
@@ -125,6 +131,9 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         dishes.addAll((Collection<? extends Dish>) data.getSerializableExtra("Dishes"));
         plates.putAll((Map<? extends String, ? extends Plate>) data.getSerializableExtra("Plates"));
 //        invalidateHolesUuid.addAll((Collection<? extends String>) data.getSerializableExtra("invalidateHolesUuid"));
+        tempHoles.addAll(holes);
+        tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
+
         comparisonPlatesDishes();
 
         System.out.println("aaa lines:" + lines.toString());
@@ -195,7 +204,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
             holesAdapter.notifyDataSetChanged();
         } else {
 //                    若空则认为是初始化，实例化适配器
-            holesAdapter = new HolesAdapter_Edit(context, holes, lines, plates, invalidateHolesUuid);
+            holesAdapter = new HolesAdapter_Edit(context, tempHoles, lines, tempPlates, invalidateHolesUuid);
             holesAdapter.setOnItemClickListener(new mItemClickListener_rvHoles());
             rvHoles.setAdapter(holesAdapter);
         }
@@ -238,7 +247,8 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                 break;
 
             case R.id.btn_allLines:
-                updateNotifyDataSet_LinesHoles();
+//                updateNotifyDataSet_LinesHoles();
+                pickHolesByLineClick("全  部");
                 break;
         }
     }
@@ -321,11 +331,14 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     }
 
 
+    /**
+     * 比对排菜与菜单，无效化
+     */
     private void comparisonPlatesDishes() {
 
         invalidateHolesUuid.clear();
         boolean isExist = false;
-        for (Plate plate : plates.values()) {
+        for (Plate plate : tempPlates.values()) {
             String dish_code = plate.getDish_code();
             isExist = false;
             for (Dish dish : dishes) {
@@ -357,10 +370,10 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
         @Override
         public void onItemViewClick(Dish dish) {
-            Hole hole = holes.get(selectedHolePosition);
+            Hole hole = tempHoles.get(selectedHolePosition);
             Plate plate = GetPlate.GetPlate_FromHoleAndDish(hole, dish);
 
-            int indexOfKey = plates.indexOfKey(hole.getUuid());
+            int indexOfKey = tempPlates.indexOfKey(hole.getUuid());
 
 //            System.out.println("aaa plates:" + plates.toString());
 //            System.out.println("aaa hole.getUuid():" + hole.getUuid());
@@ -369,8 +382,10 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
             if (0 > indexOfKey) {
                 plates.put(hole.getUuid(), plate);
+                tempPlates.put(hole.getUuid(), plate);
             } else {
                 plates.setValueAt(indexOfKey, plate);
+                tempPlates.setValueAt(indexOfKey, plate);
             }
 
             invalidateHolesUuid.remove(hole.getUuid());
@@ -404,9 +419,51 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         @Override
         public void onBtnNameClick(String lineName) {
 
-            whenBtnLineNameClick(lineName);
+//            whenBtnLineNameClick(lineName);
+            pickHolesByLineClick(lineName);
         }
 
+    }
+
+    /**
+     * 点击餐线切换相应的餐眼，弃用whenBtnLineNameClick()
+     * 避免未上传的排菜信息丢失
+     *
+     * @param lineName 点击的餐线名称
+     */
+    private void pickHolesByLineClick(String lineName) {
+        tempHoles.clear();
+        tempPlates.clear();
+
+        if (lineName.equals("全  部")) {
+            tempHoles.addAll(holes);
+            tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
+        } else {
+
+            int lineId = -1;
+
+            for (Line line : lines) {
+                if (lineName.equals(line.getName())) {
+                    lineId = line.getId();
+                }
+            }
+
+            for (Hole hole : holes) {
+                if (hole.getLineId() == lineId) {
+                    tempHoles.add(hole);
+                }
+            }
+
+
+            for (String holeUuid : plates.keySet()) {
+                for (Hole hole : tempHoles) {
+                    if (hole.getUuid().equals(holeUuid)) {
+                        tempPlates.put(holeUuid, plates.get(holeUuid));
+                    }
+                }
+            }
+        }
+        holesAdapter.notifyDataSetChanged();
     }
 
     /**
