@@ -12,6 +12,7 @@ import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
 import com.acuit.yanj.padtest.Bean.MenuList;
 import com.acuit.yanj.padtest.Bean.Plate;
+import com.acuit.yanj.padtest.Model.DAO.DishDAO;
 import com.acuit.yanj.padtest.Model.DAO.HoleDAO;
 import com.acuit.yanj.padtest.Model.DAO.LineDAO;
 import com.acuit.yanj.padtest.Model.DAO.PlateDAO;
@@ -71,9 +72,10 @@ public class MainBusiness_DataLoad {
                     List<Line> linesList = (List<Line>) datas[0];
                     List<Hole> holesList = (List<Hole>) datas[1];
                     ArrayMap<String, Plate> platesList = (ArrayMap<String, Plate>) datas[2];
+                    List<Dish> dishesList = (List<Dish>) datas[3];
 
                     if ((null != linesList) && (null != holesList) && (null != platesList)) {
-                        onDataLoadedLisener.load_Lines_Holes_Plates(linesList, holesList, platesList);
+                        onDataLoadedLisener.load_Lines_Holes_Plates(linesList, holesList, platesList, dishesList);
                     } else {
                         System.out.println("aaa 排菜餐眼查询结果集为空");
                     }
@@ -83,7 +85,7 @@ public class MainBusiness_DataLoad {
                     holesList = (ArrayList<Hole>) msg.obj;
 
                     if ((null != holesList)) {
-                        onDataLoadedLisener.load_Lines_Holes_Plates(null, holesList, null);
+                        onDataLoadedLisener.load_Lines_Holes_Plates(null, holesList, null, null);
                     } else {
                         System.out.println("aaa 排菜餐眼查询结果集为空");
                     }
@@ -116,7 +118,7 @@ public class MainBusiness_DataLoad {
     public interface OnDataLoadedLisener {
 
         //        餐线+餐眼+排菜  完成加载
-        void load_Lines_Holes_Plates(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList);
+        void load_Lines_Holes_Plates(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList, List<Dish> dishesList);
     }
 
 
@@ -129,7 +131,7 @@ public class MainBusiness_DataLoad {
             @Override
             public void run() {
 
-                Object[] dataLists = new Object[3];
+                Object[] dataLists = new Object[4];
 
                 LineDAO lineDAO = new LineDAO();
                 dataLists[0] = lineDAO.getAllLines();
@@ -139,6 +141,9 @@ public class MainBusiness_DataLoad {
 
                 PlateDAO plateDAO = new PlateDAO();
                 dataLists[2] = plateDAO.getPlates();
+
+                DishDAO dishDAO = new DishDAO();
+                dataLists[3] = dishDAO.getLastDishes();
 
                 Message msg = Message.obtain();
                 msg.obj = dataLists;
@@ -320,6 +325,7 @@ public class MainBusiness_DataLoad {
 
     /**
      * 将下载的今日菜单 转换为 菜品list
+     *
      * @param menuList
      * @return
      */

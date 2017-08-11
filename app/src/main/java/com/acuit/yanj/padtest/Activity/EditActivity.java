@@ -15,6 +15,7 @@ import com.acuit.yanj.padtest.Adapter.DishesAdapter;
 import com.acuit.yanj.padtest.Adapter.HolesAdapter_Edit;
 import com.acuit.yanj.padtest.Adapter.LinesAdapter;
 import com.acuit.yanj.padtest.Base.BaseActivity;
+import com.acuit.yanj.padtest.Base.BaseArrayList;
 import com.acuit.yanj.padtest.Base.BaseArrayMap;
 import com.acuit.yanj.padtest.Bean.Dish;
 import com.acuit.yanj.padtest.Bean.Hole;
@@ -27,7 +28,9 @@ import com.acuit.yanj.padtest.R;
 import com.acuit.yanj.padtest.Utils.GetPlate;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 
 /**
  * 类名: EditActivity <p>
@@ -50,9 +53,10 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private RecyclerView rvLines;
     private RecyclerView rvMenu;
 
-    private List<Line> lines;
-    private List<Hole> holes;
-    private List<Dish> dishes;
+    private BaseArrayList<Line> lines;
+    private BaseArrayList<Hole> holes;
+    private BaseArrayList<Dish> dishes;
+    private BaseArrayList<String> invalidateHolesUuid;
     private BaseArrayMap<String, Plate> plates;
     private MenuList menuList;
     private LinesAdapter linesAdapter;
@@ -83,6 +87,8 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         super.onResume();
 //        updateNotifyDataSet_LinesHoles();
 //        避免排菜信息未上传丢失
+
+        comparisonPlatesDishes();
     }
 
     @Override
@@ -106,16 +112,25 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private void initData() {
         context = this;
 
-        lines = new ArrayList<Line>();
-        holes = new ArrayList<Hole>();
-        dishes = new ArrayList<Dish>();
+        lines = new BaseArrayList<Line>();
+        holes = new BaseArrayList<Hole>();
+        dishes = new BaseArrayList<Dish>();
         plates = new BaseArrayMap<String, Plate>();
+        invalidateHolesUuid = new BaseArrayList<String>();
 
         // TODO: 2017/8/10 使用页面传值，加快显示速度，需重写adapter初始化的逻辑（只查询菜单集合）
-//        Intent data = getIntent();
-//        lines.addAll((Collection<? extends Line>) data.getSerializableExtra("Lines"));
-//        holes.addAll((Collection<? extends Hole>) data.getSerializableExtra("Holes"));
-//        plates.putAll((Map<? extends String, ? extends Plate>) data.getSerializableExtra("Plates"));
+        Intent data = getIntent();
+        lines.addAll((Collection<? extends Line>) data.getSerializableExtra("Lines"));
+        holes.addAll((Collection<? extends Hole>) data.getSerializableExtra("Holes"));
+        dishes.addAll((Collection<? extends Dish>) data.getSerializableExtra("Dishes"));
+        plates.putAll((Map<? extends String, ? extends Plate>) data.getSerializableExtra("Plates"));
+//        invalidateHolesUuid.addAll((Collection<? extends String>) data.getSerializableExtra("invalidateHolesUuid"));
+        comparisonPlatesDishes();
+
+        System.out.println("aaa lines:" + lines.toString());
+        System.out.println("aaa holes:" + holes.toString());
+        System.out.println("aaa plates:" + plates.toString());
+        System.out.println("aaa dishes:" + dishes.toString());
 
 
         LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -131,7 +146,8 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         rvLines.setHasFixedSize(true);
         rvHoles.setHasFixedSize(true);
 
-        updateNotifyDataSet_LinesHoles();
+        initAdapters();
+
     }
 
     private void updateNotifyDataSet_LinesHoles() {
@@ -151,43 +167,50 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                 holes.addAll(holesList);
                 dishes.addAll(dishesList);
                 plates.putAll(plateList);
-                System.out.println("aaa linesList:" + linesList.toString());
-                System.out.println("aaa holesList:" + holesList.toString());
-                System.out.println("aaa plateList:" + plateList.toString());
-                System.out.println("aaa dishesList:" + dishesList.toString());
 
-                if (null != linesAdapter) {
-                    linesAdapter.notifyDataSetChanged();
-                } else {
-//                    若空则认为是初始化，实例化适配器
-                    linesAdapter = new LinesAdapter(context, lines);
-                    linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
-                    rvLines.setAdapter(linesAdapter);
-                }
-
-                if (null != holesAdapter) {
-                    holesAdapter.notifyDataSetChanged();
-                } else {
-//                    若空则认为是初始化，实例化适配器
-                    holesAdapter = new HolesAdapter_Edit(context, holes, lines, plates);
-                    holesAdapter.setOnItemClickListener(new mItemClickListener_rvHoles());
-                    rvHoles.setAdapter(holesAdapter);
-                }
-
-                
-                if (null != dishesAdapter) {
-                    dishesAdapter.notifyDataSetChanged();
-                } else {
-//                    若空则认为是初始化，实例化适配器
-                    dishesAdapter = new DishesAdapter(context, dishes);
-                    dishesAdapter.setOnItemClickListener(new mItemClickListener_rvDishes());
-                    rvMenu.setAdapter(dishesAdapter);
-                }
+                initAdapters();
 
             }
         });
 
         editBusiness_dataLoad.getList_Lines_Holes_Plates();
+    }
+
+    /**
+     * 刷新适配器（界面上三个列表）；若不存在，则初始化
+     */
+    private void initAdapters() {
+
+
+        if (null != linesAdapter) {
+            linesAdapter.notifyDataSetChanged();
+        } else {
+//                    若空则认为是初始化，实例化适配器
+            linesAdapter = new LinesAdapter(context, lines);
+            linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
+            rvLines.setAdapter(linesAdapter);
+        }
+
+        if (null != holesAdapter) {
+            holesAdapter.notifyDataSetChanged();
+        } else {
+//                    若空则认为是初始化，实例化适配器
+            holesAdapter = new HolesAdapter_Edit(context, holes, lines, plates, invalidateHolesUuid);
+            holesAdapter.setOnItemClickListener(new mItemClickListener_rvHoles());
+            rvHoles.setAdapter(holesAdapter);
+        }
+
+
+        if (null != dishesAdapter) {
+            dishesAdapter.notifyDataSetChanged();
+        } else {
+//                    若空则认为是初始化，实例化适配器
+            dishesAdapter = new DishesAdapter(context, dishes);
+            dishesAdapter.setOnItemClickListener(new mItemClickListener_rvDishes());
+            rvMenu.setAdapter(dishesAdapter);
+        }
+
+
     }
 
     private void initEvent() {
@@ -202,7 +225,6 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
     @Override
     public void onClick(View v) {
-        Intent intent;
         switch (v.getId()) {
             case R.id.ll_Clear:
                 plates.clear();
@@ -224,13 +246,16 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private void ReturnResult() {
         Intent intent;
         intent = new Intent();
+        intent.putExtra("Dishes", dishes);
         intent.putExtra("Plates", plates);
+        intent.putExtra("invalidateHolesUuid", invalidateHolesUuid);
         setResult(2, intent);
         finish();
     }
 
 
 //-------------------------------------下载今日菜单👇-----------------------------------------------------
+
     /**
      * 点击下载今日菜单后
      */
@@ -252,6 +277,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
     /**
      * 将下载的菜单存数据库，拿出数据库的菜品来排菜;
+     *
      * @param dishesList
      */
     private void saveDownloadedDishes(ArrayList<Dish> dishesList) {
@@ -286,8 +312,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                 dishes.addAll(dishList);
                 dishesAdapter.notifyDataSetChanged();
 
-                // TODO: 2017/8/10 比对holes+plates 与dishes 不在的无效化
-
+                comparisonPlatesDishes();
 
             }
         });
@@ -295,8 +320,33 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         editBusiness_dataLoad.getList_Dishes();
     }
 
-//-------------------------------------下载今日菜单?👆-----------------------------------------------------
 
+    private void comparisonPlatesDishes() {
+
+        invalidateHolesUuid.clear();
+        boolean isExist = false;
+        for (Plate plate : plates.values()) {
+            String dish_code = plate.getDish_code();
+            isExist = false;
+            for (Dish dish : dishes) {
+                if ((dish.getStock_id() + "").equals(dish_code)) {
+                    isExist = true;
+                }
+            }
+            if (isExist == false) {
+                invalidateHolesUuid.add(plate.getDevice_code());
+            }
+        }
+
+        for (String s : invalidateHolesUuid) {
+            System.out.println("aaa editActivity invalidateUuid:" + s);
+        }
+
+        if (null != holesAdapter) {
+            holesAdapter.notifyDataSetChanged();
+        }
+    }
+//-------------------------------------下载今日菜单?👆-----------------------------------------------------
 
 
     /**
@@ -323,7 +373,12 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                 plates.setValueAt(indexOfKey, plate);
             }
 
-            System.out.println("aaa plates:" + plates.toString());
+            invalidateHolesUuid.remove(hole.getUuid());
+
+            for (String s : invalidateHolesUuid) {
+                System.out.println("aaa editActivity remove invalidateUuid:" + s);
+            }
+
             holesAdapter.notifyDataSetChanged();
         }
     }
@@ -365,8 +420,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
 
             @Override
-            public void load_Lines_Holes_Plates(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList) {
-                // TODO: 2017/8/7 餐线点击后，下载完成该餐线的餐盘信息，需完成：切换餐盘列表
+            public void load_Lines_Holes_Plates(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList, List<Dish> dishesList) {
                 System.out.println("aaa 点击了餐线 holes:" + holesList.toString());
                 holes.clear();
                 holes.addAll(holesList);

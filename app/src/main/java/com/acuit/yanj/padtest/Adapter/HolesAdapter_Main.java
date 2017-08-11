@@ -16,6 +16,7 @@ import com.acuit.yanj.padtest.Bean.Plate;
 import com.acuit.yanj.padtest.R;
 import com.acuit.yanj.padtest.Utils.MyImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -35,14 +36,16 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
     private BaseApplication context;
     private List<Hole> holesList;
     private List<Line> linesList;
+    private ArrayList<String> invalidateHolesUuid;
     private BaseArrayMap<String, Plate> plateList;
     private Line line;
 
-    public HolesAdapter_Main(Context context, List<Hole> holes, List<Line> linesList, BaseArrayMap<String, Plate> plateList) {
+    public HolesAdapter_Main(Context context, List<Hole> holes, List<Line> linesList, BaseArrayMap<String, Plate> plateList, ArrayList<String> invalidateHolesUuid) {
         this.context = (BaseApplication) context.getApplicationContext();
         this.holesList = holes;
         this.linesList = linesList;
         this.plateList = plateList;
+        this.invalidateHolesUuid = invalidateHolesUuid;
         imageLoader = this.context.getImageLoader();
     }
 
@@ -120,6 +123,13 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
             if (null != menu_url && !menu_url.isEmpty()) {
                 imageLoader.setBitmapToImageView(menu_url, holder_HolesAdapter.ivDish);
             }
+
+
+//            比对是否无效化
+            if (invalidateHolesUuid.contains(holesList.get(position).getUuid())) {
+                holder_HolesAdapter.ivStatu.setImageResource(R.mipmap.item_hole_invalidate);
+            }
+
 
         }
     }

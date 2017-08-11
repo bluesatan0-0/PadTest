@@ -35,16 +35,18 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
     private BaseApplication context;
     private List<Hole> holesList;
     private List<Line> linesList;
+    private List<String> invalidateHolesUuid;
     private BaseArrayMap<String, Plate> plateList;
     private Line line;
     private ViewHolder_HolesAdapter preSelected_ViewHolder = null;
     private OnItemClickListener itemClickListener;
 
-    public HolesAdapter_Edit(Context context, List<Hole> holes, List<Line> linesList, BaseArrayMap<String, Plate> plateList) {
+    public HolesAdapter_Edit(Context context, List<Hole> holes, List<Line> linesList, BaseArrayMap<String, Plate> plateList,List<String> invalidateHolesUuid) {
         this.context = (BaseApplication) context.getApplicationContext();
         this.holesList = holes;
         this.linesList = linesList;
         this.plateList = plateList;
+        this.invalidateHolesUuid = invalidateHolesUuid;
         imageLoader = this.context.getImageLoader();
     }
 
@@ -125,6 +127,12 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
             if (null != menu_url && !menu_url.isEmpty()) {
                 imageLoader.setBitmapToImageView(menu_url, holder_HolesAdapter.ivDish);
             }
+
+            //            比对是否无效化
+            if (invalidateHolesUuid.contains(holesList.get(position).getUuid())) {
+                holder_HolesAdapter.ivStatu.setImageResource(R.mipmap.item_hole_invalidate);
+            }
+
 
         }
 

@@ -94,7 +94,10 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
     @Override
     protected void onResume() {
         super.onResume();
-        updateNotifyDataSet_LinesHolesPlatesDishes();
+
+        if (!SharedPreference_Utils.getConfigs().get(SharedPreference_Utils.KEY_DB_IP).isEmpty()) {
+            updateNotifyDataSet_LinesHolesPlatesDishes();
+        }
     }
 
     private void initView() {
@@ -126,7 +129,6 @@ public class SettingsActivity extends BaseActivity implements View.OnClickListen
         LinearLayoutManager linearLayoutManager_holes = new LinearLayoutManager(context);
         rvLines.setLayoutManager(linearLayoutManager_lines);
         rvHoles.setLayoutManager(linearLayoutManager_holes);
-
 
 
 //        初始化列表(餐线、餐眼)数据
