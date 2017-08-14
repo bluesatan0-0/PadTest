@@ -1,8 +1,13 @@
 package com.acuit.yanj.padtest.Activity;
 
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ServiceConnection;
 import android.os.Bundle;
+import android.os.Handler;
+import android.os.IBinder;
+import android.os.Message;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -16,6 +21,7 @@ import com.acuit.yanj.padtest.Adapter.LinesAdapter;
 import com.acuit.yanj.padtest.Base.BaseActivity;
 import com.acuit.yanj.padtest.Base.BaseArrayList;
 import com.acuit.yanj.padtest.Base.BaseArrayMap;
+import com.acuit.yanj.padtest.Base.BaseHandler;
 import com.acuit.yanj.padtest.Bean.Dish;
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
@@ -23,6 +29,7 @@ import com.acuit.yanj.padtest.Bean.Plate;
 import com.acuit.yanj.padtest.Model.EditBusiness.EditBusiness_DataLoad;
 import com.acuit.yanj.padtest.Model.MainBusiness.MainBusiness_DataLoad;
 import com.acuit.yanj.padtest.R;
+import com.acuit.yanj.padtest.Service.Service_refrashWeight;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -40,7 +47,7 @@ import java.util.Map;
  * 更新描述: 实现功能（数据库操作模块）<p>
  */
 
-public class MainActivity extends BaseActivity implements View.OnClickListener {
+public class MainActivity extends BaseActivity implements View.OnClickListener, ServiceConnection {
 
     private View btnPlanDish;
     private View btnDownloadMenu;
@@ -65,6 +72,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
 
     private Context context;
     private BaseArrayList<String> invalidateHolesUuid;
+    private Intent intentService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -87,7 +95,46 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         super.onResume();
 //        updateNotifyDataSet_LinesHolesPlates();
 
+        Handler handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
 
+                plates.clear();
+                tempPlates.clear();
+                plates.putAll((Map<? extends String, ? extends Plate>) msg.obj);
+                tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
+                holesAdapter_main.notifyDataSetChanged();
+
+            }
+        };
+
+        BaseHandler uiHandler = (BaseHandler) handler;
+
+
+        intentService = new Intent(this, Service_refrashWeight.class);
+        intentService.putExtra("uiHandler", uiHandler);
+        bindService(intentService, this, Context.BIND_AUTO_CREATE);
+
+    }
+
+
+    @Override
+    public void onServiceConnected(ComponentName name, IBinder service) {
+
+
+
+    }
+
+    @Override
+    public void onServiceDisconnected(ComponentName name) {
+
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+
+        unbindService(this);
     }
 
     @Override
@@ -357,6 +404,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             @Override
             public void success() {
                 Toast.makeText(context, "排菜上传成功！", Toast.LENGTH_SHORT).show();
+                updateNotifyDataSet_LinesHolesPlates();
             }
 
             @Override
@@ -366,6 +414,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         });
 
         mainBusiness_dataLoad_UP.uploadPlates(plates);
+
     }
 
 

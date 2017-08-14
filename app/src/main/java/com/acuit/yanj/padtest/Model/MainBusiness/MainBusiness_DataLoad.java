@@ -293,8 +293,7 @@ public class MainBusiness_DataLoad {
                 String dishListJson_url = URL_Util.getDishListJson_URL(configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_IP), configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_DEPATEMENT_CODE));
                 System.out.println("aaa 服务器url:" + dishListJson_url);
 
-                // TODO: 2017/8/10 接口改版后去掉
-                dishListJson_url = "http://192.168.2.241/apis.php?c=Z_braindisc&a=platesettings&shop=15&format=json&d=2017-07-15&shoptimes=2";
+//                dishListJson_url = "http://192.168.2.241/apis.php?c=Z_braindisc&a=platesettings&shop=15&format=json&d=2017-07-15&shoptimes=2";
 
                 StringRequest stringRequest = new StringRequest(Request.Method.GET, dishListJson_url, new Response.Listener<String>() {
                     @Override
