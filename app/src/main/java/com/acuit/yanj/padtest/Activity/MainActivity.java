@@ -101,19 +101,20 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 
     @Override
-    public void onServiceConnected(ComponentName name, IBinder service) {
+    public void onServiceConnected(final ComponentName name, IBinder service) {
 
         Service_refrashWeight.MyBinder myService = (Service_refrashWeight.MyBinder) service;
-        service_refrashWeight = myService.getService();
-        service_refrashWeight.setServiceCallBack(new Service_refrashWeight.ServiceCallBack() {
+        myService.setServiceCallBack(new Service_refrashWeight.ServiceCallBack() {
             @Override
             public void getData(ArrayMap<String, Plate> plateList) {
                 plates.clear();
                 tempPlates.clear();
                 plates.putAll(plateList);
                 tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
-                holesAdapter_main.notifyDataSetChanged();
-                System.out.println("service is running");
+                if (null != holesAdapter_main) {
+                    holesAdapter_main.notifyDataSetChanged();
+                    System.out.println(name.toString()+" is running");
+                }
             }
         });
 
@@ -122,7 +123,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onServiceDisconnected(ComponentName name) {
 //        避免解绑时内存泄漏
-        service_refrashWeight.setServiceCallBack(null);
+        service_refrashWeight.scheduledExecutorService = null;
     }
 
     @Override

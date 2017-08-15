@@ -17,7 +17,7 @@ import java.util.concurrent.TimeUnit;
 
 public class Service_refrashWeight extends Service {
 
-    private ScheduledExecutorService scheduledExecutorService;
+    public ScheduledExecutorService scheduledExecutorService;
     private Handler handler;
     private ArrayMap<String, Plate> plates;
     private ServiceCallBack callBack;
@@ -79,20 +79,17 @@ public class Service_refrashWeight extends Service {
         return super.onUnbind(intent);
     }
 
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        System.out.println("service is onDestroy");
+    }
 
     public class MyBinder extends Binder {
-        public Service_refrashWeight getService() {
-            return Service_refrashWeight.this;
+        public void setServiceCallBack(ServiceCallBack callBack) {
+
+            Service_refrashWeight.this.callBack = callBack;
         }
-    }
-
-    public void setServiceCallBack(ServiceCallBack callBack) {
-        this.callBack = callBack;
-    }
-
-    public ServiceCallBack getServiceCallBack() {
-
-        return this.callBack;
     }
 
     public interface ServiceCallBack {
