@@ -237,7 +237,6 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         switch (v.getId()) {
             case R.id.ll_Clear:
                 plates.clear();
-
                 holesAdapter.notifyDataSetChanged();
                 break;
             case R.id.ll_savePlan:

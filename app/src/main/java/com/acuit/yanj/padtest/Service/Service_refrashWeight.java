@@ -3,18 +3,14 @@ package com.acuit.yanj.padtest.Service;
 import android.app.Service;
 import android.content.Intent;
 import android.os.Binder;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Message;
 import android.util.ArrayMap;
 
-import com.acuit.yanj.padtest.Base.BaseHandler;
-import com.acuit.yanj.padtest.Bean.Dish;
-import com.acuit.yanj.padtest.Bean.Hole;
-import com.acuit.yanj.padtest.Bean.Line;
 import com.acuit.yanj.padtest.Bean.Plate;
-import com.acuit.yanj.padtest.Model.MainBusiness.MainBusiness_DataLoad;
+import com.acuit.yanj.padtest.Model.DAO.PlateDAO;
 
-import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -22,7 +18,9 @@ import java.util.concurrent.TimeUnit;
 public class Service_refrashWeight extends Service {
 
     private ScheduledExecutorService scheduledExecutorService;
-    private BaseHandler uiHandler;
+    private Handler handler;
+    private ArrayMap<String, Plate> plates;
+    private ServiceCallBack callBack;
 
     public Service_refrashWeight() {
 
@@ -39,11 +37,22 @@ public class Service_refrashWeight extends Service {
     @Override
     public IBinder onBind(Intent intent) {
 
-        uiHandler = (BaseHandler) intent.getSerializableExtra("UIHandler");
+        handler = new Handler() {
+            @Override
+            public void handleMessage(Message msg) {
+                if (msg.what == 1) {
+                    plates = (ArrayMap<String, Plate>) msg.obj;
+                    if (null != callBack) {
+                        callBack.getData(plates);
+                    }
+                }
+
+            }
+        };
 
         runService();
 
-        return new Binder();
+        return new MyBinder();
     }
 
     private void runService() {
@@ -51,23 +60,17 @@ public class Service_refrashWeight extends Service {
             @Override
             public void run() {
 
-                MainBusiness_DataLoad mainBusiness_dataLoad = new MainBusiness_DataLoad();
+                PlateDAO plateDAO = new PlateDAO();
+                ArrayMap<String, Plate> platesArrayMap = plateDAO.getPlates();
 
-                mainBusiness_dataLoad.setOnDataLoadedLisener(new MainBusiness_DataLoad.OnDataLoadedLisener() {
-                    @Override
-                    public void load_Lines_Holes_Plates(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList, List<Dish> dishesList) {
-                        Message msg = Message.obtain();
-                        msg.obj = plateList;
-                        msg.what = 1;
-                        uiHandler.sendMessage(msg);
-                    }
-                });
-
-
+                Message msg = Message.obtain();
+                msg.obj = platesArrayMap;
+                msg.what = 1;
+                handler.sendMessage(msg);
             }
         };
 
-        scheduledExecutorService.schedule(getData_Task, 2, TimeUnit.SECONDS);
+        scheduledExecutorService.scheduleAtFixedRate(getData_Task, 2, 2, TimeUnit.SECONDS);
     }
 
 
@@ -76,6 +79,24 @@ public class Service_refrashWeight extends Service {
         return super.onUnbind(intent);
     }
 
-//    public MyBinder
+
+    public class MyBinder extends Binder {
+        public Service_refrashWeight getService() {
+            return Service_refrashWeight.this;
+        }
+    }
+
+    public void setServiceCallBack(ServiceCallBack callBack) {
+        this.callBack = callBack;
+    }
+
+    public ServiceCallBack getServiceCallBack() {
+
+        return this.callBack;
+    }
+
+    public interface ServiceCallBack {
+        void getData(ArrayMap<String, Plate> plateList);
+    }
 
 }
