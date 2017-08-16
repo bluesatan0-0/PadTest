@@ -65,6 +65,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
     private Button btnAllLines;
     private int selectedHolePosition = -1;
     private BaseArrayList<String> invalidateHolesUuid;
+    private ArrayList<Integer> temp_selectedHolePosition;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -209,7 +210,9 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
             holesAdapter.notifyDataSetChanged();
         } else {
 //                    若空则认为是初始化，实例化适配器
-            holesAdapter = new HolesAdapter_Edit(context, holes, lines, plates, invalidateHolesUuid,selectedHolePosition);
+            temp_selectedHolePosition = new ArrayList<Integer>();
+            temp_selectedHolePosition.add(0, selectedHolePosition);
+            holesAdapter = new HolesAdapter_Edit(context, holes, lines, plates, invalidateHolesUuid, temp_selectedHolePosition);
             holesAdapter.setOnItemClickListener(new mItemClickListener_rvHoles());
             rvHoles.setAdapter(holesAdapter);
         }
@@ -403,9 +406,15 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
         @Override
         public void onItemViewClick(Dish dish) {
-            if (-1==selectedHolePosition) {
+            boolean hasFull = false;
+            if (-1 == selectedHolePosition) {
                 selectedHolePosition = 0;
+            } else if (selectedHolePosition > holes.size() - 1) {
+                selectedHolePosition = 0;
+                hasFull = true;
             }
+
+
             Hole hole = holes.get(selectedHolePosition);
             Plate plate = GetPlate.GetPlate_FromHoleAndDish(hole, dish);
 
@@ -430,8 +439,14 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 //                System.out.println("aaa editActivity remove invalidateUuid:" + s);
 //            }
 
-            selectedHolePosition++;
-                System.out.println("aaa editActivity selectedHolePosition:" + selectedHolePosition);
+            if (hasFull) {
+                hasFull = false;
+            } else {
+                selectedHolePosition++;
+            }
+
+            temp_selectedHolePosition.set(0, selectedHolePosition);
+            System.out.println("aaa editActivity selectedHolePosition:" + selectedHolePosition);
             holesAdapter.notifyDataSetChanged();
         }
     }

@@ -16,6 +16,7 @@ import com.acuit.yanj.padtest.Bean.Plate;
 import com.acuit.yanj.padtest.R;
 import com.acuit.yanj.padtest.Utils.MyImageLoader;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -40,16 +41,17 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
     private Line line;
     private ViewHolder_HolesAdapter preSelected_ViewHolder = null;
     private OnItemClickListener itemClickListener;
-    private int selectedPosition;
+    private ArrayList<Integer> selectedPosition;
 
-    public HolesAdapter_Edit(Context context, List<Hole> holes, List<Line> linesList, BaseArrayMap<String, Plate> plateList, List<String> invalidateHolesUuid, int selectedPosition) {
+    public HolesAdapter_Edit(Context context, List<Hole> holes, List<Line> linesList, BaseArrayMap<String, Plate> plateList, List<String> invalidateHolesUuid, ArrayList<Integer> selectedPosition) {
         this.context = (BaseApplication) context.getApplicationContext();
         this.holesList = holes;
         this.linesList = linesList;
         this.plateList = plateList;
         this.invalidateHolesUuid = invalidateHolesUuid;
         this.selectedPosition = selectedPosition;
-        System.out.println("aaa adapter oncreat selectedPosition:" + selectedPosition);
+
+//        System.out.println("aaa adapter oncreat selectedPosition:" + selectedPosition);
         imageLoader = this.context.getImageLoader();
     }
 
@@ -163,16 +165,16 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
 //            HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(true);
 //        } else {
 
-
-        if (-1 == selectedPosition && 0 == position) {
+        Integer selectedHolePosition = selectedPosition.get(0);
+        if (-1 == selectedHolePosition && 0 == position) {
             HolesAdapter_Edit.this.preSelected_ViewHolder = (ViewHolder_HolesAdapter) holder;
             HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(true);
-            selectedPosition = position;
+            selectedPosition.set(0, position);
         } else {
-                System.out.println("aaa adapter selectedPosition:"+selectedPosition);
-                System.out.println("aaa adapter position:"+position);
-            if (selectedPosition == position) {
-                System.out.println("aaa adapter selectedPosition:"+selectedPosition);
+            System.out.println("aaa adapter selectedPosition:" + selectedHolePosition);
+            System.out.println("aaa adapter position:" + position);
+            if (selectedHolePosition == position) {
+                System.out.println("aaa adapter selectedPosition:" + selectedHolePosition);
                 HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(false);
                 HolesAdapter_Edit.this.preSelected_ViewHolder = (ViewHolder_HolesAdapter) holder;
                 holder.itemView.setSelected(true);
