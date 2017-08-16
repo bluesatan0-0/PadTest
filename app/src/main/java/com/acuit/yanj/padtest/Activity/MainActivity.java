@@ -29,9 +29,7 @@ import com.acuit.yanj.padtest.R;
 import com.acuit.yanj.padtest.Service.Service_refrashWeight;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
-import java.util.Map;
 
 /**
  * 类名: MainActivity <p>
@@ -48,7 +46,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     private View btnPlanDish;
     private View btnDownloadMenu;
-    private View btnUploadPlan;
+    //    private View btnUploadPlan;
     private View btnOrderList;
     private View btnSettings;
     private Button btnAllLines;
@@ -64,13 +62,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private BaseArrayList<Dish> dishes;
     private BaseArrayMap<String, Plate> plates;
 
-    private BaseArrayList<Hole> tempHoles;
-    private BaseArrayMap<String, Plate> tempPlates;
+//    private BaseArrayList<Hole> tempHoles;
+//    private BaseArrayMap<String, Plate> tempPlates;
 
     private Context context;
     private BaseArrayList<String> invalidateHolesUuid;
     private Intent intentService;
     private Service_refrashWeight service_refrashWeight;
+    private Service_refrashWeight.MyBinder myService;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -103,17 +102,17 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     @Override
     public void onServiceConnected(final ComponentName name, IBinder service) {
 
-        Service_refrashWeight.MyBinder myService = (Service_refrashWeight.MyBinder) service;
+        myService = (Service_refrashWeight.MyBinder) service;
         myService.setServiceCallBack(new Service_refrashWeight.ServiceCallBack() {
             @Override
             public void getData(ArrayMap<String, Plate> plateList) {
                 plates.clear();
-                tempPlates.clear();
+//                tempPlates.clear();
                 plates.putAll(plateList);
-                tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
+//                tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
                 if (null != holesAdapter_main) {
                     holesAdapter_main.notifyDataSetChanged();
-                    System.out.println(name.toString()+" is running");
+                    System.out.println(name.toString() + " is running");
                 }
             }
         });
@@ -122,8 +121,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
     @Override
     public void onServiceDisconnected(ComponentName name) {
-//        避免解绑时内存泄漏
-        service_refrashWeight.scheduledExecutorService = null;
     }
 
     @Override
@@ -131,39 +128,42 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         super.onPause();
 
         unbindService(this);
+//        避免解绑时内存泄漏
+        service_refrashWeight.scheduledExecutorService.shutdownNow();
+        myService = null;
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 1 && resultCode == 2) {
-            plates.clear();
-            dishes.clear();
-            invalidateHolesUuid.clear();
-            plates.putAll((Map<? extends String, ? extends Plate>) data.getSerializableExtra("Plates"));
-            dishes.addAll((Collection<? extends Dish>) data.getSerializableExtra("Dishes"));
-
-            tempHoles.clear();
-            tempPlates.clear();
-            tempHoles.addAll(holes);
-            tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
-
-//            invalidateHolesUuid.addAll((Collection<? extends String>) data.getSerializableExtra("invalidateHolesUuid"));
-            if (null == holesAdapter_main) {
-                holesAdapter_main = new HolesAdapter_Main(context, tempHoles, lines, tempPlates, invalidateHolesUuid);
-                rvHoles.setAdapter(holesAdapter_main);
-            }
-            holesAdapter_main.notifyDataSetChanged();
-
-            comparisonPlatesDishes();
-        }
-    }
+//    @Override
+//    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+//        super.onActivityResult(requestCode, resultCode, data);
+//        if (requestCode == 1 && resultCode == 2) {
+//            plates.clear();
+//            dishes.clear();
+//            invalidateHolesUuid.clear();
+//            plates.putAll((Map<? extends String, ? extends Plate>) data.getSerializableExtra("Plates"));
+//            dishes.addAll((Collection<? extends Dish>) data.getSerializableExtra("Dishes"));
+//
+//            tempHoles.clear();
+//            tempPlates.clear();
+//            tempHoles.addAll(holes);
+//            tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
+//
+////            invalidateHolesUuid.addAll((Collection<? extends String>) data.getSerializableExtra("invalidateHolesUuid"));
+//            if (null == holesAdapter_main) {
+//                holesAdapter_main = new HolesAdapter_Main(context, tempHoles, lines, tempPlates, invalidateHolesUuid);
+//                rvHoles.setAdapter(holesAdapter_main);
+//            }
+//            holesAdapter_main.notifyDataSetChanged();
+//
+//            comparisonPlatesDishes();
+//        }
+//    }
 
     private void initView() {
 
         btnPlanDish = findViewById(R.id.ll_planDish);
         btnDownloadMenu = findViewById(R.id.ll_downloadMenu);
-        btnUploadPlan = findViewById(R.id.ll_uploadPlan);
+//        btnUploadPlan = findViewById(R.id.ll_uploadPlan);
         btnOrderList = findViewById(R.id.ll_orderList);
         btnSettings = findViewById(R.id.ll_settings);
 
@@ -182,8 +182,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         plates = new BaseArrayMap<String, Plate>();
         invalidateHolesUuid = new BaseArrayList<String>();
 
-        tempHoles = new BaseArrayList<Hole>();
-        tempPlates = new BaseArrayMap<String, Plate>();
+//        tempHoles = new BaseArrayList<Hole>();
+//        tempPlates = new BaseArrayMap<String, Plate>();
 
         LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
         rvLines.setLayoutManager(linesLayoutManager);
@@ -214,8 +214,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 plates.putAll(plateList);
                 dishes.addAll(dishesList);
 
-                tempHoles.addAll(holes);
-                tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
+//                tempHoles.addAll(holes);
+//                tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
 
                 System.out.println("aaa linesList:" + linesList.toString());
                 System.out.println("aaa holesList:" + holesList.toString());
@@ -235,7 +235,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                     holesAdapter_main.notifyDataSetChanged();
                 } else {
 //                    若空则认为是初始化，实例化适配器
-                    holesAdapter_main = new HolesAdapter_Main(context, tempHoles, lines, tempPlates, invalidateHolesUuid);
+                    holesAdapter_main = new HolesAdapter_Main(context, holes, lines, plates, invalidateHolesUuid);
                     // TODO: 2017/8/7 点击餐盘，进入该餐盘的设置模式
 //                    linesAdapter.setOnItemClickListener(new mItemClickListener_rvLines());
                     rvHoles.setAdapter(holesAdapter_main);
@@ -252,7 +252,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private void initEvent() {
 
         btnDownloadMenu.setOnClickListener(this);
-        btnUploadPlan.setOnClickListener(this);
+//        btnUploadPlan.setOnClickListener(this);
         btnOrderList.setOnClickListener(this);
         btnPlanDish.setOnClickListener(this);
         btnSettings.setOnClickListener(this);
@@ -267,20 +267,22 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         switch (v.getId()) {
             case R.id.ll_planDish:
                 intent = new Intent(this, EditActivity.class);
-                intent.putExtra("Lines", lines);
-                intent.putExtra("Holes", holes);
-                intent.putExtra("Plates", plates);
-                intent.putExtra("Dishes", dishes);
+                startActivity(intent);
+//                finish();
+//                intent.putExtra("Lines", lines);
+//                intent.putExtra("Holes", holes);
+//                intent.putExtra("Plates", plates);
+//                intent.putExtra("Dishes", dishes);
 //                intent.putExtra("invalidateHolesUuid", invalidateHolesUuid);
+//                startActivityForResult(intent, 1);
 
-                startActivityForResult(intent, 1);
                 break;
             case R.id.ll_downloadMenu:
                 downloadMenuList();
                 break;
-            case R.id.ll_uploadPlan:
-                uploadPlatesPlan();
-                break;
+//            case R.id.ll_uploadPlan:
+//                uploadPlatesPlan();
+//                break;
             case R.id.ll_orderList:
 
                 break;
@@ -289,8 +291,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 startActivity(intent);
                 break;
             case R.id.btn_allLines:
-//                updateNotifyDataSet_LinesHolesPlates();
-                pickHolesByLineClick("全  部");
+                updateNotifyDataSet_LinesHolesPlates();
+//                pickHolesByLineClick("全  部");
                 break;
         }
     }
@@ -392,29 +394,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
 
     /**
-     * 将当前排菜信息存入数据库
-     */
-    private void uploadPlatesPlan() {
-        MainBusiness_DataLoad mainBusiness_dataLoad_UP = new MainBusiness_DataLoad();
-        mainBusiness_dataLoad_UP.setOnUpdateListener(new MainBusiness_DataLoad.OnUpdateListener() {
-            @Override
-            public void success() {
-                Toast.makeText(context, "排菜上传成功！", Toast.LENGTH_SHORT).show();
-                updateNotifyDataSet_LinesHolesPlates();
-            }
-
-            @Override
-            public void error() {
-                Toast.makeText(context, "上传失败！", Toast.LENGTH_SHORT).show();
-            }
-        });
-
-        mainBusiness_dataLoad_UP.uploadPlates(plates);
-
-    }
-
-
-    /**
      * 餐线列表点击事件  的  回调监听器
      */
     class mItemClickListener_rvLines implements LinesAdapter.ItemClickListener {
@@ -422,53 +401,54 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         @Override
         public void onBtnNameClick(String lineName) {
 
-//            whenBtnLineNameClick(lineName);
-            pickHolesByLineClick(lineName);
+            whenBtnLineNameClick(lineName);
+//2017-08-16 需求变更：页面传值作废，
+//            pickHolesByLineClick(lineName);
         }
 
     }
 
 
-    /**
-     * 点击餐线切换相应的餐眼，弃用whenBtnLineNameClick()
-     * 避免未上传的排菜信息丢失
-     *
-     * @param lineName 点击的餐线名称
-     */
-    private void pickHolesByLineClick(String lineName) {
-        tempHoles.clear();
-        tempPlates.clear();
-
-        if (lineName.equals("全  部")) {
-            tempHoles.addAll(holes);
-            tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
-        } else {
-
-            int lineId = -1;
-
-            for (Line line : lines) {
-                if (lineName.equals(line.getName())) {
-                    lineId = line.getId();
-                }
-            }
-
-            for (Hole hole : holes) {
-                if (hole.getLineId() == lineId) {
-                    tempHoles.add(hole);
-                }
-            }
-
-
-            for (String holeUuid : plates.keySet()) {
-                for (Hole hole : tempHoles) {
-                    if (hole.getUuid().equals(holeUuid)) {
-                        tempPlates.put(holeUuid, plates.get(holeUuid));
-                    }
-                }
-            }
-        }
-        holesAdapter_main.notifyDataSetChanged();
-    }
+//    /**
+//     * 点击餐线切换相应的餐眼，弃用whenBtnLineNameClick()
+//     * 避免未上传的排菜信息丢失
+//     *
+//     * @param lineName 点击的餐线名称
+//     */
+//    private void pickHolesByLineClick(String lineName) {
+//        tempHoles.clear();
+//        tempPlates.clear();
+//
+//        if (lineName.equals("全  部")) {
+//            tempHoles.addAll(holes);
+//            tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
+//        } else {
+//
+//            int lineId = -1;
+//
+//            for (Line line : lines) {
+//                if (lineName.equals(line.getName())) {
+//                    lineId = line.getId();
+//                }
+//            }
+//
+//            for (Hole hole : holes) {
+//                if (hole.getLineId() == lineId) {
+//                    tempHoles.add(hole);
+//                }
+//            }
+//
+//
+//            for (String holeUuid : plates.keySet()) {
+//                for (Hole hole : tempHoles) {
+//                    if (hole.getUuid().equals(holeUuid)) {
+//                        tempPlates.put(holeUuid, plates.get(holeUuid));
+//                    }
+//                }
+//            }
+//        }
+//        holesAdapter_main.notifyDataSetChanged();
+//    }
 
     /**
      * 根据点击的line  更新rvHoles中的数据（换成被点击餐线的餐眼）

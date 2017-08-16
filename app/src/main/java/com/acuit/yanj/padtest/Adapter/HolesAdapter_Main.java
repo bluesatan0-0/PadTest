@@ -90,7 +90,12 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
         holder_HolesAdapter.itemPosition = position;
 
         Plate plate = plateList.get(hole.getUuid());
-        int statuResID = R.mipmap.item_hole_empty;
+
+        boolean isOnLine = false;
+        if (1 == hole.getStatu()) {
+            isOnLine = true;
+        }
+        int statuResID;
 
 //        未排菜的餐眼
         if (null == plate) {
@@ -98,8 +103,17 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
             holder_HolesAdapter.tvCode.setTextColor(0xffADADAD);
             holder_HolesAdapter.tvCode.setBackgroundColor(0xffF2F2F2);
 
+
+            if (isOnLine) {
+                statuResID = R.mipmap.item_hole_empty_online;
+            } else {
+                statuResID = R.mipmap.item_hole_empty_offline;
+            }
+
             holder_HolesAdapter.ivStatu.setImageResource(statuResID);
         } else {
+//            排菜餐眼
+
 
 //        存在菜品👇 在线离线
             if (1 == hole.getStatu()) {
@@ -108,14 +122,12 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
                 statuResID = R.mipmap.item_hole_offline;
             }
 
+
             holder_HolesAdapter.tvCode.setTextColor(0xffCBA99A);
             holder_HolesAdapter.tvCode.setBackgroundColor(0xffFFF6F2);
-//        获取holeStatu👆
-            holder_HolesAdapter.ivStatu.setImageResource(statuResID);
             holder_HolesAdapter.tvDishPrice.setText(plate.getPrice() + "");
             holder_HolesAdapter.tvDishName.setText(plate.getDish_name());
             holder_HolesAdapter.tvWeight.setText(plate.getLeft_amount() + "");
-
 
 //        获取菜品图片
 //            'http://192.168.2.241/skin/images/no_cai_pic.jpg
@@ -125,11 +137,24 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
             }
 
 
-//            比对是否无效化
+//        设置holeStatu?👇
+            //            比对是否无效化
             if (invalidateHolesUuid.contains(holesList.get(position).getUuid())) {
-                holder_HolesAdapter.ivStatu.setImageResource(R.mipmap.item_hole_invalidate);
-            }
+                if (isOnLine) {
+                    holder_HolesAdapter.ivStatu.setImageResource(R.mipmap.item_hole_invalidate_online);
+                } else {
+                    holder_HolesAdapter.ivStatu.setImageResource(R.mipmap.item_hole_invalidate_offline);
+                }
+            } else {
 
+                //        存在菜品👇 在线离线
+                if (isOnLine) {
+                    statuResID = R.mipmap.item_hole_online;
+                } else {
+                    statuResID = R.mipmap.item_hole_offline;
+                }
+                holder_HolesAdapter.ivStatu.setImageResource(statuResID);
+            }
 
         }
     }

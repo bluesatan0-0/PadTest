@@ -40,13 +40,15 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
     private Line line;
     private ViewHolder_HolesAdapter preSelected_ViewHolder = null;
     private OnItemClickListener itemClickListener;
+    private int selectedPosition;
 
-    public HolesAdapter_Edit(Context context, List<Hole> holes, List<Line> linesList, BaseArrayMap<String, Plate> plateList,List<String> invalidateHolesUuid) {
+    public HolesAdapter_Edit(Context context, List<Hole> holes, List<Line> linesList, BaseArrayMap<String, Plate> plateList, List<String> invalidateHolesUuid, int selectedPosition) {
         this.context = (BaseApplication) context.getApplicationContext();
         this.holesList = holes;
         this.linesList = linesList;
         this.plateList = plateList;
         this.invalidateHolesUuid = invalidateHolesUuid;
+        this.selectedPosition = selectedPosition;
         imageLoader = this.context.getImageLoader();
     }
 
@@ -94,7 +96,12 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
         holder_HolesAdapter.itemPosition = position;
 
         Plate plate = plateList.get(hole.getUuid());
-        int statuResID = R.mipmap.item_hole_empty;
+
+        boolean isOnLine = false;
+        if (1 == hole.getStatu()) {
+            isOnLine = true;
+        }
+        int statuResID;
 
 //        未排菜的餐眼
         if (null == plate) {
@@ -102,24 +109,23 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
             holder_HolesAdapter.tvCode.setTextColor(0xffADADAD);
             holder_HolesAdapter.tvCode.setBackgroundColor(0xffF2F2F2);
 
-            holder_HolesAdapter.ivStatu.setImageResource(statuResID);
-        } else {
 
-//        存在菜品👇 在线离线
-            if (1 == hole.getStatu()) {
-                statuResID = R.mipmap.item_hole_online;
+            if (isOnLine) {
+                statuResID = R.mipmap.item_hole_empty_online;
             } else {
-                statuResID = R.mipmap.item_hole_offline;
+                statuResID = R.mipmap.item_hole_empty_offline;
             }
+
+            holder_HolesAdapter.ivStatu.setImageResource(statuResID);
+
+        } else {
+//            排菜餐眼
 
             holder_HolesAdapter.tvCode.setTextColor(0xffCBA99A);
             holder_HolesAdapter.tvCode.setBackgroundColor(0xffFFF6F2);
-//        获取holeStatu👆
-            holder_HolesAdapter.ivStatu.setImageResource(statuResID);
             holder_HolesAdapter.tvDishPrice.setText(plate.getPrice() + "");
             holder_HolesAdapter.tvDishName.setText(plate.getDish_name());
             holder_HolesAdapter.tvWeight.setText(plate.getLeft_amount() + "");
-
 
 //        获取菜品图片
 //            'http://192.168.2.241/skin/images/no_cai_pic.jpg
@@ -128,9 +134,25 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
                 imageLoader.setBitmapToImageView(menu_url, holder_HolesAdapter.ivDish);
             }
 
+
+
+//        设置holeStatu?👇
             //            比对是否无效化
             if (invalidateHolesUuid.contains(holesList.get(position).getUuid())) {
-                holder_HolesAdapter.ivStatu.setImageResource(R.mipmap.item_hole_invalidate);
+                if (isOnLine) {
+                    holder_HolesAdapter.ivStatu.setImageResource(R.mipmap.item_hole_invalidate_online);
+                } else {
+                    holder_HolesAdapter.ivStatu.setImageResource(R.mipmap.item_hole_invalidate_offline);
+                }
+            } else {
+
+                //        存在菜品👇 在线离线
+                if (isOnLine) {
+                    statuResID = R.mipmap.item_hole_online;
+                } else {
+                    statuResID = R.mipmap.item_hole_offline;
+                }
+                holder_HolesAdapter.ivStatu.setImageResource(statuResID);
             }
 
 
@@ -139,6 +161,11 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
         if (null == HolesAdapter_Edit.this.preSelected_ViewHolder) {
             HolesAdapter_Edit.this.preSelected_ViewHolder = (ViewHolder_HolesAdapter) holder;
             HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(true);
+        } else {
+            if (selectedPosition + 1 == position) {
+                HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(true);
+                selectedPosition++;
+            }
         }
     }
 
