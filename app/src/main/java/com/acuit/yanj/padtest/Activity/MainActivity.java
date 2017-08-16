@@ -68,7 +68,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
     private Context context;
     private BaseArrayList<String> invalidateHolesUuid;
     private Intent intentService;
-    private Service_refrashWeight service_refrashWeight;
     private Service_refrashWeight.MyBinder myService;
 
     @Override
@@ -129,7 +128,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 
         unbindService(this);
 //        避免解绑时内存泄漏
-        service_refrashWeight.scheduledExecutorService.shutdownNow();
         myService = null;
     }
 

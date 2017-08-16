@@ -426,10 +426,12 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
             invalidateHolesUuid.remove(hole.getUuid());
 
-            for (String s : invalidateHolesUuid) {
-                System.out.println("aaa editActivity remove invalidateUuid:" + s);
-            }
+//            for (String s : invalidateHolesUuid) {
+//                System.out.println("aaa editActivity remove invalidateUuid:" + s);
+//            }
 
+            selectedHolePosition++;
+                System.out.println("aaa editActivity selectedHolePosition:" + selectedHolePosition);
             holesAdapter.notifyDataSetChanged();
         }
     }

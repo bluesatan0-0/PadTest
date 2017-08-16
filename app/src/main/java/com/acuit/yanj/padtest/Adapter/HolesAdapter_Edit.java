@@ -49,6 +49,7 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
         this.plateList = plateList;
         this.invalidateHolesUuid = invalidateHolesUuid;
         this.selectedPosition = selectedPosition;
+        System.out.println("aaa adapter oncreat selectedPosition:" + selectedPosition);
         imageLoader = this.context.getImageLoader();
     }
 
@@ -135,7 +136,6 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
             }
 
 
-
 //        设置holeStatu?👇
             //            比对是否无效化
             if (invalidateHolesUuid.contains(holesList.get(position).getUuid())) {
@@ -158,15 +158,29 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
 
         }
 
-        if (null == HolesAdapter_Edit.this.preSelected_ViewHolder) {
+//        if (null == HolesAdapter_Edit.this.preSelected_ViewHolder) {
+//            HolesAdapter_Edit.this.preSelected_ViewHolder = (ViewHolder_HolesAdapter) holder;
+//            HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(true);
+//        } else {
+
+
+        if (-1 == selectedPosition && 0 == position) {
             HolesAdapter_Edit.this.preSelected_ViewHolder = (ViewHolder_HolesAdapter) holder;
             HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(true);
+            selectedPosition = position;
         } else {
-            if (selectedPosition + 1 == position) {
-                HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(true);
-                selectedPosition++;
+                System.out.println("aaa adapter selectedPosition:"+selectedPosition);
+                System.out.println("aaa adapter position:"+position);
+            if (selectedPosition == position) {
+                System.out.println("aaa adapter selectedPosition:"+selectedPosition);
+                HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(false);
+                HolesAdapter_Edit.this.preSelected_ViewHolder = (ViewHolder_HolesAdapter) holder;
+                holder.itemView.setSelected(true);
             }
+
+            System.out.println("aaa adapter selectedPosition:----------------");
         }
+//        }
     }
 
 
