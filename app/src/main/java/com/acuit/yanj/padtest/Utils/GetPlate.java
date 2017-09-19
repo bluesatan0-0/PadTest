@@ -4,6 +4,8 @@ import com.acuit.yanj.padtest.Bean.Dish;
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Plate;
 
+import java.math.BigDecimal;
+
 /**
  * 类名: GetPlate <p>
  * 创建人: YanJ <p>
@@ -29,7 +31,7 @@ public class GetPlate {
         plate.setDish_id(Integer.valueOf(dish.getId()));
         plate.setDish_code(dish.getStock_id()+"");
         plate.setDish_name(dish.getName());
-        plate.setPrice(dish.getSell_100gram_price());
+        plate.setPrice(BigDecimal.valueOf(dish.getSell_100gram_price()));
         plate.setMenu_url(dish.getPic());
 //        plate.setCreate_date(); 存储时获取，而非现在
 //        plate.setStatus(0);

@@ -41,7 +41,7 @@ public class CacheUtils {
     }
 
     private static String getCachePath() {
-        return getSDRootPath() + File.separator + ".MyChaBaiKe";
+        return getSDRootPath() + File.separator + ".PadTest";
     }
 
     public static Bitmap getImageFromCache(String path) throws FileNotFoundException {

@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="119dp"
+    android:background="#00cccccc"
+    android:gravity="right|top"
+    android:orientation="horizontal">
+
+    <!--返回首页-->
+    <LinearLayout
+        android:id="@+id/ll_back_Orders"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="top"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="20dp"
+        android:background="#00999999"
+        android:clickable="true"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <ImageView
+            android:layout_width="60px"
+            android:layout_height="40px"
+            android:scaleType="centerInside"
+            android:src="@mipmap/navegation_menu_settings_back_off"></ImageView>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="4dp"
+            android:text="返回主页"
+            android:textColor="#ffffffff"
+            android:textSize="24px" />
+    </LinearLayout>
+
+
+</LinearLayout>

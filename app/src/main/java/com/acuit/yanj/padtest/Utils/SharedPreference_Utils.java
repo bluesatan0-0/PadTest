@@ -100,17 +100,6 @@ public class SharedPreference_Utils {
         return configs;
     }
 
-    //设置某项参数，返回操作结果
-    public static boolean setValue(String key, String value) {
-
-        boolean commit = sharedPreferences.edit().putString(key, value).commit();
-//        提交成功则更新app中config
-        if (commit) {
-            setConfigs(getValuesALL());
-        }
-        return commit;
-    }
-
     //批量设置参数，返回操作结果
     public static boolean setValues(ArrayMap<String, String> data) {
         SharedPreferences.Editor edit = sharedPreferences.edit();
@@ -123,10 +112,21 @@ public class SharedPreference_Utils {
 //        提交成功则更新app中config
         boolean result = edit.commit();
         if (result) {
-            setConfigs(getValuesALL());
+            SharedPreference_Utils.configs = getValuesALL();
         }
 
         return result;
+    }
+
+    //设置某项参数，返回操作结果
+    public static boolean setValue(String key, String value) {
+
+        boolean commit = sharedPreferences.edit().putString(key, value).commit();
+//        提交成功则更新app中config
+        if (commit) {
+            SharedPreference_Utils.configs = getValuesALL();
+        }
+        return commit;
     }
 
     public static ArrayMap<String, String> getConfigs() {
@@ -134,9 +134,5 @@ public class SharedPreference_Utils {
             return getInstance(context).getConfigs();
         }
         return configs;
-    }
-
-    public static void setConfigs(ArrayMap<String, String> configs) {
-        SharedPreference_Utils.configs = configs;
     }
 }

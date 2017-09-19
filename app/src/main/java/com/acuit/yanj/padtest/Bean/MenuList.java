@@ -17,14 +17,14 @@ public class MenuList {
 
     /**
      * code : 1
-     * part : 2
-     * plan_prods : [{"amount":100,"cate":"16","cate_name":"卤味类","id":"731","name":"卤猪耳朵(kg)","no":"","pic":"http://192.168.2.241/skin/images/no_cai_pic.jpg","price":"78.00","sell_100gram_price":0,"stock_id":"731"},{"amount":100,"cate":"16","cate_name":"卤味类","id":"730","name":"杭州酱肉（kg）","no":"","pic":"http://192.168.2.241/skin/images/no_cai_pic.jpg","price":"66.00","sell_100gram_price":0,"stock_id":"730"}]
+     * part : 3
+     * plan_prods : [{"amount":33,"cate":"16","cate_name":"卤味类","id":"735","name":"香辣排骨(kg)","no":"","pic":"http://api.acuit.net/upload/stock/show/1433787912247.jpg","price":"66.00","sell_100gram_price":3.3,"stock_id":"735"},{"amount":55,"cate":"16","cate_name":"卤味类","id":"1296","name":"杭州酥鱼条","no":"","pic":"http://api.acuit.net/skin/images/no_cai_pic.jpg","price":"4.50","sell_100gram_price":0,"stock_id":"1296"},{"amount":44,"cate":"132","cate_name":"新增2","id":"1332","name":"香辣小土豆","no":"","pic":"http://api.acuit.net/skin/images/no_cai_pic.jpg","price":"2.80","sell_100gram_price":0,"stock_id":"1332"}]
      * prods : []
      * sub_code : 0
      */
 
     private int code;
-    private String part;
+    private int part;
     private String sub_code;
     private List<PlanProdsBean> plan_prods;
     private List<?> prods;
@@ -37,11 +37,11 @@ public class MenuList {
         this.code = code;
     }
 
-    public String getPart() {
+    public int getPart() {
         return part;
     }
 
-    public void setPart(String part) {
+    public void setPart(int part) {
         this.part = part;
     }
 
@@ -71,16 +71,16 @@ public class MenuList {
 
     public static class PlanProdsBean {
         /**
-         * amount : 100
+         * amount : 33
          * cate : 16
          * cate_name : 卤味类
-         * id : 731
-         * name : 卤猪耳朵(kg)
+         * id : 735
+         * name : 香辣排骨(kg)
          * no :
-         * pic : http://192.168.2.241/skin/images/no_cai_pic.jpg
-         * price : 78.00
-         * sell_100gram_price : 0
-         * stock_id : 731
+         * pic : http://api.acuit.net/upload/stock/show/1433787912247.jpg
+         * price : 66.00
+         * sell_100gram_price : 3.3
+         * stock_id : 735
          */
 
         private int amount;
@@ -91,7 +91,7 @@ public class MenuList {
         private String no;
         private String pic;
         private String price;
-        private int sell_100gram_price;
+        private double sell_100gram_price;
         private String stock_id;
 
         public int getAmount() {
@@ -158,11 +158,11 @@ public class MenuList {
             this.price = price;
         }
 
-        public int getSell_100gram_price() {
+        public double getSell_100gram_price() {
             return sell_100gram_price;
         }
 
-        public void setSell_100gram_price(int sell_100gram_price) {
+        public void setSell_100gram_price(double sell_100gram_price) {
             this.sell_100gram_price = sell_100gram_price;
         }
 

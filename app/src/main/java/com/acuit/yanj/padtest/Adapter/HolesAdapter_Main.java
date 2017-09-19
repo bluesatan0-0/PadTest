@@ -128,6 +128,7 @@ public class HolesAdapter_Main extends RecyclerView.Adapter {
             holder_HolesAdapter.tvDishPrice.setText(plate.getPrice() + "");
             holder_HolesAdapter.tvDishName.setText(plate.getDish_name());
             holder_HolesAdapter.tvWeight.setText(plate.getLeft_amount() + "");
+            holder_HolesAdapter.tvDishPrice.setText(plate.getPrice() + "");
 
 //        获取菜品图片
 //            'http://192.168.2.241/skin/images/no_cai_pic.jpg

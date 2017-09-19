@@ -76,6 +76,7 @@ public class Service_refrashWeight extends Service {
 
     @Override
     public boolean onUnbind(Intent intent) {
+        scheduledExecutorService.shutdownNow();
         return super.onUnbind(intent);
     }
 

@@ -14,6 +14,7 @@ import com.acuit.yanj.padtest.Adapter.DishesAdapter;
 import com.acuit.yanj.padtest.Adapter.HolesAdapter_Edit;
 import com.acuit.yanj.padtest.Adapter.LinesAdapter;
 import com.acuit.yanj.padtest.Base.BaseActivity;
+import com.acuit.yanj.padtest.Base.BaseApplication;
 import com.acuit.yanj.padtest.Base.BaseArrayList;
 import com.acuit.yanj.padtest.Base.BaseArrayMap;
 import com.acuit.yanj.padtest.Bean.Dish;
@@ -395,7 +396,15 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
             holesAdapter.notifyDataSetChanged();
         }
     }
-//-------------------------------------下载今日菜单?👆-----------------------------------------------------
+
+    @Override
+    public void onDestroy() {
+        BaseApplication.getRequestQueue().cancelAll("DownloadMenu");
+        super.onDestroy();
+    }
+
+
+    //-------------------------------------下载今日菜单?👆-----------------------------------------------------
 
 
     /**

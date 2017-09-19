@@ -74,7 +74,7 @@ public class DishDAO {
                 dish.setId(resultSet.getString("id"));
                 dish.setStock_id(resultSet.getInt("stock_id"));
                 dish.setPrice(resultSet.getBigDecimal("price"));
-                dish.setSell_100gram_price(resultSet.getBigDecimal("sell_100gram_price"));
+                dish.setSell_100gram_price(resultSet.getDouble("sell_100gram_price"));
                 dish.setAmount(resultSet.getBigDecimal("amount"));
                 dish.setPic(resultSet.getString("pic"));
                 dish.setCate(resultSet.getInt("cate"));

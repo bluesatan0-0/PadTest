@@ -2,6 +2,7 @@ package com.acuit.yanj.padtest.Model.SettingsBusiness;
 
 import android.os.Handler;
 import android.os.Message;
+import android.util.Log;
 
 import com.acuit.yanj.padtest.Bean.Hole;
 import com.acuit.yanj.padtest.Bean.Line;
@@ -46,7 +47,7 @@ public class SettingsBusiness_DataLoad {
                     if (null != lineList) {
                         onDataLoadedLisener.loaded_Lines(lineList);
                     } else {
-                        System.out.println("aaa 餐线查询结果集为空");
+                        Log.e("aaa", "SettingsBusiness_DataLoad.handleMessage:餐线查询结果集为空 ");
                     }
                     break;
 //                餐眼集合加载完成
@@ -55,7 +56,7 @@ public class SettingsBusiness_DataLoad {
                     if (null != holeList) {
                         onDataLoadedLisener.loaded_Holes(holeList);
                     } else {
-                        System.out.println("aaa 餐线查询结果集为空");
+                        Log.e("aaa", "SettingsBusiness_DataLoad.handleMessage:餐眼查询结果集为空 ");
                     }
                     break;
 //                餐线+餐眼 加载完成
@@ -68,7 +69,7 @@ public class SettingsBusiness_DataLoad {
                     if ((null != linesList) && (null != holesList)) {
                         onDataLoadedLisener.load_Lines_Holes(linesList, holesList);
                     } else {
-                        System.out.println("aaa 餐线查询结果集为空");
+                        Log.e("aaa", "餐线或餐眼 查询结果集为空");
                     }
                     break;
 
@@ -140,8 +141,9 @@ public class SettingsBusiness_DataLoad {
     }
 
     /**
-     *  通过餐线名称 获取 餐眼list
-     *  @param linesName 餐线名
+     * 通过餐线名称 获取 餐眼list
+     *
+     * @param linesName 餐线名
      */
     public void getList_HolesByLinesName(final String linesName) {
 

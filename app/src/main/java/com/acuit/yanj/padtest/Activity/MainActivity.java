@@ -17,6 +17,7 @@ import android.widget.Toast;
 import com.acuit.yanj.padtest.Adapter.HolesAdapter_Main;
 import com.acuit.yanj.padtest.Adapter.LinesAdapter;
 import com.acuit.yanj.padtest.Base.BaseActivity;
+import com.acuit.yanj.padtest.Base.BaseApplication;
 import com.acuit.yanj.padtest.Base.BaseArrayList;
 import com.acuit.yanj.padtest.Base.BaseArrayMap;
 import com.acuit.yanj.padtest.Bean.Dish;
@@ -215,10 +216,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //                tempHoles.addAll(holes);
 //                tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
 
-                System.out.println("aaa linesList:" + linesList.toString());
-                System.out.println("aaa holesList:" + holesList.toString());
-                System.out.println("aaa plateList:" + plateList.toString());
-                System.out.println("aaa dishesList:" + dishesList.toString());
+//                System.out.println("aaa holesAdapter_main.linesList:" + linesList.toString());
+//                System.out.println("aaa holesAdapter_main.holesList:" + holesList.toString());
+//                System.out.println("aaa holesAdapter_main.plateList:" + plateList.toString());
+//                System.out.println("aaa holesAdapter_main.dishesList:" + dishesList.toString());
 
                 if (null != linesAdapter) {
                     linesAdapter.notifyDataSetChanged();
@@ -282,7 +283,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //                uploadPlatesPlan();
 //                break;
             case R.id.ll_orderList:
-
+                startActivity(new Intent(this,OrderListActivity.class));
                 break;
             case R.id.ll_settings:
                 intent = new Intent(this, SettingsActivity.class);
@@ -380,7 +381,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
 
         for (String s : invalidateHolesUuid) {
-            System.out.println("aaa mainActivity invalidateUuid:" + s);
+//            System.out.println("aaa mainActivity invalidateUuid:" + s);
         }
 
         if (null != holesAdapter_main) {
@@ -388,7 +389,14 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         }
     }
 
-//-------------------------------------下载今日菜单?👆-----------------------------------------------------
+    @Override
+    public void onDestroy() {
+
+        BaseApplication.getRequestQueue().cancelAll("DownloadMenu");
+        super.onDestroy();
+    }
+
+    //-------------------------------------下载今日菜单?👆-----------------------------------------------------
 
 
     /**
@@ -461,7 +469,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             @Override
             public void load_Lines_Holes_Plates(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList, List<Dish> dishes) {
                 // TODO: 2017/8/7 餐线点击后，下载完成该餐线的餐盘信息，需完成：切换餐盘列表
-                System.out.println("aaa 点击了餐线 holes:" + holesList.toString());
+//                System.out.println("aaa 点击了餐线 holes:" + holesList.toString());
                 holes.clear();
                 holes.addAll(holesList);
                 holesAdapter_main.notifyDataSetChanged();

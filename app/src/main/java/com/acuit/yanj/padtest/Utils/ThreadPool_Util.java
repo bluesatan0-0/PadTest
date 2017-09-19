@@ -34,6 +34,13 @@ public class ThreadPool_Util {
         return instance;
     }
 
+//    public static void stop() {
+//        if (null!=singleThreadPool) {
+//            singleThreadPool.shutdownNow();
+//        }
+//
+//    }
+
     public static void doTask(Runnable r) {
         if (null != r) {
             ExecutorService ex = instance.getSingleThreadPool();

@@ -31,7 +31,7 @@ public class Dish implements java.io.Serializable {
     private BigDecimal price;
 
     /**  */
-    private BigDecimal sell_100gram_price;
+    private double sell_100gram_price;
 
     /** 计划量分或者千克的单位 */
     private BigDecimal amount;
@@ -58,7 +58,7 @@ public class Dish implements java.io.Serializable {
     public Dish() {
     }
 
-    public Dish(String id, Integer stock_id, BigDecimal price, BigDecimal sell_100gram_price, BigDecimal amount, String pic, Integer cate, String cat_name, String date, Integer part, String name) {
+    public Dish(String id, Integer stock_id, BigDecimal price, double sell_100gram_price, BigDecimal amount, String pic, Integer cate, String cat_name, String date, Integer part, String name) {
         this.id = id;
         this.stock_id = stock_id;
         this.price = price;
@@ -153,7 +153,7 @@ public class Dish implements java.io.Serializable {
      *
      * @return
      */
-    public BigDecimal getSell_100gram_price() {
+    public double getSell_100gram_price() {
         return this.sell_100gram_price;
     }
 
@@ -163,7 +163,7 @@ public class Dish implements java.io.Serializable {
      * @param sell_100gram_price
      *
      */
-    public void setSell_100gram_price(BigDecimal sell_100gram_price) {
+    public void setSell_100gram_price(double sell_100gram_price) {
         this.sell_100gram_price = sell_100gram_price;
     }
 

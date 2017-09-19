@@ -23,6 +23,8 @@ public class BaseActivity extends AppCompatActivity {
     public void onDestroy() {
         super.onDestroy();
 
+//        ThreadPool_Util.stop();
+
 //        LeakCanary内存泄漏监控
         RefWatcher refWatcher = BaseApplication.getRefWatcher();
         refWatcher.watch(this);
