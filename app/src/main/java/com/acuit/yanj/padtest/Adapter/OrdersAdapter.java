@@ -31,7 +31,6 @@ public class OrdersAdapter extends RecyclerView.Adapter {
 
     public OrdersAdapter(OrderListActivity mActivity, List<Trade> dataList) {
 
-        System.out.println("aaa OrdersAdapter");
         this.mActivity = mActivity;
         this.dataList = dataList;
     }
@@ -39,25 +38,27 @@ public class OrdersAdapter extends RecyclerView.Adapter {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
 
-        System.out.println("aaa onCreateViewHolder");
-        View itemView = LayoutInflater.from(mActivity).inflate(R.layout.item_orders, null, false);
+        View itemView = LayoutInflater.from(mActivity).inflate(R.layout.item_orders, parent, false);
         return new ViewHolder_Orders(itemView);
     }
 
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
 
-        System.out.println("aaa onBindViewHolder");
         ViewHolder_Orders viewHolder = (ViewHolder_Orders) holder;
         Trade trade = dataList.get(position);
-        viewHolder.getTvAmount().setText(trade.getAmount());
-        viewHolder.getTvDate().setText(Tools.getSimpleFormatedTime(trade.getTradeDate()));
-        viewHolder.getTvDishName().setText(trade.getDishId());
+        viewHolder.getTvAmount().setText(trade.getAmount() + "");
+        if (null == trade.getTradeDate()) {
+            viewHolder.getTvDate().setText("null");
+        } else {
+            viewHolder.getTvDate().setText(Tools.getSimpleFormatedTime(trade.getTradeDate()) + "");
+        }
+        viewHolder.getTvDishName().setText(trade.getDishId() + "");
         viewHolder.getTvMoney().setText(trade.getMoney() + "");
-        viewHolder.getTvOrderID().setText(trade.getId());
-        viewHolder.getTvStudentID().setText(trade.getUserId());
-        viewHolder.getTvStudentName().setText(trade.getUserId());
-        if (trade.getIsUpload().equals("1")) {
+        viewHolder.getTvOrderID().setText(trade.getId() + "");
+        viewHolder.getTvStudentID().setText(trade.getUserId() + "");
+        viewHolder.getTvStudentName().setText(trade.getUserId() + "");
+        if (1 == trade.getIsUpload()) {
             viewHolder.getTvStatu().setText("上传成功");
         } else {
             viewHolder.getTvStatu().setText("上传失败");

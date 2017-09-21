@@ -2,6 +2,7 @@ package com.acuit.yanj.padtest.Activity;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.Toast;
@@ -68,7 +69,6 @@ public class OrderListActivity extends BaseActivity implements View.OnClickListe
 
     private void initData() {
 
-        System.out.println("aaa initData");
         Orders_DataLoad orders_dataLoad = new Orders_DataLoad();
         orders_dataLoad.setDataLoadListener(new Orders_DataLoad.DataLoadListener() {
             @Override
@@ -79,7 +79,6 @@ public class OrderListActivity extends BaseActivity implements View.OnClickListe
             @Override
             public void success(List<Trade> trades) {
 
-                System.out.println("aaa success");
                 if (null == OrderListActivity.this.trades) {
                     OrderListActivity.this.trades = new ArrayList<Trade>();
                 }
@@ -88,9 +87,10 @@ public class OrderListActivity extends BaseActivity implements View.OnClickListe
 
                 if (null == ordersAdapter) {
 
+                    rvOrders.setLayoutManager(new LinearLayoutManager(OrderListActivity.this, LinearLayoutManager.VERTICAL, false));
+
                     ordersAdapter = new OrdersAdapter(OrderListActivity.this, OrderListActivity.this.trades);
                     rvOrders.setAdapter(ordersAdapter);
-                    System.out.println("aaa setAdapter:" + OrderListActivity.this.trades.toString());
 
                 } else {
                     ordersAdapter.notifyDataSetChanged();
