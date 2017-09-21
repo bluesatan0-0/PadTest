@@ -178,10 +178,10 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
 //                comparisonPlatesDishes();
 
-                System.out.println("aaa lines:" + lines.toString());
-                System.out.println("aaa holes:" + holes.toString());
-                System.out.println("aaa plates:" + plates.toString());
-                System.out.println("aaa dishes:" + dishes.toString());
+//                System.out.println("aaa lines:" + lines.toString());
+//                System.out.println("aaa holes:" + holes.toString());
+//                System.out.println("aaa plates:" + plates.toString());
+//                System.out.println("aaa dishes:" + dishes.toString());
 
 
                 initAdapters();
@@ -297,6 +297,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         });
 
         mainBusiness_dataLoad_UP.uploadPlates(plates);
+        System.out.println("aaa 上传排菜:" + plates.toString());
 
     }
 
@@ -329,6 +330,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
      */
     private void saveDownloadedDishes(ArrayList<Dish> dishesList) {
 
+        System.out.println("aaa 保存今日菜单：" + dishesList.toString());
         EditBusiness_DataLoad editBusiness_dataLoad = new EditBusiness_DataLoad();
         editBusiness_dataLoad.setOnSaveDishesListener(new EditBusiness_DataLoad.OnSaveDishesListener() {
             @Override
@@ -455,7 +457,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
             }
 
             temp_selectedHolePosition.set(0, selectedHolePosition);
-            System.out.println("aaa editActivity selectedHolePosition:" + selectedHolePosition);
+//            System.out.println("aaa editActivity selectedHolePosition:" + selectedHolePosition);
             holesAdapter.notifyDataSetChanged();
         }
     }

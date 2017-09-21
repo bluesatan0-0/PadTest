@@ -93,6 +93,7 @@ public class DishDAO {
         return dishes;
     }
 
+
     /**
      * 保存 下载的 今日菜单
      *
@@ -100,6 +101,25 @@ public class DishDAO {
      * @return 操作结果
      */
     public boolean save(ArrayList<Dish> dishesList) {
+
+        String date = dishesList.get(0).getDate();
+        Integer part = dishesList.get(0).getPart();
+        boolean b = deleteSameDishes(date, part);
+        if (b) {
+            return saveAfterDelete(dishesList);
+        } else {
+            return saveAfterDelete(dishesList);
+        }
+
+    }
+
+    /**
+     * 保存 下载的 今日菜单
+     *
+     * @param dishesList 今日菜单
+     * @return 操作结果
+     */
+    public boolean saveAfterDelete(ArrayList<Dish> dishesList) {
 
 
         Statement statement = null;
@@ -113,11 +133,13 @@ public class DishDAO {
             for (Dish dish : dishesList) {
                 sql.replace(0, sql.length(), "");
 
+                System.out.println("aaa sql存储前：" + dish);
 //                INSERT INTO menu_plan_stock
 //                        (stock_id,price,sell_100gram_price,amount,pic,cate,cat_name,date,part,name)
 //                VALUES(2000,20.00,5.00,2.00,'http;//.jpg',1,'卤味','2017-07-15',1,'酱猪蹄')
 
-                sql.append(" INSERT INTO menu_plan_stock ");
+                sql.append(" REPLACE INTO menu_plan_stock ");
+//                sql.append(" INSERT INTO menu_plan_stock ");
                 sql.append(" (stock_id,price,sell_100gram_price,amount,cate,part,pic,cat_name,date,name) VALUES(");
 
                 sql.append(dish.getStock_id());
@@ -142,6 +164,7 @@ public class DishDAO {
                 sql.append(dish.getName());
                 sql.append("')");
 
+                System.out.println("aaa 对应sql：" + sql.toString());
                 int i = statement.executeUpdate(sql.toString());
                 if (0 >= i) {
                     return false;
@@ -163,6 +186,49 @@ public class DishDAO {
             }
         }
 
+    }
+
+    /**
+     * 插入今日菜品前先执行删除，避免插入失败
+     *
+     * @param date
+     * @param part
+     */
+    private boolean deleteSameDishes(String date, Integer part) {
+
+        Statement statement = null;
+        StringBuilder sql = new StringBuilder();
+
+        try {
+            connection.setAutoCommit(false);
+            statement = connection.createStatement();
+
+//            DELETE FROM table_name [WHERE Clause]
+            sql.append(" DELETE FROM menu_plan_stock ");
+            sql.append(" where date='");
+            sql.append(date);
+            sql.append("' and part = ");
+            sql.append(part + "");
+
+            System.out.println("aaa delete sql:" + sql.toString());
+            boolean execute = statement.execute(sql.toString());
+            connection.commit();
+
+            return execute;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                statement.close();
+                connection.close();
+            } catch (SQLException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        return false;
     }
 
 

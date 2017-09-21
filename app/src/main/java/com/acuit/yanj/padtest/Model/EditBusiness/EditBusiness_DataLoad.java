@@ -239,7 +239,8 @@ public class EditBusiness_DataLoad {
             public void run() {
 
                 DishDAO dishDAO = new DishDAO();
-                boolean result = dishDAO.save(dishes);
+                boolean result = dishDAO.saveAfterDelete(dishes);
+//                boolean result = dishDAO.save(dishes);
 
                 Message msg = Message.obtain();
                 msg.what = FLAGE_SAVE_DISHES;

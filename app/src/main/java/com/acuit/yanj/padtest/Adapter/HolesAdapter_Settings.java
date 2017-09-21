@@ -32,6 +32,7 @@ public class HolesAdapter_Settings extends RecyclerView.Adapter implements View.
     private List<Hole> dataList;
     private List<Line> linesList;
     private Line line;
+    private ItemClickListener itemClickListener;
 
     public HolesAdapter_Settings(Context context, List<Hole> holes, List<Line> linesList) {
         this.context = context;
@@ -119,7 +120,7 @@ public class HolesAdapter_Settings extends RecyclerView.Adapter implements View.
     }
 
 
-    class ViewHolder_HolesAdapter extends RecyclerView.ViewHolder {
+    class ViewHolder_HolesAdapter extends RecyclerView.ViewHolder implements View.OnClickListener {
 
         private TextView tvHoleName;
         private TextView tvLineName;
@@ -141,6 +142,24 @@ public class HolesAdapter_Settings extends RecyclerView.Adapter implements View.
             btnDeviceCheck = (Button) itemView.findViewById(R.id.btn_device_check);
             btnDeviceDelete = (Button) itemView.findViewById(R.id.btn_device_delete);
 
+            btnDeviceEdit.setOnClickListener(this);
+            btnDeviceCheck.setOnClickListener(this);
+            btnDeviceDelete.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View v) {
+            switch (v.getId()) {
+                case R.id.btn_device_edit:
+
+                    break;
+                case R.id.btn_device_check:
+
+                    break;
+                case R.id.btn_device_delete:
+
+                    break;
+            }
         }
 
         public void setItemPosition(int itemPosition) {
@@ -178,6 +197,28 @@ public class HolesAdapter_Settings extends RecyclerView.Adapter implements View.
         public Button getBtnDeviceDelete() {
             return btnDeviceDelete;
         }
+
     }
+
+    /**
+     * item点击回调 接口
+     */
+    public interface ItemClickListener {
+        void onCheckClick(String lineName);
+
+        void onDeleteClick(String lineName);
+
+        void onEditClick(String lineName);
+    }
+
+    /**
+     * 外部设置 回调监听
+     *
+     * @param listener
+     */
+    public void setOnItemClickListener(ItemClickListener listener) {
+        itemClickListener = listener;
+    }
+
 
 }

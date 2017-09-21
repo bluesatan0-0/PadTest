@@ -85,6 +85,7 @@ public class PlateDAO {
 
                 plates.put(resultSet.getString("device_code"), plate);
 
+//                System.out.println("aaa 排菜："+plate.toString());
             }
         } catch (SQLException e) {
             e.printStackTrace();

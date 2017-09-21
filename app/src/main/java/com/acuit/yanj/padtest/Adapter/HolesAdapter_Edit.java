@@ -171,16 +171,12 @@ public class HolesAdapter_Edit extends RecyclerView.Adapter {
             HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(true);
             selectedPosition.set(0, position);
         } else {
-            System.out.println("aaa adapter selectedPosition:" + selectedHolePosition);
-            System.out.println("aaa adapter position:" + position);
             if (selectedHolePosition == position) {
-                System.out.println("aaa adapter selectedPosition:" + selectedHolePosition);
                 HolesAdapter_Edit.this.preSelected_ViewHolder.itemView.setSelected(false);
                 HolesAdapter_Edit.this.preSelected_ViewHolder = (ViewHolder_HolesAdapter) holder;
                 holder.itemView.setSelected(true);
             }
 
-            System.out.println("aaa adapter selectedPosition:----------------");
         }
 //        }
     }
