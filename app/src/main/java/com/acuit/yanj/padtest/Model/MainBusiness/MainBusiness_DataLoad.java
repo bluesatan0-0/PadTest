@@ -291,7 +291,7 @@ public class MainBusiness_DataLoad {
 
                 ArrayMap<String, String> configs = SharedPreference_Utils.getConfigs();
                 String dishListJson_url = URL_Util.getDishListJson_URL(configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_IP), configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_DEPATEMENT_CODE));
-//                System.out.println("aaa 服务器url:" + dishListJson_url);
+                System.out.println("aaa 服务器url:" + dishListJson_url);
 
 //                dishListJson_url = "http://192.168.2.241/apis.php?c=Z_braindisc&a=platesettings&shop=15&format=json&d=2017-07-15&shoptimes=2";
 

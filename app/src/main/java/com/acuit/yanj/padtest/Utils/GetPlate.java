@@ -28,8 +28,8 @@ public class GetPlate {
 //        plate.setId(resultSet.getString("id"));
         plate.setDevice_id(hole.getId());
         plate.setDevice_code(hole.getUuid());
-        plate.setDish_id(Integer.valueOf(dish.getId()));
-        plate.setDish_code(dish.getStock_id()+"");
+        plate.setDish_id(Integer.valueOf(dish.getStock_id()));
+        plate.setDish_code("");
         plate.setDish_name(dish.getName());
         plate.setPrice(BigDecimal.valueOf(dish.getSell_100gram_price()));
         plate.setMenu_url(dish.getPic());
@@ -39,6 +39,10 @@ public class GetPlate {
 //        plate.setKcal(resultSet.getBigDecimal("kcal"));
 //        plate.setKcal_nrv(resultSet.getBigDecimal("kcal_nrv"));
 
+
+        System.out.println("GetPlate_FromHoleAndDish: hole:"+hole);
+        System.out.println("GetPlate_FromHoleAndDish: dish:"+dish);
+        System.out.println("GetPlate_FromHoleAndDish: plate:"+plate);
         return plate;
     }
 }

@@ -76,7 +76,7 @@ public class URL_Util {
     public final static String REMOTE_SERVER_IP_TEST = "192.168.2.241";
     public final static String REMOTE_SERVER_DEPARTMENT_CODE_TEST = "15";
     public final static String BASE_PATH_TEST = REMOTE_SERVER_SCHEME + REMOTE_SERVER_IP_TEST + REMOTE_SERVER_SUFFIX;
-    public final static String DISH_LIST_JSON_URL_TEST = BASE_PATH_TEST + "&shop="+ REMOTE_SERVER_DEPARTMENT_CODE_TEST +"&format=json&d=2017-07-15&shoptimes=2";
+    public final static String DISH_LIST_JSON_URL_TEST = BASE_PATH_TEST + "&shop=" + REMOTE_SERVER_DEPARTMENT_CODE_TEST + "&format=json&d=2017-07-15&shoptimes=2";
 
     /**
      * 获取远端服务器数据（当前时间菜单）
@@ -91,7 +91,7 @@ public class URL_Util {
         String basePath = getBasePath_RemoteServer(remote_server_ip);
         String time = (new SimpleDateFormat("yyyy-MM-dd")).format(new Date(System.currentTimeMillis()));
 //        String time =  Long.valueOf(System.currentTimeMillis());
-        return basePath + "&shop=" + shop_code + "&format=json&d=" + time;
+        return basePath + "&shop=" + shop_code + "&format=json&d=" + time + "&nutr=1";
     }
 
     public static String getBasePath_RemoteServer(String remote_server_ip) {

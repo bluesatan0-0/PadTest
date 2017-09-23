@@ -136,7 +136,6 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 //        tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
 
 //        comparisonPlatesDishes();
-        updateNotifyDataSet_LinesHoles();
 
 
         LinearLayoutManager linesLayoutManager = new LinearLayoutManager(this, LinearLayoutManager.VERTICAL, false);
@@ -152,7 +151,8 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         rvLines.setHasFixedSize(true);
         rvHoles.setHasFixedSize(true);
 
-        initAdapters();
+        updateNotifyDataSet_LinesHoles();
+//        initAdapters();
 
     }
 
@@ -173,8 +173,8 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
                 dishes.clear();
                 lines.addAll(linesList);
                 holes.addAll(holesList);
-                dishes.addAll(dishesList);
                 plates.putAll(plateList);
+                dishes.addAll(dishesList);
 
 //                comparisonPlatesDishes();
 
@@ -213,6 +213,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 //                    若空则认为是初始化，实例化适配器
             temp_selectedHolePosition = new ArrayList<Integer>();
             temp_selectedHolePosition.add(0, selectedHolePosition);
+            System.out.println("aaa 初始化排菜：" + plates.toString());
             holesAdapter = new HolesAdapter_Edit(context, holes, lines, plates, invalidateHolesUuid, temp_selectedHolePosition);
             holesAdapter.setOnItemClickListener(new mItemClickListener_rvHoles());
             rvHoles.setAdapter(holesAdapter);
@@ -378,10 +379,10 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         invalidateHolesUuid.clear();
         boolean isExist = false;
         for (Plate plate : plates.values()) {
-            String dish_code = plate.getDish_code();
+            String dish_id = plate.getDish_id() + "";
             isExist = false;
             for (Dish dish : dishes) {
-                if ((dish.getStock_id() + "").equals(dish_code)) {
+                if ((dish.getStock_id() + "").equals(dish_id)) {
                     isExist = true;
                 }
             }
@@ -437,10 +438,10 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 //            System.out.println("aaa indexOfKey:" + indexOfKey);
 
             if (0 > indexOfKey) {
-                plates.put(hole.getUuid(), plate);
+//                plates.put(hole.getUuid(), plate);
                 plates.put(hole.getUuid(), plate);
             } else {
-                plates.setValueAt(indexOfKey, plate);
+//                plates.setValueAt(indexOfKey, plate);
                 plates.setValueAt(indexOfKey, plate);
             }
 

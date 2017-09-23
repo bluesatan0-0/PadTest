@@ -43,7 +43,7 @@ public class PlateDAO {
 
         StringBuilder sql_select = new StringBuilder();
 
-        sql_select.append(" select * from menu_order where status=1 and device_code in (select menu_device.uuid from menu_device)");
+        sql_select.append(" select * from menu_order where status=1 ");
 
         return getPlates(sql_select.toString());
 
@@ -146,7 +146,7 @@ public class PlateDAO {
                 sql.append(plate.getMenu_url());
                 sql.append("')");
 
-
+                System.out.println("plateDAO.save:" + sql.toString());
                 int i = statement.executeUpdate(sql.toString());
                 if (0 >= i) {
                     return false;

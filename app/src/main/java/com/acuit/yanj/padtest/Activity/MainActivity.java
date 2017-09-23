@@ -283,7 +283,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
 //                uploadPlatesPlan();
 //                break;
             case R.id.ll_orderList:
-                startActivity(new Intent(this,OrderListActivity.class));
+                startActivity(new Intent(this, OrderListActivity.class));
                 break;
             case R.id.ll_settings:
                 intent = new Intent(this, SettingsActivity.class);
@@ -368,10 +368,10 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         invalidateHolesUuid.clear();
         boolean isExist = false;
         for (Plate plate : plates.values()) {
-            String dish_code = plate.getDish_code();
+            String dish_id = plate.getDish_id() + "";
             isExist = false;
             for (Dish dish : dishes) {
-                if ((dish.getStock_id() + "").equals(dish_code)) {
+                if ((dish.getStock_id() + "").equals(dish_id)) {
                     isExist = true;
                 }
             }
