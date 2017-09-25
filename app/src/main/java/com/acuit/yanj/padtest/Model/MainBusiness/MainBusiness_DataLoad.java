@@ -291,7 +291,7 @@ public class MainBusiness_DataLoad {
 
                 ArrayMap<String, String> configs = SharedPreference_Utils.getConfigs();
                 String dishListJson_url = URL_Util.getDishListJson_URL(configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_IP), configs.get(SharedPreference_Utils.KEY_REMOTE_SERVER_DEPATEMENT_CODE));
-                System.out.println("aaa 服务器url:" + dishListJson_url);
+//                System.out.println("aaa 服务器url:" + dishListJson_url);
 
 //                dishListJson_url = "http://192.168.2.241/apis.php?c=Z_braindisc&a=platesettings&shop=15&format=json&d=2017-07-15&shoptimes=2";
 
@@ -301,6 +301,15 @@ public class MainBusiness_DataLoad {
                         Message msg = Message.obtain();
                         Gson gson = new Gson();
                         MenuList menuList = gson.fromJson(response, MenuList.class);
+                        for (MenuList.PlanProdsBean planProdsBean : menuList.getPlan_prods()) {
+                            if (null == planProdsBean.getKcal()) {
+                                planProdsBean.setKcal("0");
+                            }
+                            if (null == planProdsBean.getKcal_nrv()) {
+                                planProdsBean.setKcal_nrv("0");
+                            }
+
+                        }
                         msg.obj = getDishesFromMenuList(menuList);
                         msg.what = FLAG_DOWNLOAD_MENU;
                         handler_DownloadMenu.sendMessage(msg);
@@ -309,6 +318,7 @@ public class MainBusiness_DataLoad {
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+//                        System.out.println("aaa downloadError:" + error.getMessage());
                         Toast.makeText(BaseApplication.getInstance(), "下载今日菜单失败", Toast.LENGTH_SHORT).show();
                     }
                 });
@@ -350,6 +360,16 @@ public class MainBusiness_DataLoad {
             dish.setPic(plan_prod.getPic());
             dish.setPrice(BigDecimal.valueOf(Double.valueOf(plan_prod.getPrice())));
             dish.setSell_100gram_price(plan_prod.getSell_100gram_price());
+            if (null == plan_prod.getKcal_nrv()) {
+                dish.setKcal_nrv(BigDecimal.valueOf(Float.parseFloat("0")));
+            } else {
+                dish.setKcal_nrv(BigDecimal.valueOf(Float.parseFloat(plan_prod.getKcal_nrv())));
+            }
+            if (null == plan_prod.getKcal()) {
+                dish.setKcal(BigDecimal.valueOf(Float.parseFloat("0")));
+            } else {
+                dish.setKcal(BigDecimal.valueOf(Float.parseFloat(plan_prod.getKcal())));
+            }
 
             dishesList.add(dish);
         }

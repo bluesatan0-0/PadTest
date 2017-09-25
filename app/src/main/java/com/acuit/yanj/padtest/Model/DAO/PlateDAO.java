@@ -114,7 +114,7 @@ public class PlateDAO {
                 sql.replace(0, sql.length(), "");
 
                 sql.append(" replace into menu_order (");
-                sql.append("device_id,device_code,status,dish_id,dish_code,dish_name,price,create_date,menu_url");
+                sql.append("device_id,device_code,status,dish_id,dish_code,dish_name,price,create_date,menu_url,kcal_nrv,kcal");
                 sql.append(" ) values( ");
 
                 sql.append(plate.getDevice_id());
@@ -144,9 +144,15 @@ public class PlateDAO {
                 sql.append(",'");
 
                 sql.append(plate.getMenu_url());
-                sql.append("')");
+                sql.append("',");
 
-                System.out.println("plateDAO.save:" + sql.toString());
+                sql.append(plate.getKcal_nrv());
+                sql.append(",");
+
+                sql.append(plate.getKcal());
+                sql.append(")");
+
+//                System.out.println("plateDAO.save:" + sql.toString());
                 int i = statement.executeUpdate(sql.toString());
                 if (0 >= i) {
                     return false;

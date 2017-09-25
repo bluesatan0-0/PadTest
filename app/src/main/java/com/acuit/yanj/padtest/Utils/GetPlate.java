@@ -33,6 +33,8 @@ public class GetPlate {
         plate.setDish_name(dish.getName());
         plate.setPrice(BigDecimal.valueOf(dish.getSell_100gram_price()));
         plate.setMenu_url(dish.getPic());
+        plate.setKcal_nrv(dish.getKcal_nrv());
+        plate.setKcal(dish.getKcal());
 //        plate.setCreate_date(); 存储时获取，而非现在
 //        plate.setStatus(0);
 //        plate.setLeft_amount(resultSet.getBigDecimal("left_amount"));
@@ -40,9 +42,9 @@ public class GetPlate {
 //        plate.setKcal_nrv(resultSet.getBigDecimal("kcal_nrv"));
 
 
-        System.out.println("GetPlate_FromHoleAndDish: hole:"+hole);
-        System.out.println("GetPlate_FromHoleAndDish: dish:"+dish);
-        System.out.println("GetPlate_FromHoleAndDish: plate:"+plate);
+//        System.out.println("GetPlate_FromHoleAndDish: hole:"+hole);
+//        System.out.println("GetPlate_FromHoleAndDish: dish:"+dish);
+//        System.out.println("GetPlate_FromHoleAndDish: plate:"+plate);
         return plate;
     }
 }

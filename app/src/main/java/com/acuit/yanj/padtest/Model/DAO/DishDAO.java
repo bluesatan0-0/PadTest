@@ -3,6 +3,7 @@ package com.acuit.yanj.padtest.Model.DAO;
 import com.acuit.yanj.padtest.Bean.Dish;
 import com.acuit.yanj.padtest.Utils.DBConnect_Util;
 
+import java.math.BigDecimal;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -82,6 +83,12 @@ public class DishDAO {
                 dish.setDate(resultSet.getString("date"));
                 dish.setPart(resultSet.getInt("part"));
                 dish.setName(resultSet.getString("name"));
+                if (null!=resultSet.getString("kcal")) {
+                    dish.setKcal(BigDecimal.valueOf(Float.parseFloat(resultSet.getString("kcal"))));
+                }
+                if (null!=resultSet.getString("kcal_nrv")) {
+                    dish.setKcal_nrv(BigDecimal.valueOf(Float.parseFloat(resultSet.getString("kcal_nrv"))));
+                }
 
                 dishes.add(dish);
 
@@ -133,14 +140,14 @@ public class DishDAO {
             for (Dish dish : dishesList) {
                 sql.replace(0, sql.length(), "");
 
-                System.out.println("aaa sql存储前：" + dish);
+//                System.out.println("aaa sql存储前：" + dish);
 //                INSERT INTO menu_plan_stock
 //                        (stock_id,price,sell_100gram_price,amount,pic,cate,cat_name,date,part,name)
 //                VALUES(2000,20.00,5.00,2.00,'http;//.jpg',1,'卤味','2017-07-15',1,'酱猪蹄')
 
                 sql.append(" REPLACE INTO menu_plan_stock ");
 //                sql.append(" INSERT INTO menu_plan_stock ");
-                sql.append(" (stock_id,price,sell_100gram_price,amount,cate,part,pic,cat_name,date,name) VALUES(");
+                sql.append(" (stock_id,price,sell_100gram_price,amount,cate,part,pic,cat_name,date,name,kcal,kcal_nrv) VALUES(");
 
                 sql.append(dish.getStock_id());
                 sql.append(",");
@@ -162,9 +169,13 @@ public class DishDAO {
                 sql.append(dish.getDate());
                 sql.append("','");
                 sql.append(dish.getName());
+                sql.append("','");
+                sql.append(dish.getKcal());
+                sql.append("','");
+                sql.append(dish.getKcal_nrv());
                 sql.append("')");
 
-                System.out.println("aaa 对应sql：" + sql.toString());
+//                System.out.println("aaa 对应sql：" + sql.toString());
                 int i = statement.executeUpdate(sql.toString());
                 if (0 >= i) {
                     return false;

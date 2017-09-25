@@ -213,7 +213,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 //                    若空则认为是初始化，实例化适配器
             temp_selectedHolePosition = new ArrayList<Integer>();
             temp_selectedHolePosition.add(0, selectedHolePosition);
-            System.out.println("aaa 初始化排菜：" + plates.toString());
+//            System.out.println("aaa 初始化排菜：" + plates.toString());
             holesAdapter = new HolesAdapter_Edit(context, holes, lines, plates, invalidateHolesUuid, temp_selectedHolePosition);
             holesAdapter.setOnItemClickListener(new mItemClickListener_rvHoles());
             rvHoles.setAdapter(holesAdapter);
@@ -298,7 +298,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         });
 
         mainBusiness_dataLoad_UP.uploadPlates(plates);
-        System.out.println("aaa 上传排菜:" + plates.toString());
+//        System.out.println("aaa 上传排菜:" + plates.toString());
 
     }
 
@@ -314,7 +314,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
         mainBusiness_dataLoad.setOnDownloadListener(new MainBusiness_DataLoad.OnDownloadListener() {
             @Override
             public void downloadMenu(ArrayList<Dish> dishesList) {
-                System.out.println("aaa 下载的菜单为：" + dishesList.toString());
+//                System.out.println("aaa 下载的菜单为：" + dishesList.toString());
 
 //                将下载的菜单存数据库，拿出数据库的菜品来排菜;
                 saveDownloadedDishes(dishesList);
@@ -331,7 +331,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
      */
     private void saveDownloadedDishes(ArrayList<Dish> dishesList) {
 
-        System.out.println("aaa 保存今日菜单：" + dishesList.toString());
+//        System.out.println("aaa 保存今日菜单：" + dishesList.toString());
         EditBusiness_DataLoad editBusiness_dataLoad = new EditBusiness_DataLoad();
         editBusiness_dataLoad.setOnSaveDishesListener(new EditBusiness_DataLoad.OnSaveDishesListener() {
             @Override
@@ -546,7 +546,7 @@ public class EditActivity extends BaseActivity implements View.OnClickListener {
 
             @Override
             public void load_Lines_Holes_Plates(List<Line> linesList, List<Hole> holesList, ArrayMap<String, Plate> plateList, List<Dish> dishesList) {
-                System.out.println("aaa 点击了餐线 holes:" + holesList.toString());
+//                System.out.println("aaa 点击了餐线 holes:" + holesList.toString());
                 holes.clear();
                 holes.addAll(holesList);
                 holesAdapter.notifyDataSetChanged();

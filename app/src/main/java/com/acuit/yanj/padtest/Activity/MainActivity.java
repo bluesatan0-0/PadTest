@@ -111,8 +111,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
                 plates.putAll(plateList);
 //                tempPlates.putAll((Map<? extends String, ? extends Plate>) plates);
                 if (null != holesAdapter_main) {
+                    comparisonPlatesDishes();
                     holesAdapter_main.notifyDataSetChanged();
-                    System.out.println(name.toString() + " is running");
+//                    System.out.println(name.toString() + " is running");
                 }
             }
         });
@@ -308,7 +309,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         mainBusiness_dataLoad.setOnDownloadListener(new MainBusiness_DataLoad.OnDownloadListener() {
             @Override
             public void downloadMenu(ArrayList<Dish> dishesList) {
-                System.out.println("aaa 下载的菜单为：" + dishesList.toString());
+//                System.out.println("aaa 下载的菜单为：" + dishesList.toString());
 
 //                将下载的菜单存数据库，拿出数据库的菜品来排菜;
                 saveDownloadedDishes(dishesList);
@@ -368,9 +369,11 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
         invalidateHolesUuid.clear();
         boolean isExist = false;
         for (Plate plate : plates.values()) {
+//            System.out.println("aaa comperison.排菜里的菜名:" + plate.getDish_name() + "  排菜里菜的stock_id:" + plate.getDish_id());
             String dish_id = plate.getDish_id() + "";
             isExist = false;
             for (Dish dish : dishes) {
+//                System.out.println("aaa comperison.菜单里菜名:" + dish.getName() + "  菜单里菜的stock_id:" + dish.getStock_id());
                 if ((dish.getStock_id() + "").equals(dish_id)) {
                     isExist = true;
                 }
@@ -380,9 +383,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener, 
             }
         }
 
-        for (String s : invalidateHolesUuid) {
+//        for (String s : invalidateHolesUuid) {
 //            System.out.println("aaa mainActivity invalidateUuid:" + s);
-        }
+//        }
 
         if (null != holesAdapter_main) {
             holesAdapter_main.notifyDataSetChanged();

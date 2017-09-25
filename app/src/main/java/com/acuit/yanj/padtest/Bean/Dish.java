@@ -54,11 +54,16 @@ public class Dish implements java.io.Serializable {
     /** 产品名 */
     private String name;
 
+    /**  */
+    private BigDecimal kcal;
+
+    /**  */
+    private BigDecimal kcal_nrv;
 
     public Dish() {
     }
 
-    public Dish(String id, Integer stock_id, BigDecimal price, double sell_100gram_price, BigDecimal amount, String pic, Integer cate, String cat_name, String date, Integer part, String name) {
+    public Dish(String id, Integer stock_id, BigDecimal price, double sell_100gram_price, BigDecimal amount, String pic, Integer cate, String cat_name, String date, Integer part, String name, BigDecimal kcal, BigDecimal kcal_nrv) {
         this.id = id;
         this.stock_id = stock_id;
         this.price = price;
@@ -70,8 +75,9 @@ public class Dish implements java.io.Serializable {
         this.date = date;
         this.part = part;
         this.name = name;
+        this.kcal = kcal;
+        this.kcal_nrv = kcal_nrv;
     }
-
 
     @Override
     public String toString() {
@@ -87,9 +93,26 @@ public class Dish implements java.io.Serializable {
                 ", date='" + date + '\'' +
                 ", part=" + part +
                 ", name='" + name + '\'' +
+                ", kcal=" + kcal +
+                ", kcal_nrv=" + kcal_nrv +
                 '}';
     }
 
+    public BigDecimal getKcal() {
+        return kcal;
+    }
+
+    public void setKcal(BigDecimal kcal) {
+        this.kcal = kcal;
+    }
+
+    public BigDecimal getKcal_nrv() {
+        return kcal_nrv;
+    }
+
+    public void setKcal_nrv(BigDecimal kcal_nrv) {
+        this.kcal_nrv = kcal_nrv;
+    }
 
     /**
      * 获取

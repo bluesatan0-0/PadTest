@@ -90,9 +90,45 @@ public class MenuList {
         private String name;
         private String no;
         private String pic;
+        private String kcal;
+        private String kcal_nrv;
         private String price;
         private double sell_100gram_price;
         private String stock_id;
+
+        @Override
+        public String toString() {
+            return "PlanProdsBean{" +
+                    "amount=" + amount +
+                    ", cate='" + cate + '\'' +
+                    ", cate_name='" + cate_name + '\'' +
+                    ", id='" + id + '\'' +
+                    ", name='" + name + '\'' +
+                    ", no='" + no + '\'' +
+                    ", pic='" + pic + '\'' +
+                    ", kcal='" + kcal + '\'' +
+                    ", kcal_nrv='" + kcal_nrv + '\'' +
+                    ", price='" + price + '\'' +
+                    ", sell_100gram_price=" + sell_100gram_price +
+                    ", stock_id='" + stock_id + '\'' +
+                    '}';
+        }
+
+        public String getKcal() {
+            return kcal;
+        }
+
+        public void setKcal(String kcal) {
+            this.kcal = kcal;
+        }
+
+        public String getKcal_nrv() {
+            return kcal_nrv;
+        }
+
+        public void setKcal_nrv(String kcal_nrv) {
+            this.kcal_nrv = kcal_nrv;
+        }
 
         public int getAmount() {
             return amount;
